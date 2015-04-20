@@ -1,0 +1,117 @@
+.loaderSecondary {
+    animation: 1s linear 0s alternate none infinite running typing;
+    border-radius: 50%;
+    height: 6px;
+    left: 45%;
+    position: relative;
+    top: 50%;
+    width: 6px;
+}
+.background-blue {
+    background-color: #2dc3e8 !important;
+}
+
+.cursor-hand{
+  cursor: pointer;
+}
+
+.minh-420{
+  min-height: 420px;
+}
+.h-350{
+  height: 350px !important;
+}
+
+.footer_custom{
+    bottom: 0;
+    left: 0;
+    padding: 5px;
+    position: absolute;
+    right: 0;
+}
+
+.center-text{
+  text-align: center !important
+}
+.image-map{
+
+}
+.p-bottom{
+  margin-bottom: 10px;
+}
+
+.hmodal300 {
+  height: 300px;
+  width: 99.9%;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal300{
+    height: 300px;
+    width: 99.9%;
+  }
+}
+
+.hmodal280 {
+  height: 280px;
+  width: 99.9%;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal280{
+    height: 280px;
+    width: 99.9%;
+  }
+}
+
+.hmodal500 {
+  height: 500px;
+  width: 99.9%;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal500{
+    height: 500px;
+    width: 99.9%;
+  }
+}
+.hmodal550 {
+  height: 550px;
+  width: 99.9%;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal550{
+    height: 550px;
+    width: 99.9%;
+  }
+}
+
+.hmodal350 {
+  height: 350px;
+  width: 99.9%;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal350{
+    height: 350px;
+    width: 99.9%;
+  }
+}
+
+.hmodal400 {
+  height: 400px;
+  width: 99.9%;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal400{
+    height: 400px;
+    width: 99.9%;
+  }
+}
+
+.row-min-h300{
+  min-height: 300px;
+  margin-top: 15px;
+}
