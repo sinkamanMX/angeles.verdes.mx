@@ -1,0 +1,46 @@
+<?php $this->headScript()->appendFile('/js/modules/general/functionGral.js') ?> 
+<?php $this->headScript()->appendFile('/js/modules/users/jsValidateProfiles.js') ?> 
+<div class="row-min-h300" id="divContenedor">
+	<form id="FormData3" class="form-horizontal" role="form" method="POST" action="/admin/users/listhorarios">
+		<input type="hidden" id="catId" name="catId"  value="<?php echo $this->catId; ?>" id="catId" />
+		<input type="hidden" id="optReg" name="optReg" value="updateModules" />
+		<input type="hidden" name="strTabSelected" value="<?php echo $this->tabSelected;?>" />
+
+		<table class="table table-striped table-hover table-bordered">
+		    <thead> 
+		        <tr role="row">
+		        	<th class="table-checkbox col-xs-2">
+						<div class="checkbox">
+		                    <label>
+		                  		<input name="checkAllItems" onClick="optionAll(this.checked);" type="checkbox">
+		                        <span class="text">Todos</span>
+		                    </label>
+		                </div>
+					</th>
+					<th>Hora Inico - Hora Fin</th>
+		        </tr>                                
+		    </thead>                        
+		    <tbody>                      
+		        <?php foreach(@$this->aDataModules as $key => $items):?>
+					<tr>
+		    			<td>
+		    				<label>
+		                        <input onChange="selectOption(this.checked,<?php echo $items['ID_HORARIO'];?>)"  class="chkOn" name="formsValues[]" value="<?php echo $items['ID_HORARIO'];?>" type="checkbox" <?php echo ($items['ASSIGN']==1) ? 'checked':'';?> >
+		                        <span class="text"></span>
+		                    </label>					                    				
+		    			</td>
+		    			<td><?php echo $items['HORARIOS'];?></td>
+		    		</tr>
+		        <?php endforeach;?>
+		    </tbody>
+		</table>
+		<div class="form-group margin-t5px">
+	        <div class="col-sm-offset-2 col-sm-10">
+				<div class="pull-right">
+					<button type="button" onClick="validateListCheks('FormData3')" class="btn btn-info">Guardar Cambios</button>
+					<button type="button" class="btn default" onClick="location.href='<?php echo $this->moduleInfo['SCRIPT']; ?>';">Cancelar</button>	
+				</div>
+	        </div>
+	    </div>										
+	</form>
+</div>

@@ -12,7 +12,7 @@ class My_Model_Equipos extends My_Db_Table
 	protected $_primary = 'ID_EQUIPO';
 	
 	
-	public function getDataTables($idEmpresa){
+	public function getDataTables(){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
     	$sql ="SELECT
@@ -25,7 +25,6 @@ class My_Model_Equipos extends My_Db_Table
 				FROM AVL_EQUIPOS E
 				INNER JOIN AVL_MODELO_EQUIPOS M ON E.ID_MODELO = M.ID_MODELO
 				INNER JOIN AVL_MARCA_EQUIPOS A ON M.ID_MARCA   = A.ID_MARCA
-				WHERE ID_EMPRESA = $idEmpresa
 				ORDER BY E.DESCRIPCION DESC";    	
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
@@ -71,7 +70,6 @@ class My_Model_Equipos extends My_Db_Table
         
         $sql="INSERT INTO $this->_name			 
 					SET ID_MODELO 	=  ".$data['inputModelo'].",
-					ID_EMPRESA	    =  ".$data['idEmpresa'].",
 					ID_SERVIDOR		=  ".$data['inputServidor'].",
 					DESCRIPCION		=  '".$data['inputDesc']."',
 					IMEI			=  '".$data['inputImei']."',
@@ -121,7 +119,7 @@ class My_Model_Equipos extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
-		$sqlDel  	= "DELETE FROM AVL_EQUIPO_ACTIVO WHERE ID_EQUIPO = ".$data['catId']." LIMIT 1";
+		$sqlDel  	= "DELETE FROM AVL_EQUIPO_ACTIVO WHERE ID_EQUIPO = ".$data['catId'];
 	    $queryDel   = $this->query($sqlDel,false);        
 
         $sql="DELETE FROM  $this->_name
@@ -143,7 +141,7 @@ class My_Model_Equipos extends My_Db_Table
        		$result     = Array();
         	$result['status']  = false;
         
-			$sql  	= "DELETE FROM AVL_EQUIPO_ACTIVO WHERE ID_EQUIPO = ".$data['catId']." LIMIT 1";
+			$sql  	= "DELETE FROM AVL_EQUIPO_ACTIVO WHERE ID_EQUIPO = ".$data['catId'];
     		$query   = $this->query($sql,false);
 			if($query){
 				$result['status']  = true;					
@@ -174,7 +172,7 @@ class My_Model_Equipos extends My_Db_Table
     public function setActivo($idObject,$idActivo){
         $result  = false;
         try{   
-	        $sqlDel  = "DELETE FROM AVL_EQUIPO_ACTIVO WHERE ID_EQUIPO = $idObject LIMIT 1";
+	        $sqlDel  = "DELETE FROM AVL_EQUIPO_ACTIVO WHERE ID_EQUIPO = $idObject";
 	        $queryDel   = $this->query($sqlDel,false);
 	        
 	        $sql="INSERT INTO AVL_EQUIPO_ACTIVO		 

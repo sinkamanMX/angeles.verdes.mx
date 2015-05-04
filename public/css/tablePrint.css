@@ -1,0 +1,35 @@
+table {
+	width: 100%;
+}
+ 
+.DataTables_sort_wrapper {
+
+}
+ 
+tr, td, th {
+	border: 1px solid #000;
+}
+
+.table-striped tbody > tr:nth-child(2n+1) > td, .table-striped tbody > tr:nth-child(2n+1) > th {
+    background-color: #f9f9f9;
+}
+
+.table-bordered th, .table-bordered td {
+    border-left: 1px solid #ddd;
+}
+.table th, .table td {
+    border-top: 1px solid #ddd;
+    line-height: 20px;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+  background-color: #f9f9f9;
+}
+
+table.dataTable tr.DTTT_selected.even {
+	background-color: #B0BED9;
+}

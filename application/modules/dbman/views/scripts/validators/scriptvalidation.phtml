@@ -1,0 +1,34 @@
+var validationControl =  null;
+
+$().ready(function(){
+    validateFormA();
+});
+
+function revalidate(inputName){
+    $('#formDbman').bootstrapValidator('updateStatus', inputName, 'NOT_VALIDATED');
+}
+
+function validateFormA(){  
+        $('#formDbman').bootstrapValidator({
+            live: 'true',
+            excluded: [':disabled'],
+            resetFormData: true,
+            feedbackIcons: {
+                valid: 'icon-checkmark-circle',
+                invalid: 'icon-cancel-circle',
+                validating: 'icon-spinner7'
+            },
+            fields: {<?php foreach($this->aFields as $key => $items):?>
+                <?php if($items['VISIBLE']!=0 && $items['ID_VALIDACION']>0):?>
+                    <?php echo 'input'.$items['INPUT_NAME'];?><?php echo $items['OPCIONES'];?>
+                <?php endif;?>
+                <?php endforeach;?>           
+            }
+        }).on('success.form.fv', function(e) {
+            $('.loading-container').removeClass('loading-inactive');
+                e.preventDefault();
+                var $form = $(e.target);
+                var fv = $form.data('FormDataGral');
+                    fv.defaultSubmit();
+            });    
+    }

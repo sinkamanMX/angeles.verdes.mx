@@ -14,12 +14,10 @@ class My_Model_EventosTel extends My_Db_Table
 	public function getDataTables($idObject,$idModel){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT E.DESCRIPCION_EVENTO AS NAME, M.ID_EVENTO AS ID, IF(T.ID_EVENTO_TELEFONO IS NULL ,'0' ,'1') AS ASIGNADO
-			FROM PROD_EVENTOS_MODELO M
-			INNER JOIN PROD_EVENTOS E ON M.`ID_EVENTO`  = E.ID_EVENTO
-			 LEFT JOIN PROD_EVENTO_TELEFONO T ON M.ID_EVENTO = T.ID_EVENTO AND T.ID_TELEFONO = $idObject
-			WHERE M.ID_MODELO 	= $idModel
-			ORDER BY ASIGNADO DESC,E.DESCRIPCION_EVENTO ASC";    	
+    	$sql ="SELECT E.DESCRIPCION_EVENTO AS NAME, E.ID_EVENTO AS ID, IF(T.ID_EVENTO_TELEFONO IS NULL ,'0' ,'1') AS ASIGNADO
+			FROM PROD_EVENTOS E
+			 LEFT JOIN PROD_EVENTO_TELEFONO T ON E.ID_EVENTO = T.ID_EVENTO AND T.ID_TELEFONO =  $idObject
+			ORDER BY ASIGNADO DESC,E.DESCRIPCION_EVENTO ASC";
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			

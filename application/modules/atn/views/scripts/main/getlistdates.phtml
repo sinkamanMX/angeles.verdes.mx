@@ -1,0 +1,36 @@
+<?php $this->headScript()->appendFile('/js/modules/atn/mainAtnSearch.js') ?>     
+
+        <div class="panel-body">
+            <div class="datatable">
+                <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="dataTable">
+                    <thead>             
+                        <tr>
+                            <th>Folio Cita</th>
+                            <th>Tipo Servicio</th>
+                            <th>Estatus</th>
+                            <th>Cliente</th>
+                            <th>Fecha Programada</th>
+                            <th>Hora Programada</th>
+                            <th>Técnico Asignado</th>
+                            <th>Ociones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($this->dataSearch as $key => $items): ?>
+                            <tr>                   
+                                <td><?php echo $items['FOLIO'];?></td>
+                                <td><?php echo $items['N_TIPO'];?></td>
+                                <td><?php echo $items['DESCRIPCION'];?></td>
+                                <td><?php echo $items['NOMBRE_CLIENTE'];?></td>
+                                <td><?php echo $items['F_PROGRAMADA'];?></td>
+                                <td><?php echo $items['H_PROGRAMADA'];?></td>                                    
+                                <td><?php echo $items['NOMBRE_TECNICO'];?></td>
+                                <td class="text-center">                                
+                                    <a href="javascript:parent.showDetail(<?php echo $items['ID'];?>)"><button class="btn btn-info btn-sm"> <i class="icon-redo2"></i></button></a>
+                                </td>
+                            </tr>  
+                        <?php  endforeach;?>
+                    </tbody>
+                </table>    
+            </div>      
+        </div>

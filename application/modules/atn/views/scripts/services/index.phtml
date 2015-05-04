@@ -1,0 +1,208 @@
+<?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false') ?>
+<?php $this->headScript()->appendFile('/libs/graphs/js/jquery.circliful.js'); ?>
+<?php $this->headScript()->appendFile('/libs/datatables/js/dataTables.fixedColumns.min.js'); ?>
+<?php $this->headLink()->appendStylesheet('/libs/graphs/css/jquery.circliful.css');?>
+<?php $this->headScript()->appendFile('/libs/graphs/js/jquery.circliful.js'); ?>
+<?php //$this->headLink()->appendStylesheet('/css/dataTables.tableTools.css');?>
+<?php $this->headScript()->appendFile('/libs/others/jQuery.print.js'); ?>
+<?php $this->headScript()->appendFile('/js/modules/atn/jsService.js'); ?>
+<div id="divDataPersonal" class="hide"><?php foreach($this->aTecnicos as $key => $items):?><?php echo ($control==0) ? '': '?';?><?php echo $items['ID']."|".$items['NAME']."|".$items['ID_SUCURSAL'];?><?php $control++;?><?php endforeach;?></div>
+
+<div class="panel panel-default margin-t5px">
+    <div class="panel-heading">
+        <h6 class="panel-title"> Reporte de Citas</h6>
+    </div>
+    
+    <div class="">
+        <div class="row no-margin-l  margin-t5px">
+            <form method="POST" action="/atn/services/index" id="FormData" class="form-horizontal formcustom">
+                <input type="hidden" name="optReg" value="search" />
+                <input type="hidden" name="inputStatus" id="inputStatus" value="<?php echo $this->iStatus; ?>" />
+                <fieldset> 
+                    <div class="col-md-12">   
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Buscar Por<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select class="chzn-select col-md-10" id="cboTypeSearch" name="cboTypeSearch" onChange="getReport()">
+                                        <?php echo $this->aTypeSearchs;?>
+                                    </select>
+                                </div>
+                            </div>   
+                        </div>
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Fecha Inicio<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input readonly id="inputFechaIn" name="inputFechaIn" data-required="1"  type="text" class="form-control" value="<?php echo @$this->data['inputFechaIn']; ?>">
+                                </div>
+                            </div>   
+                        </div>
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Fecha Fin<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input readonly type="text" id="inputFechaFin" name="inputFechaFin" class="form-control" value="<?php echo (@$this->data['inputFechaFin']); ?>">                          
+                                </div>
+                            </div>                                      
+                        </div>    
+                    </div>  
+                    <div class="col-md-12 no-margin-l">
+                        <div class="col-md-4">       
+                            <div class="control-group">
+                                <label class="control-label">Sucursales<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select class="chzn-select col-md-10" id="cboInstalacion" name="cboInstalacion" onChange="getReport()">
+                                        <option value="">Todos</option>
+                                        <?php echo $this->cInstalaciones;?>
+                                    </select>
+                                </div>
+                            </div>                                          
+                        </div>
+                        <div class="col-md-4 <?php echo (isset($this->showUsers))? '': 'hide'; ?>">
+                            <div class="control-group">
+                                <label class="control-label">Técnicos<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select class="chzn-select col-md-10" id="inputTecnicos" name="inputTecnicos" >
+                                        <option value="">Todos</option>
+                                        <?php echo $this->aTecnicos;?>
+                                    </select>
+                                </div>
+                            </div>                          
+                        </div>
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label"></label>
+                                <div class="controls">
+                                    <button type="submit" class="btn row-margin-r5 btn-primary">Buscar</button>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>                          
+                </fieldset>
+            </form>
+        </div>
+        <div class="row no-margin-l  margin-t5px">
+              <div class="col-md-2 hide-sidebar <?php echo ($this->iStatus==-1) ? 'status-selected':'';?>" onClick="setStatus(-1)">
+                    <div class="graphCircle" 
+                        data-dimension="150" 
+                        data-text="<?php echo $this->dataResumeTotal;?>" 
+                        data-info="Total Citas" 
+                        data-width="30" 
+                        data-fontsize="38" 
+                        data-percent="100" 
+                        data-fgcolor="#2D66F5" 
+                        data-bgcolor="#E2E2E2" 
+                        data-fill="#F3F3F3"></div>
+                </div>        
+                <?php foreach($this->dataResume as $key => $items):?>
+                <?php $porcentaje = (round($items['TOTAL'] / $this->dataResumeTotal * 100, 0)); ?>
+                <div class="col-md-2 hide-sidebar <?php echo ($this->iStatus==$items['ID']) ? 'status-selected':'';?>" onClick="setStatus(<?php echo $items['ID']; ?>)">
+                    <div class="graphCircle" 
+                        data-dimension="150" 
+                        data-text="<?php echo $items['TOTAL'];?>" 
+                        data-info="<?php echo $items['DESC'];?>" 
+                        data-width="30" 
+                        data-fontsize="38" 
+                        data-percent="<?php echo $porcentaje;?>" 
+                        data-fgcolor="<?php echo $items['COLOR'];?>" 
+                        data-bgcolor="#E2E2E2" 
+                        data-fill="#F3F3F3"></div>
+                </div>    
+                <?php endforeach;?>           
+        </div>
+        <div class="rrow no-margin-l  margin-t5px">
+            <div class="button-excel-rel">
+                <?php if(count($this->aResume)>0): ?>
+                    <div class="btn-group">
+                     <a href="javascript:getReportAll()"><button class="btn btn-success"><i class="icon-file-download"></i> Exportar</button></a>                                    
+                    </div>
+                     <!--<div class="btn-group">
+                        <button onClick="printPage()" class="btn btn-primary"> Imprimir <i class="icon-print icon-white"></i></button>
+                    </div>-->
+                <?php endif;?>
+            </div>
+        </div>
+        <div class=" no-margin-l  margin-t5px">                        
+        </div>
+    </div>
+</div>
+<div class="datatable-tools">                     
+                <table cellspacing="0" width="100%" class="table table-striped table-bordered display"  id="dataTable">
+                    <thead>             
+                        <tr>
+                            <th>Folio Cita</th>
+                            <th>Tipo Servicio</th>
+                            <th>Estatus</th>
+                            <th>Cliente</th>
+                            <th>Fecha-Hora Programada</th>
+                            <!--<th>Hora Programada</th>-->
+                            <th>Hora Inicio</th>
+                            <th>Hora Terminado</th>
+                            <th>Técnico Asignado</th>                                
+                            <th>Municipio</th>
+                            <th>CP</th>
+                            <th>Estado</th>
+                            <th  style="width: 100px;" >Ociones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $result = '';$print=false?>
+                        <?php foreach($this->aResume as $key => $items): ?>
+                            <?php $print = (isset($this->iStatus) && $this->iStatus != -1) ? (($this->iStatus==$items['IDE']) ? true : false) : true; ?>
+                            <?php if($print):?>
+                                <tr>                   
+                                    <td><?php echo $items['FOLIO'];?></td>
+                                    <td><?php echo $items['N_TIPO'];?></td>
+                                    <td><?php echo $items['DESCRIPCION'];?></td>
+                                    <td><?php echo $items['NOMBRE_CLIENTE'];?></td>
+                                    <td><?php echo $items['F_PROGRAMADA']."-".$items['H_PROGRAMADA'];?></td>
+                                    <td><?php echo $items['FECHA_INICIO'];?></td>
+                                    <td><?php echo $items['FECHA_TERMINO'];?></td>
+                                    <td><?php echo $items['NOMBRE_TECNICO'];?></td>
+                                    <td><?php echo $items['DIR_MUN'];?></td>
+                                    <td><?php echo $items['DIR_CP'];?></td>
+                                    <td><?php echo $items['DIR_ESTADO'];?></td>
+                                    <td class="text-center" style="width: 100px;" > 
+                                        <div class="row">
+                                            <?php if($items['TEC_ASIGNADO']==1):?>                                                
+                                                <button type="button" onClick="showPosition(<?php echo $items['ID']; ?>);" class="btn btn-icon btn-primary col-xs-3" data-toggle="tooltip" data-placement="left" title="Ult. Posición del Técnico"><i class="icon-globe2"></i></button>                                                
+                                            <?php endif;?>
+                                            <?php if($items['IDE']==4):?>
+                                                    <a href="/atn/reportes/exportsearch?strInput=<?php echo $items['ID']; ?>">
+                                                        <button type="button" class="btn btn-icon btn-warning  col-xs-3" data-toggle="tooltip" data-placement="left" title="Formato General"><i class="icon-paragraph-center2"></i></button>
+                                                    </a>
+                                                <?php if($items['NEW_FORM']=='N'):?>
+                                                        <a href="/atn/reportes/exportoservicio?strInput=<?php echo $items['ID']; ?>">
+                                                            <button type="button" class="btn btn-icon btn-success col-xs-3" data-toggle="tooltip" data-placement="bottom" title="Orden de Servicio"><i class="icon-file"></i></button>
+                                                        </a>                                            
+                                                        <a href="/atn/reportes/exportchecklist?strInput=<?php echo $items['ID']; ?>">
+                                                            <button type="button" class="btn btn-icon btn-info col-xs-3" data-toggle="tooltip" data-placement="right" title="Checklist de Servicio"><i class="icon-numbered-list"></i></button>
+                                                        </a>  
+                                                <?php endif;?>
+                                            <?php endif;?>
+                                        </div>
+                                    </td>
+                                </tr>  
+                            <?php endif;?>
+                        <?php  endforeach;?>
+                    </tbody>
+                </table>                  
+            </div>
+
+
+    <div id="myModalinfoVis" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"> Citas </h4>
+                </div>
+
+                <div class="modal-body with-padding">
+                    <img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
+                    <iframe class="hmodal550" id="iFrameDetCita" src="" style="zoom:0" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>

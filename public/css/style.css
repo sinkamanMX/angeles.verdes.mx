@@ -1,43 +1,42 @@
-.loaderSecondary {
-    animation: 1s linear 0s alternate none infinite running typing;
-    border-radius: 50%;
-    height: 6px;
-    left: 45%;
-    position: relative;
-    top: 50%;
-    width: 6px;
-}
-.background-blue {
-    background-color: #2dc3e8 !important;
-}
 
-.cursor-hand{
-  cursor: pointer;
+.logo-png{
+  width: 25%;
 }
-
-.minh-420{
-  min-height: 420px;
-}
-.h-350{
-  height: 350px !important;
-}
-
-.footer_custom{
-    bottom: 0;
-    left: 0;
-    padding: 5px;
-    position: absolute;
-    right: 0;
-}
-
-.center-text{
-  text-align: center !important
-}
-.image-map{
+/** Home Page **/
+body {
 
 }
-.p-bottom{
-  margin-bottom: 10px;
+
+
+@media (min-width: 979px){
+  .body-all {
+    padding-top: 35px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;          
+  }
+}
+
+
+.m-top-1{
+  margin-top: 1%;
+}
+.m-top-3{
+  margin-top: 3%;
+}
+.m-top-10{
+  margin-top: 10%;
+}
+.m-top-20{
+  margin-top: 20%;
+}
+.m-top-30{
+  margin-top: 30%;
+}
+.margin-t5px{
+  margin-top: 5px !important;
+}
+.margin-30{
+  margin: 30px 0 0;
 }
 
 .hmodal300 {
@@ -111,7 +110,104 @@
   }
 }
 
+.bg-white{
+  background-color: #FFFFFF;
+}
+
+.no-margin-t{
+  margin-top: 0px !important;
+}
+
+.no-margin-l{
+  margin-left:  0px !important;
+}
+
+.no-margin-r{
+  margin-right:  0px !important;
+}
+
+.no-margin-b{
+  margin-bottom:  0px !important;
+}
+
+.row-min-h{
+  min-height: 550px;
+  margin-top: 15px;
+}
+.row-min-h300{
+  min-height: 300px;
+}
+
 .row-min-h300{
   min-height: 300px;
   margin-top: 15px;
+}
+.formcustom {
+  margin: 0 0 0px !important;
+}
+
+.row-margin-left25 {
+    margin-left: 25px !important;
+}
+.row-margin-left5 {
+    margin-left: 5% !important;
+}
+.row-margin-r5{
+  margin-right: 5% !important;
+}
+.row-margin-left5px {
+    margin-left: 5px !important;
+}
+
+.button-excel-15 {
+  margin-left: 5px;
+  margin-top: -15px;
+  position: fixed;
+}
+.button-excel-rel {
+    margin-left: 5px;
+    position: relative;
+    top: 5% !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.no-padding-top {
+  padding-top: 0px !important;
+}
+.no-clear{
+  clear: none !important;
+}
+
+.cursor-hand{
+  cursor: pointer;  
+}
+.status-selected{
+  border: 9px solid #f3f3f3;
+  border-radius: 50px; 
+}
+
+.table-date-date {
+  background-color: #ffffff;
+  bottom: 10%;
+  left: 2%;
+  position: fixed;
+  opacity: 0.8;
+}
+
+.table-data-pos{
+  background-color: #ffffff;
+  bottom: 10%;
+  right: 2%;
+  position: fixed;
+  opacity: 0.8;
+}
+
+.no-border{
+  border: 0px !important;
+}
+.no-padding{
+  padding: 0px !important;
 }

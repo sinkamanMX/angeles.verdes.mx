@@ -16,7 +16,7 @@ class My_Model_Horarios extends My_Db_Table
 		$this->query("SET NAMES utf8",false); 		
     	$sql ="SELECT ID_HORARIO,CONCAT(HORA,'-',HORA_FIN ) AS HORARIOS, HORA, HORA_FIN
 			 	FROM PROD_HORARIO 
-			 	WHERE ID_SUCURSAL IN ($aSucursales)";    	
+			 	WHERE ID_SUCURSAL IN ($aSucursales)";
 		$query   = $this->query($sql);
 		if(count($query)>0){
 			foreach($query AS $key => $items){
@@ -84,6 +84,7 @@ class My_Model_Horarios extends My_Db_Table
 					  AND H.ID_HORARIO =  $idHorario
 				 )
 				 ORDER BY U.ID_USUARIO ASC LIMIT 1";	
+    	Zend_Debug::dump($sql);
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query[0]['ID_USUARIO'];			
@@ -220,7 +221,7 @@ class My_Model_Horarios extends My_Db_Table
         $result = false;
         $sql=" INSERT INTO PROD_HORARIO_USUARIO
 				 SET ID_USUARIO	= ".$data['catId'].",
-				 ID_HORARIO		= ".$data['inputhorario'];        
+				 ID_HORARIO		= ".$data['inputhorario'];
         try{
     		$query   = $this->query($sql,false);
 			if($query){
@@ -233,12 +234,12 @@ class My_Model_Horarios extends My_Db_Table
 		return $result;			
 	}
 	
-	public function deleteByUser($idObject){
+	public function deleteByUser($data){
     	try{    	
        		$result     = Array();
         	$result['status']  = false;
         
-			$sql  	= "DELETE FROM PROD_HORARIO_USUARIO WHERE ID_USUARIO = ".$idObject;
+			$sql  	= "DELETE FROM PROD_HORARIO_USUARIO WHERE ID_USUARIO = ".$data['catId'];
     		$query   = $this->query($sql,false);
 			if($query){
 				$result['status']  = true;					
@@ -248,18 +249,5 @@ class My_Model_Horarios extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;			
-	}
-	
-	public function getHorariosEmpresa($idEmpresa){
- 		$result= Array();
-		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT ID_HORARIO AS ID, CONCAT(HORA,'-',HORA_FIN ) AS NAME
-				FROM PROD_HORARIO
-				WHERE ID_EMPRESA = $idEmpresa";
-		$query   = $this->query($sql);
-		if(count($query)>0){
-			$result = $query;		
-		}	
-		return $result;	
 	}
 }

@@ -1,0 +1,64 @@
+<?php $this->headScript()->appendFile('/libs/fullcalendar/lib/moment.min.js') ?>   
+<?php $this->headScript()->appendFile('/libs/fullcalendar/fullcalendar.js') ?>   
+<?php $this->headScript()->appendFile('/libs/fullcalendar/lang-all.js') ?>
+<?php $this->headScript()->appendFile('/js/modules/atn/mainAtn.js') ?>
+	<div class="panel panel-default margin-t5px">
+	    <div class="panel-heading">
+	    	<h6 class="panel-title"> Resumen de Citas</h6>
+			<div class="pull-right">
+				<button class="btn btn-default btn-sm" type="button" onClick="searchDialog();" ><i class="icon-search3"></i></button>	
+			</div>
+	    </div>
+	    
+	    <div class="panel-body">
+	    	<div id="calendar"></div>
+	    </div>
+	</div>
+
+	<div id="myModalinfoVis" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"> Información de la Cita</h4>
+				</div>
+
+				<div class="modal-body with-padding">
+					<img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif" style="display:none;"/>
+	        		<iframe class="hmodal500" id="iFrameDetCita" src="" style="zoom:0" frameborder="0"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="MyModalSearch" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Buscar Citas </h4>
+				</div>
+
+				<div class="modal-body with-padding">
+					<img id="loader2" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>	      	
+					<iframe class="hmodal550" id="iFrameModaCita" src="" style="zoom:0" frameborder="0"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="mModalList" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"> Citas </h4>
+				</div>
+
+				<div class="modal-body with-padding">
+					<img id="loader3" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
+	        		<iframe class="hmodal550" id="frameList" src="" style="zoom:0" frameborder="0"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>

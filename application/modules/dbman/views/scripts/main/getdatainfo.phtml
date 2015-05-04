@@ -1,0 +1,163 @@
+<?php $this->headScript()->appendFile('/js/modules/general/jGeneralOptionsSearch.js') ?> 
+<?php $this->headScript()->appendFile('/js/modules/general/functionGral.js') ?> 
+<?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>	
+<?php $this->headScript()->appendFile('/dbman/validators/scriptvalidation?ssIdource='.$this->DbmanInfo['CLAVE_MODULO']); ?>   
+<?php $urlActions = ($this->DbmanInfo['CUSTOM_ACTIONS']==1) ? $this->DbmanInfo['CUSTOM_URL'] : '/dbman/main/getdatainfo?ssIdource='.$this->DbmanInfo['CLAVE_MODULO']; ?>
+<input type="hidden" id="inputModule" value="<?php echo $this->moduleInfo['SCRIPT']; ?>"/>
+
+    <div class="breadcrumb-line margin-t5px">
+        <ul class="breadcrumb">
+            <li>Administración</li>
+            <li><a href="<?php echo $this->moduleInfo['SCRIPT']; ?>"><?php echo $this->DbmanInfo['TITULO']; ?></a></li>
+            <li>Registro</li>
+        </ul>
+    </div>
+
+    <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
+        <div class="alert alert-block alert-danger fade in block-inner">
+            <h6><i class="icon-cancel-circle"></i> Error</h6>
+            <hr>
+            <p>Usted no tiene permiso para ver esta información.</p>
+        </div>
+    <?php else:?>
+        <ul class="nav nav-tabs" id="tabInformation">
+            <li class="<?php echo ($this->tabSelected==1 || !isset($this->tabSelected)) ? 'active':'tab';?>">
+                <a data-toggle="tab" href="#formInit" aria-expanded="true" onClick="setTabSelected(1)">
+                    Información
+                </a>
+            </li>
+            <?php $validate = 2;?>
+            <?php if(count($this->aTabs)>0):?>
+                <?php for($i=0;$i<count($this->aTabs);$i++):?>
+                    <?php $dataTab = explode(',',$this->aTabs[0]);?>
+                    <?php if(($dataTab[1]=='u' && $this->idToUpdate>0 ) || 
+                             ($dataTab[1]=='i' && ($this->idToUpdate==-1 || $this->idToUpdate>0))) : ?>
+                        <li class="tab <?php echo ($this->tabSelected==($validate)) ? 'active': '';?>">
+                            <?php if($this->tabSelected==($validate)):?>
+                                <?php $this->headScript()->captureStart() ?>
+                                    $().ready(function(){
+                                        getContentDiv('divTab<?php echo $validate;?>','<?php echo $dataTab[2];?>','?catId=<?php echo $this->catId; ?>&strTabSelected=<?php echo ($validate);?>');
+                                        <?php if($this->optResult!=""):?>
+                                            showNotification('registerOk','');
+                                        <?php endif;?>
+                                    });
+                                <?php $this->headScript()->captureEnd() ?>
+                            <?php endif;?>
+                            <a data-toggle="tab" href="#divTab<?php echo $validate;?>" aria-expanded="false" onClick="setTabSelected(<?php echo $validate;?>);getContentDiv('divTab<?php echo $validate;?>','<?php echo $dataTab[2];?>','?catId=<?php echo $this->catId; ?>&strTabSelected=<?php echo ($validate);?>')">
+                                <?php echo $dataTab[0];?>
+                            </a>
+                        </li>   
+                    <?php endif;?>                                  
+                    <?php $validate++;?>
+                <?php endfor;?>
+            <?php endif;?>
+        </ul>
+
+        <div class="tab-content">
+            <div id="formInit" class="tab-pane <?php echo ($this->tabSelected==1 || !isset($this->tabSelected)) ? 'active':'';?>">
+                <form id="formDbman" class="form-horizontal" role="form" method="POST" action="<?php echo $urlActions;?>" <?php echo ($this->DbmanInfo['INCLUYE_ARCHIVOS']==1) ? 'enctype="multipart/form-data"' :'';?>>                                
+                    <input type="hidden" id="catId" name="catId"  value="<?php echo $this->catId; ?>" id="catId" />
+                    <input type="hidden" id="optReg" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                    <input type="hidden" id="strTabSelected" name="strTabSelected" value="<?php echo $this->tabSelected;?>" />
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                            <?php if($this->resultOp=='okRegister'): ?>
+                                <?php $this->headScript()->captureStart() ?>
+                                    $().ready(function(){                                        
+                                            showNotification('registerOk','');
+                                    });
+                                <?php $this->headScript()->captureEnd() ?>                                                                
+                            <?php endif; ?>     
+                                                  
+                            <?php if(@$this->errors['errorAction']):?>
+                                <div class="alert alert-block alert-danger fade in block-inner">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h6><i class="icon-cancel-circle"></i><strong>¡Error!</strong> Se han encontrado uno ó mas problemas para guardar la información</h6>
+                                    <hr>
+                                    <p>
+                                        <?php if(count($this->aErrorFields)>0):?>
+                                        <br/>
+                                            <strong>Errores:</strong><br/>
+                                            <?php for($i=0;$i<count($this->aErrorFields);$i++):?>
+                                                <?php echo $this->aErrorFields[$i]['MessageError'];?><br/>
+                                            <?php endfor;?>                       
+                                        <?php endif;?>    
+                                    </p>
+                                </div>
+                            <?php endif;?>
+                            <?php foreach($this->aFields as $key => $items):?>
+                                <?php if($items['VISIBLE']==0):?>
+                                    <?php echo $items['INPUT'];?>
+                                <?php elseif($items['VISIBLE']==1):?>
+                                    <?php if($items['ID_TIPO_CAMPO']==6):?>
+                                        <h4><?php echo $items['DESCRIPCION'];?></h4>
+                                    <?php elseif($items['ID_TIPO_CAMPO']==7):?>
+                                        <h5><?php echo $items['DESCRIPCION'];?></h5>
+                                    <?php else:?>
+                                        <div class="form-group">
+                                            <label for="input<?php echo $items['INPUT_NAME'];?>" class="col-sm-2 control-label"><?php echo " ".$items['DESCRIPCION'];?><?php echo ($items['ID_VALIDACION']!=0) ? ' <span class="mandatory">*</span>':'' ;?></label>
+                                            <div class="col-sm-10">
+                                                <?php if(isset($items['DIV_CONTENEDOR']) && $items['DIV_CONTENEDOR']==2):?>
+                                                    <div id="div<?php echo $items['INPUT_NAME'];?>"></div>
+                                                <?php endif;?>
+
+                                                <?php if(isset($items['DIV_CONTENEDOR']) && $items['DIV_CONTENEDOR']==1):?>
+                                                    <div id="div<?php echo $items['INPUT_NAME'];?>">                                                            
+                                                <?php endif;?>
+                                                    <?php echo $items['INPUT'];?>
+                                                <?php if(isset($items['DIV_CONTENEDOR'])  && $items['DIV_CONTENEDOR']==1):?>
+                                                    </div>
+                                                <?php endif;?>                                                      
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+                                <?php endif;?>
+                            <?php endforeach;?>
+
+                            <?php if($disabled!='disabled'):?>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-info">Guardar Cambios</button>
+                                            <button type="button" class="btn default" onClick="location.href='<?php echo $this->moduleInfo['SCRIPT']; ?>';">Cancelar</button>   
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif;?>  
+                        </div>
+                    </div>                                                               
+                </form>
+            </div>
+            <?php $validateDiv = 2;?>
+            <?php if(count($this->aTabs)>0):?>
+                <?php for($i=0;$i<count($this->aTabs);$i++):?>
+                    <?php $dataTab = explode(',',$this->aTabs[0]);?>
+                    <?php if(($dataTab[1]=='u' && $this->idToUpdate>0 ) || 
+                             ($dataTab[1]=='i' && ($this->idToUpdate==-1 || $this->idToUpdate>0))) : ?>
+                        <div id="divTab<?php echo $validateDiv;?>" class="tab-pane <?php echo ($this->tabSelected==($validateDiv)) ? 'active': '';?>" >
+
+                        </div>  
+                    <?php endif;?>  
+                    <?php $validateDiv++;?>                             
+                <?php endfor;?>
+            <?php endif;?>            
+        </div>
+    <?php endif;?>
+
+
+    <div id="myLargeModalLabel" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"> Buscar y Seleccionar</h4>
+                </div>
+
+                <div class="modal-body with-padding">
+                    <img id="loader1" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif" style="display:none;"/>
+                    <div class="hmodal550" id="iFrameSearch" src="" style="zoom:0" frameborder="0"></div>
+                </div>
+            </div>
+        </div>
+    </div>

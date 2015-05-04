@@ -1,0 +1,36 @@
+<?php $this->headScript()->appendFile('/js/modules/general/jGeneralSearch.js') ?>	
+<?php //$this->headScript()->appendFile('/js/modules/gralTables.js') ?>   
+
+<div class="panel-body">
+    <div class="datatable">
+        <table id="dataTableSearch" class="table table-striped table-hover table-bordered">
+            <thead> 
+                <tr role="row">
+                    <?php for($i=0;$i<count($this->aTittles);$i++):?>
+                        <th>
+                            <?php echo $this->aTittles[$i];?>
+                        </th>
+                    <?php endfor;?>
+                    <th class="col-xs-2 col-md-2">
+                        Opciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($this->aDataTable as $key => $items):?>
+                    <tr>
+                        <?php for($i=0;$i<count($this->aNamesTable);$i++):?>
+                            <?php $nameField = "".$this->aNamesTable[$i]; ?>
+                            <?php if($nameField!="ID"):?>
+                                <td><?php echo stripcslashes($items[$nameField]);?> </td>
+                            <?php endif;?>
+                        <?php endfor;?>
+                        <td>
+                            <a class="btn btn-info btn-sm icon-only white tooltip-info" href="javascript:parent.assignValue('<?php echo $items['NAME']; ?>',<?php echo $items['ID'];?>)" data-toggle="tooltip" data-placement="top" data-original-title="Asignar"><i class="icon-redo2"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach;?>                                           
+            </tbody>
+        </table>    
+    </div>      
+</div>

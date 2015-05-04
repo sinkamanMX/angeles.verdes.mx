@@ -1,0 +1,32 @@
+		<div class="sidebar">
+			<div class="sidebar-content">
+				<ul class="navigation">
+			        <?php $controlMenu = -1; ?>
+			        <?php foreach($this->modules as $key => $items): ?>
+			            <?php if($items['SUBMENU']==0): ?>
+							<li class="<?php echo ($this->moduleInfo['ID_MENU']==$items['ID_MENU']) ? 'active open': ''; ?>">
+								<a href="<?php echo $itemsModule['S_MODULE'];?>&ssKeyConfigTokenAction=<?php echo $this->nRandom.''.rand(5, 255);?>">
+									<span><?php echo $items['M_DESCRIPCION'];?></span> 
+									<i class="<?php echo $items['M_ICONO'];?>"></i></a>
+							</li>			                
+			            <?php else:?>
+			                <?php if($controlMenu!=$items['IDMENU']): ?>
+			                    <?php $controlMenu=$items['IDMENU']; ?>
+			                    	<li class="<?php echo ($this->moduleInfo['ID_MENU']==$items['ID_MENU']) ? 'active open': ''; ?>">
+										<a href="#"><span><?php echo $items['N_DESCRIPCION'];?></span> <i class=" <?php echo $items['ICONO'];?>"></i></a>
+										<ul>
+			                                <?php foreach($this->modules as $key => $itemsModule): ?>
+			                                    <?php if($itemsModule['ID_MENU'] == $items['ID_MENU']):?>
+			                                    	<li  class="<?php echo ($this->moduleInfo['ID_MODULO']==$itemsModule['ID_MODULO']) ? 'active': ''; ?>">
+			                                    		<a href="<?php echo $itemsModule['S_MODULE'];?>&ssKeyConfigTokenAction=<?php echo $this->nRandom.''.rand(5, 255);?>"><?php echo $itemsModule['M_DESCRIPCION']; ?></a></li>
+			                                    <?php endif;?>
+			                                <?php endforeach;?>
+			                            </ul>
+			                        </li>                                      
+			                <?php endif;?>
+			            <?php endif;?>
+			        <?php endforeach;?>
+				</ul>
+				<!-- /main navigation -->				
+			</div>
+		</div>

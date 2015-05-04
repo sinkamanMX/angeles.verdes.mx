@@ -39,19 +39,33 @@ class My_Model_Cinstalaciones extends My_Db_Table
 		return $result;			
 	}
 	
-	public function getCentroFromEdo($idObject,$idEmpresa){
+	public function getCentroFromEdo($idObject){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT GROUP_CONCAT(C.ID_SUCURSAL SEPARATOR ',') AS SUCURSALES
-				FROM SUCURSALES_COBERTURA C
-				INNER JOIN SUCURSALES S ON C.ID_SUCURSAL = S.ID_SUCURSAL
-				WHERE C.ID_ESTADO  = $idObject
-				  AND S.ID_EMPRESA = $idEmpresa";
+    	$sql ="SELECT GROUP_CONCAT(ID_SUCURSAL SEPARATOR ',') AS SUCURSALES
+				FROM SUCURSALES_COBERTURA
+				WHERE ID_ESTADO = $idObject";
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query[0];			
 		}
         
 		return $result;		
+	}
+	
+	public function getList($idEmpresa){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT GROUP_CONCAT(DISTINCT ID_SUCURSAL ORDER BY ID_SUCURSAL) AS LIST_SUCURSALES
+				FROM SUCURSALES 
+				WHERE ID_EMPRESA = $idEmpresa";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query[0]['LIST_SUCURSALES'];			
+		}
+        
+		return $result;				
+		
+		
 	}
 }

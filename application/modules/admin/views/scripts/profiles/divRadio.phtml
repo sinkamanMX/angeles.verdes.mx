@@ -1,0 +1,56 @@
+<?php $this->headScript()->appendFile('/js/modules/functionGral.js') ?> 
+<?php $this->headScript()->appendFile('/js/modules/users/jsValidateProfiles.js') ?> 
+<div class="row-min-h300" id="divContenedor">
+	<form id="FormData3" class="form-horizontal" role="form" method="POST" action="/admin/profiles/listmodules">
+		<input type="hidden" id="catId" name="catId"  value="<?php echo $this->catId; ?>" id="catId" />
+		<input type="hidden" id="optReg" name="optReg" value="updateModules" />
+		<input type="hidden" name="strTabSelected" value="<?php echo $this->tabSelected;?>" />
+
+		<table class="table table-striped table-hover table-bordered">
+		    <thead> 
+		        <tr role="row">
+		        	<th class="table-checkbox col-xs-2">
+						<div class="checkbox">
+		                    <label>
+		                        <input name="checkAllItems" onClick="optionAll(this.checked);" type="checkbox">
+		                        <span class="text">Todos</span>
+		                    </label>
+		                </div>
+					</th>
+					<th>Menu</th>
+					<th>Descripción</th>
+					<th>Modulo de Inicio</th>
+		        </tr>                                
+		    </thead>                        
+		    <tbody>                      
+		        <?php foreach(@$this->aDataModules as $key => $items):?>
+					<tr>
+		    			<td>
+		    				<label>
+		                        <input onChange="selectOption(this.checked,<?php echo $items['ID'];?>)" class="chkOn" name="formsValues[]" value="<?php echo $items['ID'];?>" type="checkbox" <?php echo ($items['ASIGNADO']==1) ? 'checked':'';?> >
+		                        <span class="text"></span>
+		                    </label>					                    				
+		    			</td>
+		    			<td><?php echo $items['MENU'];?></td>
+		    			<td><?php echo $items['N_MODULE'];?></td>
+		    			<td>
+		    				<div id="divCheckini<?php echo $items['ID'];?>" class="radio" style="display:<?php echo ($items['ASIGNADO']==1) ? 'block' : 'none';?>">
+                            <label>
+                                <input name="form-field-radio" type="radio" class="colored-blue">
+                                <span class="text"></span>
+                            </label>
+                        </div></td>
+		    		</tr>
+		        <?php endforeach;?>
+		    </tbody>
+		</table>
+		<div class="form-group">
+	        <div class="col-sm-offset-2 col-sm-10">
+				<div class="pull-right">
+					<button type="button" onClick="validateListCheks('FormData3')" class="btn btn-info">Guardar Cambios</button>
+					<button type="button" class="btn default" onClick="location.href='<?php echo $this->moduleInfo['SCRIPT']; ?>';">Cancelar</button>	
+				</div>
+	        </div>
+	    </div>										
+	</form>
+</div>

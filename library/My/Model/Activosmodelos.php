@@ -15,7 +15,7 @@ class My_Model_Activosmodelos extends My_Db_Table
 		$this->query("SET NAMES utf8",false); 		
     	$sql ="SELECT $this->_primary AS ID, DESCRIPCION AS NAME 
     			FROM $this->_name 
-    			WHERE ID_MARCA = $idObject ORDER BY NAME ASC";    	
+    			WHERE ID_MARCA = $idObject ORDER BY NAME ASC";  
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			

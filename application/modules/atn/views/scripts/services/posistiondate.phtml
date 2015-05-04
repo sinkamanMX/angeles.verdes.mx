@@ -1,0 +1,60 @@
+<?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false') ?>
+<?php $this->headScript()->appendFile('/js/modules/atn/jsinfoDate.js'); ?>
+
+<input type="hidden" id="inputLatDate" name="inputLatDate"  value="<?php echo (isset($this->dataDate['LAT_CITA']) && $this->dataDate['LAT_CITA']!="")? $this->dataDate['LAT_CITA']:'0.000000';?>">
+<input type="hidden" id="inputLonDate" name="inputLonDate"  value="<?php echo (isset($this->dataDate['LON_CITA']) && $this->dataDate['LON_CITA']!="")? $this->dataDate['LON_CITA']:'0.000000';?>">
+<input type="hidden" id="inputDireccion" 	   name="inputDireccion" value="<?php echo @$this->dataDate['DIRECCION_MAPS'];?>">
+<input type="hidden" id="inputData" name="inputData" value="<?php echo @$this->resultPos;?>">
+
+<div class="row">
+	<div id="Map" style="width:100%;height:500px;">
+
+	</div>
+</div>
+
+<div class="col-md-5  table-date-date">
+	<table class="table-striped" >
+		<tr>
+			<td colspan="2" style="text-align:center;"><b>Detalle de la Cita</b></td>
+		</tr>
+		<tr>
+			<td>Folio</td>
+			<td><b><?php echo $this->dataDate['FOLIO'];?></b></td>
+		</tr>	
+		<tr>
+			<td>Tipo Servicio</td>
+			<td><b><?php echo $this->dataDate['TIPO_CITA'];?></b></td>
+		</tr>	
+		<tr>
+			<td>Estatus</td>
+			<td><b><?php echo $this->dataDate['ESTATUS'];?></b></td>
+		</tr>	
+		<tr>
+			<td>Fecha programada</td>
+			<td><b><?php echo $this->dataDate['FECHA_CITA'];?></b></td>
+		</tr>
+		<tr>
+			<td>Hora Programada</td>
+			<td><b><?php echo $this->dataDate['HORA_CITA'];?></b></td>
+		</tr>	
+		<tr>
+			<td>Dirección</td>
+			<td><b><?php echo $this->dataDate['DIRECCION_CITA'];?></b></td>
+		</tr>	
+	</table>
+</div>
+
+<div class="col-md-5  table-data-pos">
+	<table id="divDataPosition"  class="table-striped span12 no-margin-l" >
+		<tr>
+			<td colspan="2" style="text-align:center;"><b>Información del Técnico</b></td>
+		</tr>
+		<tr>
+			<td>Nombre</td>
+			<td><b><?php echo $this->dataDate['OPERADOR'];?></b></td>
+		</tr>	
+		<tr>
+			<td colspan="2" style="text-align:center;"><b>Última Posición</b></td>
+		</tr>		
+	</table>
+</div>

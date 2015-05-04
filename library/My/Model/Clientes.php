@@ -11,13 +11,12 @@ class My_Model_Clientes extends My_Db_Table
 	protected $_name 	= 'PROD_CLIENTES';
 	protected $_primary = 'ID_CLIENTE';
 	
-	public function insertRow($data,$idEmpresa){
+	public function insertRow($data){
         $result     = Array();
         $result['status']  = false;
         
         $sql="INSERT INTO $this->_name
 				SET  NOMBRE			= '".$data['inputNombre']."',
-					ID_EMPRESA      =  ".$idEmpresa.",
 					APELLIDOS		= '".$data['inputApps']."',
 					TELEFONO_FIJO	= '".$data['inputTel']."',
 					TELEFONO_MOVIL	= '".$data['inputCel']."',

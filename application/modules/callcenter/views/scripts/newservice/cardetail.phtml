@@ -1,0 +1,154 @@
+<?php $this->headScript()->appendFile('/js/modules/general/functionGral.js') ?>   
+<?php $this->headScript()->appendFile('/js/modules/callcenter/cardetail.js') ?>   
+<div class="breadcrumb-line margin-t5px">
+    <ul class="breadcrumb">
+        <li><a href="/callcenter/newservice/index">Datos del Cliente</a></li>
+        <li><a href="/callcenter/newservice/instalation">Ubicación de la Instalación</a></li>
+        <li><a href="javascript:void()">Datos del Vehículo</a></li>
+    </ul>
+</div>
+    <div class="panel panel-default margin-t5px"  id="divBodyPage" >
+        <div class="panel-heading">
+            <h6 class="panel-title"> Datos del Vehículo</h6>
+        </div>
+        
+        <div class="panel-body">
+            <div class="col-xs-12">
+
+				<form method="POST" action="/callcenter/newservice/cardetail" id="FormData" class="form-horizontal ">
+                	<input type="hidden" name="optReg" value="new" />
+					<fieldset>
+						<div class="row col-xs-12">
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Tarjeta Circulación</label>
+									<div class="col-sm-9">
+										<input id="inputTdc" name="inputTdc" type="text" class="form-control upper" value="<?php echo @$this->data['inputTdc']; ?>" >
+									</div>
+								</div>	
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Licencia de Manejo</label>
+									<div class="col-sm-9">
+										<input type="text" id="inputLicencia" name="inputLicencia" class="form-control upper" value="<?php echo (@$this->data['inputLicencia']); ?>"  >
+									</div>
+								</div>	
+							</div>
+						</div>		
+
+						<div class="row col-xs-12">
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Vigencia de la Licencia</label>
+									<div class="col-sm-9">
+				                          <input id="inputVigencia" name="inputVigencia" type="text" class="form-control upper" value="<?php echo @$this->data['inputVigencia']; ?>" >
+									</div>
+								</div>				
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Lugar de emisión</label>
+									<div class="col-sm-9">
+										<input type="text" id="inputEmision" name="inputEmision" class="form-control upper" value="<?php echo (@$this->data['inputEmision']); ?>"  >
+									</div>
+								</div>							
+							</div>						
+						</div>	
+
+						<div class="row col-xs-12">
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Marca
+										<span class="required">*</span></label>
+									<div class="col-sm-9">
+										<select class="form-control upper" name="inputMarca" id="inputMarca" onChange="getoptionsCbo('Modelo','modeloa',this.value,'','');">
+											<option value="">Seleccionar una opción</option>
+			                                <?php echo $this->marcas;?>
+										</select>
+									</div>
+								</div>				
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Modelo<span class="required">*</span></label>
+									<div class="col-sm-9">
+										<div id="divModelo"></div>
+										<select class="form-control upper" name="inputModelo" id="inputModelo"  >
+											<option value="">Seleccionar una opción</option>
+			                                <?php echo $this->modelos;?>
+										</select>
+									</div>
+								</div>							
+							</div>						
+						</div>	
+
+						<div class="row col-xs-12">
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Año<span class="required">*</span></label>
+									<div class="col-sm-9">
+				                          <input id="inputAno" name="inputAno" data-required="1" type="text" class="form-control upper" value="<?php echo @$this->data['inputAno']; ?>" >
+									</div>
+								</div>				
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Color<span class="required">*</span></label>
+									<div class="col-sm-9">
+										<select class="form-control upper" name="inputColor" id="inputColor">
+											<option value="">Seleccionar una opción</option>
+			                                <?php echo $this->colores;?>
+										</select>										
+									</div>
+								</div>							
+							</div>						
+						</div>	
+
+						<div class="row col-xs-12">
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">Placas<span class="required">*</span></label>
+									<div class="col-sm-9">
+				                          <input id="inputPlacas" name="inputPlacas" type="text"  data-required="1"  class="form-control upper" value="<?php echo @$this->data['inputPlacas']; ?>" >
+									</div>
+								</div>				
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">No. Serie<span class="required">*</span></label>
+									<div class="col-sm-9">
+										<input type="text" id="inputSerie" name="inputSerie"  data-required="1"   class="form-control upper" value="<?php echo (@$this->data['inputSerie']); ?>"  >
+									</div>
+								</div>							
+							</div>						
+						</div>	
+
+						<div class="row col-xs-12">
+							<div class="col-xs-6">
+								<div class="form-group no-margin-b">
+									<label class="col-sm-3 control-label">No. Motor</label>
+									<div class="col-sm-9">
+				                          <input id="inputMotor" name="inputMotor" type="text" class="form-control upper" value="<?php echo @$this->data['inputMotor']; ?>" >
+									</div>
+								</div>				
+							</div>					
+						</div>		
+
+						<div class="col-xs-12">
+					    	<div class="">
+								<div class="pull-right">	
+									<button type="button" class="btn" onClick="javascript:backToMain()">Cancelar</button>		
+									<button type="submit" class="btn btn-default bg-btn-send">Continuar</button>
+								</div>    
+					    	</div>						
+						</div>						
+					</fieldset>	                	
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
