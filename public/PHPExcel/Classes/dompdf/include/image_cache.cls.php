@@ -105,7 +105,7 @@ class Image_Cache {
         $resolved_url = build_url($proto, $host, $base_path, $url);
       }
         
-      $resolved_url = str_replace("/var/www/vhosts/sima/htdocs/public/.", "", $resolved_url);
+      $resolved_url = str_replace("/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/.", "", $resolved_url);
 
       // Check if the local file is readable
       if ( !is_readable($resolved_url) || !filesize($resolved_url) ) {

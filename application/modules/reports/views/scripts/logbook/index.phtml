@@ -1,0 +1,119 @@
+<?php $this->headScript()->appendFile('/libs/others/dataTables.tableTools.js'); ?>
+<?php $this->headLink()->appendStylesheet('/css/dataTables.tableTools.css');?>
+<?php $this->headScript()->appendFile('/libs/others/jQuery.print.js'); ?>
+<?php $this->headScript()->appendFile('/js/reports/jsReporteBitacora.js'); ?>
+<?php $control=0?>
+<div class="panel panel-default margin-t5px">
+    <div class="panel-heading">
+        <h6 class="panel-title">Resumen - Actividades </h6>     
+    </div>    
+    <div class="panel-body">
+        <div class="row no-margin-l  margin-t5px">
+            <form method="POST" action="/reports/logbook/index?action=index" id="FormData" class="form-horizontal formcustom">
+                <input type="hidden" name="optReg" value="search" />
+                <input type="hidden" name="inputStatus" id="inputStatus" value="<?php echo $this->iStatus; ?>" />
+                <fieldset> 
+                    <div class="col-md-12">   
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Fecha<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input readonly id="inputFechaIn" name="inputFechaIn" data-required="1"  type="text" class="form-control" value="<?php echo @$this->data['inputFechaIn']; ?>">
+                                </div>
+                            </div>   
+                        </div>
+                        <div class="col-md-4">  
+                            <div class="control-group">
+                                <label class="control-label">Fecha Fin<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input readonly type="text" id="inputFechaFin" name="inputFechaFin" class="form-control" value="<?php echo (@$this->data['inputFechaFin']); ?>">                          
+                                </div>
+                            </div>   
+                        </div>                        
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Campamento<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select class="chzn-select col-md-10" id="cboInstalacion" name="cboInstalacion" onChange="getReport()">
+                                        <option value="-1">Todos</option>
+                                        <?php echo $this->cInstalaciones;?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>    
+
+                    <div class="col-md-12">   
+                        <div class="col-md-4">
+                            
+                        </div>
+                        <div class="col-md-4">
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label"></label>
+                                <div class="controls">
+                                    <button type="submit" class="btn row-margin-r5 btn-primary">Buscar</button>
+                                </div>
+                            </div>                                                           
+                        </div>    
+                    </div>                                             
+                </fieldset>
+            </form>
+        </div>
+        <div class="row no-margin-l no-margin-r">            
+            <div class="datatable-tools">                 
+                <table cellspacing="0" width="100%" class="table table-striped table-bordered display"  id="dataTable">
+                    <thead>             
+                        <tr>
+                            <th>Campamento</th>
+                            <th>Persona</th>
+                            <th>Inicio de Turno</th>
+                            <th>Fin de Turno</th>
+                            <th>Reportes</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $result = '';$print=false?>
+                        <?php foreach($this->aData as $key => $items): ?>                              
+                            <tr>
+                                <td>
+                                    <?php echo $items['DESCRIPCION'];?>
+                                </td>
+                                <td>
+                                    <?php echo $items['USUARIO'];?>
+                                </td>
+                                <td>
+                                    <?php echo $items['FECHA_INICIO'];?>
+                                </td>
+                                <td>
+                                    <?php echo $items['FECHA_FIN'];?>
+                                </td>
+
+                                <td class="text-center" style="width: 150px;" > 
+                                    <div class="col-xs-12">
+                                        <a href="/reports/logbook/historico?strInput=<?php echo $items['ID']; ?>"  target="_blank">
+                                            <button type="button" class="btn btn-icon btn-primary col-xs-3" data-toggle="tooltip" data-placement="top" title="Historico de Viaje"><i class="icon-globe2"></i></button>
+                                        </a>
+                                        <a href="/reports/logbook/exportdata?strInput=<?php echo $items['ID']; ?>"  target="_blank">
+                                            <button type="button" class="btn btn-icon btn-warning  col-xs-3" data-toggle="tooltip" data-placement="bottom" title="Bitacora"><i class="icon-paragraph-center2"></i></button>
+                                        </a>
+                            
+                                        <a href="/reports/logbook/exportservices?strInput=<?php echo $items['ID']; ?>">
+                                            <button type="button" class="btn btn-icon btn-success col-xs-3" data-toggle="tooltip" data-placement="bottom" title="Volantes de Servicio"><i class="icon-file"></i></button>
+                                        </a>    
+                                    </div>                                        
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm icon-only white tooltip-info" href="/reports/logbook/getinfo?strInput=<?php echo $items['ID'];?>" data-toggle="tooltip" data-placement="top" data-original-title="Mas Información"><i class="icon-arrow-right6"></i></a>                                        
+                                </td>
+                            </tr>  
+                        <?php endforeach;?>
+                    </tbody>
+                </table>    
+            </div>                  
+        </div>
+    </div>
+</div>

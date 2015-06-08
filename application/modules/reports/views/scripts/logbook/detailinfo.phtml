@@ -1,0 +1,56 @@
+<div class="panel panel-default margin-t5px">
+	<div class="col-md-12">
+		<div class="col-md-4">
+			<a  href="javascript:window.history.back();"><button type="button" class="btn btn-default btn-right-icon"><i class="icon-arrow-left4"></i> Regresar</button></a>	
+		</div>
+		<div class="col-md-4">
+			<div class="panel-heading">  
+				<h6>  	
+			    	<div class="text-center"><b><?php echo @$this->aData['DESCRIPCION'];?> </b></div></h6>
+			    </div>
+		</div>		
+	</div>
+    
+    <div class="panel-body">
+		<div class="row invoice-header">
+			<div class="col-sm-7">
+				<h3><?php echo $this->aData['USUARIO'];?></h3>
+				<span>Campamento: <?php echo $this->aData['CAMPAMENTO'];?></span><br/>
+				<span>Ubicación:  <?php echo $this->aData['UBICACION'];?></span>
+			</div>
+
+			<div class="col-sm-5">
+					<ul class="invoice-details">
+					<li>Fecha de Captura :<?php echo @$this->aData['FECHA_CAPTURA_EQUIPO']; ?></li>
+					<li>Fecha de Registro :<?php echo @$this->aData['FECHA_CAPTURA_SERVIDOR']; ?></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row no-margin-l  margin-t5px">
+			<div class="col-md-10 col-md-offset-1">
+			<?php if(count(@$this->aRespuestas)>0):?>				
+				<?php foreach(@$this->aRespuestas as $key => $items):?>					
+					<?php if($items['ID_TIPO']=='8'):?>
+						<div class="text-center margin-t5px"><h6><b><?php echo $items['CONTESTACION'];?></b></h6></div>
+					<?php else:?>	
+						<div class="col-md-12">					
+							<div class="col-md-5" style="text-align: right"><b><?php echo $items['DESCIPCION'];?></b></div>
+							<div class="col-md-7">
+								<?php if($items['ID_TIPO']=='9' || $items['ID_TIPO']=='10'):?>
+									<div class="thumb">
+											<img class="col-md-5" src="/evidencia/<?php echo $items['CONTESTACION'];?>">
+									</div>									
+								<?php else:?>
+									<?php echo $items['CONTESTACION'];?></div>
+								<?php endif;?>								
+						</div>
+					<?php endif;?>
+				<?php endforeach;?>			
+			<?php else:?>
+				<div class="text-center"><h6><b>No existe información.</b></h6></div>
+			<?php endif;?>
+			</div>
+		</div>
+	</div>
+</div>

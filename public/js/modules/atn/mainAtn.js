@@ -8,7 +8,7 @@ $( document ).ready(function() {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaDay'
+            right: 'month'
         },
         lang: 'es',
         editable: false,

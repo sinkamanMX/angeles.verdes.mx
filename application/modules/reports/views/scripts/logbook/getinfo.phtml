@@ -1,0 +1,142 @@
+<?php $this->headScript()->appendFile('/libs/others/dataTables.tableTools.js'); ?>
+<?php $this->headLink()->appendStylesheet('/css/dataTables.tableTools.css');?>
+<?php $this->headScript()->appendFile('/libs/others/jQuery.print.js'); ?>
+<?php $this->headScript()->appendFile('/js/reports/jsReporteResumen.js'); ?>
+<div class="panel panel-default margin-t5px">
+
+    <div class="panel-heading">
+    	<h6 class="panel-title"><a  href="javascript:window.history.back();"><button type="button" class="btn btn-default btn-right-icon"><i class="icon-arrow-left4"></i> Regresar</button></a>	 Resumen de Actividades </h6>
+    </div>
+    
+    <div class="panel-body">
+		<div class="row invoice-header">
+			<div class="col-sm-6">
+				<h3><?php echo @$this->aDatainfo['USUARIO'];?></h3>
+				<span>Campamento: <?php echo @$this->aDatainfo['CAMPAMENTO'];?></span>
+			</div>
+
+			<div class="col-sm-6">
+					<ul class="invoice-details">
+					<li>Inicio Turno :<?php echo @$this->aDatainfo['FECHA_INICIO']; ?></li>
+					<li>Fin Turno :<?php echo @$this->aDatainfo['FECHA_FIN']; ?></li>
+				</ul>
+			</div>
+		</div>    	
+
+		<div class="row no-margin-l  margin-t5px">
+				<h6 class="panel-title">Inicio de Turno</h6>
+				<table cellspacing="0" width="100%" class="table table-striped table-bordered display"  >
+					<?php if(count(@$this->aDataInicio)>0):?>
+						<?php $controlIt = 1;?>
+						<?php foreach(@$this->aDataInicio as $key => $itemsInicio):?>
+							<?php if($controlIt==1):?>
+							<tr>
+							<?php endif;?>	
+								<td><b><?php echo $itemsInicio['DESCIPCION'];?></b></td>
+								<td><?php echo $itemsInicio['CONTESTACION'];?></td>
+							<?php if($controlIt==4):?>
+							</tr>
+							<?php $controlIt=1;?>
+							<?php else:?>
+								<?php $controlIt++;?>
+							<?php endif;?>						
+						<?php endforeach;?>
+					<?php endif;?>					
+				</table>
+		</div>
+		<div class="row no-margin-l  margin-t5px">
+			<h6 class="panel-title">Fin de Turno</h6>
+			<table cellspacing="0" width="100%" class="table table-striped table-bordered display"  >
+				<?php if(count(@$this->aDataFin)>0):?>
+					<?php foreach(@$this->aDataFin as $key => $itemsFin):?>
+						<tr>
+							<td><b><?php echo $itemsFin['DESCIPCION'];?></b></td>
+							<td><?php echo $itemsFin['CONTESTACION'];?></td>
+						<tr>
+					<?php endforeach;?>
+				<?php endif;?>
+			</table>
+		</div>		
+    </div>
+</div>
+
+<div class="panel panel-default margin-t5px">
+    <div class="panel-heading">
+    	<h6 class="panel-title"> Servicios (<?php echo count($this->aServicios);?> registrados)</h6>
+    </div>
+    
+    <div class="panel-body">
+        <div class="datatable-tools">                 
+            <table cellspacing="0" width="100%" class="table table-striped table-bordered display" id="datatable">
+                <thead>             
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Ubicacion</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $control = 1;?>
+                    <?php foreach($this->aServicios as $key => $items): ?>                              
+                        <tr>
+                            <td>
+                                <?php echo $control;?>
+                            </td>
+                            <td>
+                                <?php echo $items['FECHA_CAPTURA_EQUIPO'];?>
+                            </td>
+                            <td>
+                                <?php echo $items['UBICACION'];?>
+                            </td>   
+                            <td>
+                            	<a class="btn btn-info btn-sm icon-only white tooltip-info" href="/reports/logbook/detailinfo?strInput=<?php echo $items['ID_RESULTADO'];?>" data-toggle="tooltip" data-placement="top" data-original-title="Mas Información"><i class="icon-arrow-right6"></i></a> 
+                            </td>                         
+                        </tr>  
+                        <?php $control++;?>
+                    <?php endforeach;?>
+                </tbody>
+            </table>    
+        </div>   	
+    </div>
+</div>
+
+<div class="panel panel-default margin-t5px">
+    <div class="panel-heading">
+    	<h6 class="panel-title"> Actividades (<?php echo count($this->aActividades);?> registradas)</h6>
+    </div>
+    <div class="panel-body">
+            <div class="datatable-tools">                 
+                <table cellspacing="0" width="100%" class="table table-striped table-bordered display" id="datatable2">
+                    <thead>             
+                        <tr>
+                            <th>#</th>
+	                        <th>Fecha</th>
+	                        <th>Ubicacion</th>
+	                        <th></th>
+	                        </tr>
+                    </thead>
+                    <tbody>
+                    	<?php $control = 1;?>
+	                    <?php foreach($this->aActividades as $key => $items): ?>                              
+	                        <tr>
+	                            <td>
+	                                <?php echo $control;?>
+	                            </td>
+	                            <td>
+	                                <?php echo $items['FECHA_CAPTURA_EQUIPO'];?>
+	                            </td>
+	                            <td>
+	                                <?php echo $items['UBICACION'];?>
+	                            </td>   
+	                            <td>
+	                            	<a class="btn btn-info btn-sm icon-only white tooltip-info" href="/reports/logbook/detailinfo?strInput=<?php echo $items['ID_RESULTADO'];?>" data-toggle="tooltip" data-placement="top" data-original-title="Mas Información"><i class="icon-arrow-right6"></i></a> 
+	                            </td>                         
+	                        </tr>  
+	                        <?php $control++;?>
+	                    <?php endforeach;?>
+                    </tbody>
+                </table>    
+            </div>   	
+    </div>
+</div>

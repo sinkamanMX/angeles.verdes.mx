@@ -76,7 +76,9 @@ class My_Controller_Action extends Zend_Controller_Action
 	 * 
 	 * @var mixed
 	 */
-	protected $_baseUrl= Array();  	
+	protected $_baseUrl= Array(); 
+
+	protected $_publicPath = '';
     
    /**
     * Inicializa el contexto, el formato de respuesta a un action
@@ -95,8 +97,8 @@ class My_Controller_Action extends Zend_Controller_Action
      */
     public function preDispatch()
     {
-  
-            
+  		$config  = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+  		$this->_publicPath = str_replace("application", "public", $config->getOption('pathComplete'));
     }
 
     /**

@@ -1,0 +1,98 @@
+<?php $this->headScript()->appendFile('/libs/datatables/js/dataTables.fixedColumns.min.js'); ?>
+<?php $this->headScript()->appendFile('/libs/others/jQuery.print.js'); ?>
+<?php $this->headScript()->appendFile('/js/reports/jsServicesReports.js'); ?>
+<div id="divDataPersonal" class="hide"><?php foreach($this->aTecnicos as $key => $items):?><?php echo ($control==0) ? '': '?';?><?php echo $items['ID']."|".$items['NAME']."|".$items['ID_SUCURSAL'];?><?php $control++;?><?php endforeach;?></div>
+
+<div class="panel panel-default margin-t5px">
+    <div class="panel-heading">
+        <h6 class="panel-title"> Reporte de Actividades</h6>
+    </div>
+    
+    <div class="">
+        <div class="row no-margin-l  margin-t5px">
+            <form method="POST" action="/reports/activities/index" id="FormData" class="form-horizontal formcustom">
+                <input type="hidden" name="optReg" value="search" />
+                <input type="hidden" name="inputStatus" id="inputStatus" value="<?php echo $this->iStatus; ?>" />
+                <fieldset> 
+                    <div class="col-md-12">   
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Fecha Inicio<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input readonly id="inputFechaIn" name="inputFechaIn" data-required="1"  type="text" class="form-control" value="<?php echo @$this->data['inputFechaIn']; ?>">
+                                </div>
+                            </div>                             
+                        </div>
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label">Fecha Fin<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input readonly type="text" id="inputFechaFin" name="inputFechaFin" class="form-control" value="<?php echo (@$this->data['inputFechaFin']); ?>">                          
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="col-md-4">                                     
+
+                        </div>    
+                    </div>  
+                    <div class="col-md-12 no-margin-l">
+                        <div class="col-md-4">       
+                            <div class="control-group">
+                                <label class="control-label">Sucursales<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select class="chzn-select col-md-10" id="cboInstalacion" name="cboInstalacion" onChange="getReport()">
+                                        <option value="-1">Todos</option>
+                                        <?php echo $this->cInstalaciones;?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                                                   
+                        </div>
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <label class="control-label"></label>
+                                <div class="controls">
+                                    <button type="submit" class="btn row-margin-r5 btn-primary">Buscar</button>
+                                </div>
+                            </div>                            
+                        </div> 
+                    </div>                          
+                </fieldset>
+            </form>
+        </div>
+    </div>    
+</div>
+<div class=" no-margin-l  margin-t5px">      
+    <div class="">
+        <?php if(count($this->aData)>0): ?>
+            <div class="btn-group">
+             <a target="_blank" href="/reports/activities/exportdata?inputFechaIn=<?php echo @$this->data['inputFechaIn'];?>&inputFechaFin=<?php echo @$this->data['inputFechaFin'];?>&cboInstalacion=<?php echo @$this->data['cboInstalacion']; ?>"><button class="btn btn-success"> Exportar <i class="icon-file icon-white"></i></button></a>
+            </div>
+        <?php endif;?>
+    </div>                          
+</div>
+<div class="datatable-tools">                     
+    <table cellspacing="0" width="100%" class="table table-striped table-bordered display"  id="dataTable">
+        <thead>             
+            <tr>
+                <th>Campamento</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Ubicación</th>                            
+            </tr>
+        </thead>
+        <tbody>
+            <?php $result = '';$print=false?>
+            <?php foreach($this->aData as $key => $items): ?>                        
+                    <tr>
+                        <td><?php echo $items['N_SUCURSAL'];?></td>
+                        <td><?php echo $items['USUARIO'];?></td>
+                        <td><?php echo $items['FECHA_CAPTURA_EQUIPO'];?></td>
+                        <td><?php echo $items['UBICACION'];?></td>
+                    </tr>  
+            <?php  endforeach;?>
+        </tbody>
+    </table>                  
+</div>
