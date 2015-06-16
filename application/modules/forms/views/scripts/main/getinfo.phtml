@@ -158,19 +158,18 @@
                         <table id="tableElements" class="table table-striped ">     
                             <thead>
                                 <tr>
-                                    <th class="col-md-1">Id</th>
-                                    <th class="col-md-1">Orden</th>
-                                    <th class="col-md-2">Tipo</th>
-                                    <th class="col-md-4">Descripción</th>                                    
-                                    <th class="col-md-1">Estatus</th>
-                                    <th class="col-md-1">Requerido</th>
-                                    <th class="col-md-1">Validación Local</th>
+                                    <th class="span1">Id</th>
+                                    <th class="span1">Orden</th>
+                                    <th class="span2">Tipo</th>
+                                    <th class="span4">Descripción</th>                                    
+                                    <th class="span1">Estatus</th>
+                                    <th class="span1">Requerido</th>
+                                    <th class="span1">Validación Local</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach(@$this->aElements as $key => $items):?>
-                                    
                                     
                                     
                                     <tr>
@@ -180,7 +179,7 @@
                                         <td>
                                             <input name="aElements[<?php echo $control?>][id]" type="hidden" value="<?php echo $items['ID_ELEMENTO'];?>"/>
                                             <input id="inputOp<?php echo $control?>" name="aElements[<?php echo $control?>][op]" type="hidden" value="up"/>
-                                            <input id="inputElement<?php echo $control?>" name="aElements[<?php echo $control?>][orden]" type="text" class="input-inline form-control col-xd-2"  value="<?php echo @$items['ORDEN'];?>"  autocomplete="off">                                                 
+                                            <input id="inputElement<?php echo $control?>" name="aElements[<?php echo $control?>][orden]" type="text" class="span3"  value="<?php echo @$items['ORDEN'];?>"  autocomplete="off">                                                 
                                         </td>
                                         <td>
                                             <select id="inputTipo<?php echo $control?>" name="aElements[<?php echo $control?>][tipo]" onChange="onChangeSelect(this.value,<?php echo $control;?>);">
@@ -240,7 +239,8 @@
                                         <td>
                                             <input id="inputCuando<?php echo $control?>" name="aElements[<?php echo $control?>][when]" type="text" class="input-inline form-control col-xs-8 no-padding"  value="<?php echo @$items['ESPERA'];?>"  autocomplete="off"/>
                                         </td>                                        
-                                    </tr>          
+                                    </tr>
+
                                     <?php $control++;?>                          
                                 <?php endforeach;?>
                             </tbody>
