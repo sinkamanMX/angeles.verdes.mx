@@ -61,10 +61,17 @@ class dbman_MainController extends My_Controller_Action
     public function indexAction(){
     	try{
     		$cFunctions   	  = new My_Model_Functions();
-    		$inputEmpresa     = $this->_dataUser['ID_EMPRESA'];    		    		
-    		$sQuery 		  = str_ireplace('$inputEmpresa',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY']);
-			    		
-    		$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS']);
+    		$inputEmpresa     = $this->_dataUser['ID_EMPRESA'];
+    		$inputSucursal	  = $this->_dataUser['ID_SUCURSAL'];
+
+    		if($this->_dataUser['TIPO_USUARIO']==1){
+    			$sQuery 		  = str_ireplace('$inputEmpresa',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY_ADMIN']);
+    			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS_ADMIN']);	
+    		}else{
+    			$sQuery 		  = str_ireplace('$inputSucursal',$inputSucursal,$this->aDbManInfo['TABLA_QUERY']);
+    			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS']);
+    		}
+    		
     		$this->view->aDataTable  = $cFunctions->executeQuery($sQuery);
     		$this->view->aNamesTable = $cFunctions->getFieldsName($this->view->aDataTable);
 		}catch (Zend_Exception $e) {
@@ -78,9 +85,10 @@ class dbman_MainController extends My_Controller_Action
     		$aTabs			= Array();
     		$tabSelected	= 1;
     		$cFunctions   	= new My_Model_Functions();
-    		$cDbman 	   	= new My_Model_DbmanConfig();    		
-			$aDataFields	= $cDbman->getFieldsForm($this->aDbManInfo['ID_DB_MODULO']); 		
-    		$aFieldsValues  = $this->setValuesFields($aDataFields,$this->aDbManInfo['ID_DB_MODULO'],$this->_idUpdate);  		
+    		$cDbman 	   	= new My_Model_DbmanConfig();    
+
+			$aDataFields	= $cDbman->getFieldsForm($this->aDbManInfo['ID_DB_MODULO'],$this->_dataUser['TIPO_USUARIO']);			
+    		$aFieldsValues  = $this->setValuesFields($aDataFields,$this->aDbManInfo['ID_DB_MODULO'],$this->_idUpdate);    		
     		$aProcessFields = $this->processFields($aFieldsValues);
     		$inputEmpresa     = $this->_dataUser['ID_EMPRESA'];
     		    				
@@ -141,7 +149,7 @@ class dbman_MainController extends My_Controller_Action
 		if(count($sqlGetData)>0){
 			$aNameKeys		= $mFunctions->getFieldsNameSimple($sqlGetData);
 			
-			foreach($aFields as $key => $itemsFields){				
+			foreach($aFields as $key => $itemsFields){						
 				for($i=0;$i<count($aNameKeys);$i++){
 					if($itemsFields['NOMBRE_BD']==$aNameKeys[$i]){
 						$itemsFields['VALUE_INPUT']   = $sqlGetData[$aNameKeys[$i]];
@@ -150,12 +158,13 @@ class dbman_MainController extends My_Controller_Action
 				}
 				$aResultFields[] = $itemsFields;					
 			}
-		}else{
+		}else{			
 			foreach($aFields as $key => $items){
+					
 				$items['VALUE_INPUT'] = '';
 				$aResultFields[] 	  = $items;
 			}			
-		}
+		}		
 		return $aResultFields;	
     }
     
@@ -163,12 +172,13 @@ class dbman_MainController extends My_Controller_Action
 		$cFunctions    = new My_Controller_Functions();
 		$mFunctions    = new My_Model_Functions();
 		$aResultFields = Array();			  
-		$inputEmpresa  = $this->_dataUser['ID_EMPRESA'];   
+		$inputEmpresa  = $this->_dataUser['ID_EMPRESA'];
+		$inputSucursal = $this->_dataUser['ID_SUCURSAL'];
 		
 		foreach($aFields as $key => $items){	
 			$inputName = 'input'.$items['INPUT_NAME'];	
 			$sAction   = (isset($items['ACCION'])) ? $items['ACCION'] : '' ;
-			$valueInput= (isset($items['VALUE_INPUT'])) ? $items['VALUE_INPUT'] : '' ;
+			$valueInput= (isset($items['VALUE_INPUT'])) ? $items['VALUE_INPUT'] : '' ;			
 			
 			if($items['ID_TIPO_CAMPO']==1){
 				$items['INPUT']		 = '<input id="'.$inputName.'" name="'.$inputName.'" type="text" class="input-inline form-control"  value="'.$valueInput.'"  autocomplete="off" '.$sAction.'>';				
@@ -218,11 +228,13 @@ class dbman_MainController extends My_Controller_Action
 				if(isset($items['OPCIONES_QUERY'])){
 					if($items['QUERY_DEPENDENCIES']==1 && $this->_idUpdate>0 || @$items['REVALIDATE']==true){
 						$sQueryReplace 	  = str_ireplace($items['REPLACE_QUERY'],$valueInput, $items['OPCIONES_QUERY']);
-						$sQueryReplace 	  = str_ireplace('$inputEmpresa',$inputEmpresa,$sQueryReplace);				
+						$sQueryReplace 	  = str_ireplace('$inputEmpresa',$inputEmpresa,$sQueryReplace);
+						$sQueryReplace 	  = str_ireplace('$inputSucursal',$inputSucursal,$sQueryReplace);
 						$aDataSelect      = $mFunctions->executeQuery($sQueryReplace);
 						$items['INPUT']  .= $cFunctions->selectDb($aDataSelect,$valueInput);
 					}elseif($items['QUERY_DEPENDENCIES']==0){						
-						$sQueryReplace 	  = str_ireplace('$inputEmpresa',$inputEmpresa,$items['OPCIONES_QUERY']);	
+						$sQueryReplace 	  = str_ireplace('$inputEmpresa' ,$inputEmpresa,$items['OPCIONES_QUERY']);
+						$sQueryReplace 	  = str_ireplace('$inputSucursal',$inputSucursal,$items['OPCIONES_QUERY']);	
 						$aDataSelect      = $mFunctions->executeQuery($sQueryReplace);
 						$items['INPUT']  .= $cFunctions->selectDb($aDataSelect,$valueInput);
 					}		

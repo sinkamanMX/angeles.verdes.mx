@@ -39,13 +39,17 @@ class My_Model_DbmanConfig extends My_Db_Table
 		return $result;    	
     } 	
     
-	public function getFieldsForm($idModule){
+	public function getFieldsForm($idModule,$iTypeUser=0){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
+		$sFilter = ($iTypeUser==0) ?  ' ON_USER = 1 ' : ' ON_ADMIN = 1';
     	$sql ="SELECT C.*, V.DESCRIPCION AS V_DESCRIPCION, V.OPCIONES
 				FROM DB_MODULOS_CAMPOS C
 				LEFT JOIN DB_VALIDACIONES  V ON V.ID_VALIDACION = C.ID_VALIDACION
-				WHERE C.ID_DB_MODULO = $idModule ORDER BY ORDEN ASC";  
+				WHERE C.ID_DB_MODULO = $idModule
+				 AND  $sFilter 
+				 AND  C.ESTATUS = 1 
+				ORDER BY ORDEN ASC";    	
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;

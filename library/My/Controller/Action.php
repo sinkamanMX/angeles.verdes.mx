@@ -127,7 +127,8 @@ class My_Controller_Action extends Zend_Controller_Action
 		$this->view->moduleInfo = $cPerfiles->getDataModule($this->_clase);  
 		$this->view->nRandom	= $cFunctions->getRandomCode();
 		$this->_dataIn['userCreate']	= $this->_dataUser['ID_USUARIO'];
-		$this->_dataIn['inputEmpresa']	= $this->_dataUser['ID_EMPRESA']; 
+		$this->_dataIn['inputEmpresa']	= $this->_dataUser['ID_EMPRESA'];
+		$this->_dataIn['inputSucursal']	= $this->_dataUser['ID_SUCURSAL'];  
     	if(isset($this->_dataIn['optReg'])){
 			$this->_dataOp = $this->_dataIn['optReg'];				
 		}
