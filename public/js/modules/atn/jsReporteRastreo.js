@@ -181,3 +181,10 @@ function infoMarkerTable(marker,content){
         map.panTo(latLng);     
   });
 }
+
+function printMap(){
+  var content = window.document.getElementById('maptab') // get you map details
+  var newWindow = window.open(); // open a new window
+  newWindow.document.write(content.innerHTML); // write the map into the new window
+  newWindow.print();  
+}

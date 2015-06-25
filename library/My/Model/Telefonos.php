@@ -372,6 +372,7 @@ class My_Model_Telefonos extends My_Db_Table
 				L.`VELOCIDAD`,
 				V.`DESCRIPCION_EVENTO` AS N_EVENTO,
 				F.IDENTIFICADOR,
+				F.TELEFONO,
 				L.`TIPO_GPS`,
 				L.NIVEL_BATERIA,
 				L.`FECHA_TELEFONO`,

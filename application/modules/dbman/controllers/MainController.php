@@ -66,9 +66,11 @@ class dbman_MainController extends My_Controller_Action
 
     		if($this->_dataUser['TIPO_USUARIO']==1){
     			$sQuery 		  = str_ireplace('$inputEmpresa',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY_ADMIN']);
+    			$sQuery 		  = str_ireplace('$inputSucursal',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY_ADMIN']);
     			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS_ADMIN']);	
     		}else{
     			$sQuery 		  = str_ireplace('$inputSucursal',$inputSucursal,$this->aDbManInfo['TABLA_QUERY']);
+    			$sQuery 		  = str_ireplace('$inputEmpresa',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY']);
     			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS']);
     		}
     		

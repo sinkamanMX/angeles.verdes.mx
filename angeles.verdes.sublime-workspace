@@ -440,10 +440,10 @@
 	"buffers":
 	[
 		{
-			"file": "application/modules/reports/controllers/LogbookController.php",
+			"file": "application/modules/reports/views/scripts/activities/index.phtml",
 			"settings":
 			{
-				"buffer_size": 39119,
+				"buffer_size": 5476,
 				"line_ending": "Unix"
 			}
 		}
@@ -476,9 +476,14 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsReporteRastreo.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/reporte.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/controllers/RastreoController.php",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/header.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/controllers/LogbookController.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/header_report.html",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/forms/views/scripts/main/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/controllers/LogbookController.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/library/My/Model/Historico.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/getinfo.phtml",
@@ -491,7 +496,6 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/activities/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsServicesReports.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/services/index.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/table_bitacora.html",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/PHPExcel/Classes/dompdf/include/image_cache.cls.php",
 		"/Users/itecno2/Downloads/Bitacora_.pdf",
@@ -524,10 +528,7 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsinfoDate.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsService.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsRastreotels.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/reporte.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsReporteRastreo.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/header.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/gralTables.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/css/styles.css",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/datatables/js/dataTables.tableTools.js",
@@ -602,8 +603,7 @@
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/dbman/controllers/MainController.php",
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/main/views/scripts/phones/index.phtml",
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/main/views/scripts/phones/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/header.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/chat.phtml"
+		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/header.phtml"
 	],
 	"find":
 	{
@@ -840,30 +840,34 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/modules/reports/controllers/LogbookController.php",
+					"file": "application/modules/reports/views/scripts/activities/index.phtml",
 					"settings":
 					{
-						"buffer_size": 39119,
+						"buffer_size": 5476,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4148,
-								4148
+								1178,
+								1178
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1667.0,
+						"translation.y": 300.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

@@ -8,8 +8,6 @@
 <?php $control=0?>
 <!--<div id="divDataPersonal" class="hide"><?php foreach($this->aTecnicos as $key => $items):?><?php echo ($control==0) ? '': '?';?><?php echo $items['ID']."|".$items['NAME']."|".$items['ID_SUCURSAL'];?><?php $control++;?><?php endforeach;?>
 </div>-->
-
-
 <div class="panel panel-default margin-t5px">
     <div class="panel-heading">
     	<h6 class="panel-title">Teléfonos - Ubicación </h6>		
@@ -89,9 +87,9 @@
 	                        <thead>             
 	                            <tr>
 	                            	<th>Estatus</th>
-	                            	<th>Sucursal</th>
-	                            	<th>Tecnico</th>
-	                            	<th>Identificador</th>
+	                            	<th>Jefatura</th>
+	                            	<th>Usuario</th>
+	                            	<th>Teléfono</th>
 	                            	<th>Últ. Evento</th>
 	                            	<th>Últ. Reporte</th>		                            	
 	                            	<th>Ubicacion</th>
@@ -109,7 +107,7 @@
 	                                    	</td>
 	                                    	<td><?php echo $items['N_SUCURSAL'];?></td>
 	                                    	<td><?php echo $items['N_TECNICO'];?></td>  
-	                                    	<td><?php echo $items['IDENTIFICADOR'];?></td>  
+	                                    	<td><?php echo $items['TELEFONO'];?></td>  
 	                                    	<td><?php echo $items['N_EVENTO'];?></td>  
 	                                    	<td><?php echo $items['FECHA_GPS'];?></td>  
 	                                    	<td><?php echo $items['UBICACION'];?></td>

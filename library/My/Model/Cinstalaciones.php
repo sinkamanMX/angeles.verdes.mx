@@ -24,12 +24,13 @@ class My_Model_Cinstalaciones extends My_Db_Table
 		return $result;			
 	}
 	
-	public function getCbo($idObject){
+	public function getCbo($idObject,$iTypeuser=0){
 		$result= Array();
-		$this->query("SET NAMES utf8",false); 		
+		$this->query("SET NAMES utf8",false); 	
+		$sFilter = ($iTypeuser==0) ? " ID_SUCURSAL = $idObject" : " ID_EMPRESA = $idObject" ;	
     	$sql ="SELECT $this->_primary AS ID, DESCRIPCION AS NAME 
     			FROM $this->_name 
-    			WHERE  ID_EMPRESA = $idObject 
+    			WHERE $sFilter
     			ORDER BY NAME ASC";
 		$query   = $this->query($sql);
 		if(count($query)>0){		  

@@ -6,7 +6,7 @@ class atn_RastreoController extends My_Controller_Action
 	public $dataIn;	
 	public $aService;
 	public $realPath='/var/www/vhosts/angeles/htdocs/public';
-	//public $realPath='/Users/itecno2/Documents/workspace/productividad.mx/public';
+	//public $realPath='/Users/itecno2/Documents/workspace/angeles.verdes.mx/public';
 			
     public function init()
     {
@@ -40,9 +40,11 @@ class atn_RastreoController extends My_Controller_Action
 			
 			if(isset($this->dataIn['optReg']) && $this->dataIn['optReg']='search'){
 				$bStatus		= $this->dataIn['inputStatus'];
-			}			
+			}
+			
+			$iFilter = ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
 
-			$dataCenter		= $cInstalaciones->getCbo($this->view->dataUser['ID_EMPRESA']);									
+			$dataCenter		= $cInstalaciones->getCbo($iFilter,$this->view->dataUser['TIPO_USUARIO']);									
 			$aPocisiones  	= $cPhones->getAllPosition($sInstalacion,$this->view->dataUser['ID_EMPRESA']);		
 
 			$this->view->cInstalaciones = $cFunciones->selectDb($dataCenter,$sInstalacion);
@@ -466,4 +468,105 @@ class atn_RastreoController extends My_Controller_Action
         	echo "Message: " . $e->getMessage() . "\n";                
         }  	
 	}    
+	
+	public function exportkmlAction(){
+		try{   						
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();
+
+			$cTelefonos = new My_Model_Telefonos();
+			
+			if(isset($this->dataIn['strInput'])  	 && $this->dataIn['strInput']!=""     && 
+			   isset($this->dataIn['inputFechaIn'])  && $this->dataIn['inputFechaIn']!="" && 
+			   isset($this->dataIn['inputFechaFin']) && $this->dataIn['inputFechaFin']!=""){
+			   	
+			   	$dataInfo    = $cTelefonos->getData($this->dataIn['strInput']);	
+				$nameClient = $this->view->dataUser['N_EMPRESA']." - ".$this->view->dataUser['N_SUCURSAL']; 
+				$dateCreate = date("d-m-Y H:i");
+				$createdBy	= $this->view->dataUser['USUARIO']; 			   	
+			   	$dataRecorrido =  $cTelefonos->getReporte($this->dataIn);	
+			   	
+			   			
+			include_once($this->realPath.'/kmlcreator/kml.class.php');
+			$kml = new KML('Recorrido Historico');
+			
+			$document = new KMLDocument('Recorrido', 'Historico');
+			
+			/**
+			  * Style definitions
+			  */
+			
+			$style = new KMLStyle('boatStyle');
+			$style->setIconStyle($this->realPath.'/kmlcreator/images/fish.png', 'ffffffff', 'normal', 1);
+			$style->setLineStyle('ffffffff', 'normal', 2);
+			$document->addStyle($style);
+			
+			$style = new KMLStyle('navintStyle');
+			$style->setIconStyle($this->realPath.'/kmlcreator/images/navint.png', 'ffffffff', 'normal', 1);
+			$style->setLineStyle('ff0000ff', 'normal', 3);
+			$document->addStyle($style);
+			
+			$style = new KMLStyle('plotStyle');
+			$style->setIconStyle($this->realPath.'/kmlcreator/images/small.png', 'ff00ff00', 'normal', 0.2);
+			$document->addStyle($style);
+			
+			$style = new KMLStyle('portStyle');
+			$style->setIconStyle($this->realPath.'/kmlcreator/images/port.png');
+			$document->addStyle($style);
+			
+			$style = new KMLStyle('polyStyle');
+			$style->setPolyStyle('660000ff');
+			$document->addStyle($style);
+			
+			/**
+			  * File adds
+			  */
+			$kml->addFile($this->realPath.'/kmlcreator/images/navint.png', $this->realPath.'/kmlcreator/images/navint.png');
+			$kml->addFile($this->realPath.'/kmlcreator/images/icone.png', $this->realPath.'/kmlcreator/images/icone.png');
+			$kml->addFile($this->realPath.'/kmlcreator/images/small.png', $this->realPath.'/kmlcreator/images/small.png');
+			$kml->addFile($this->realPath.'/kmlcreator/images/fish.png', $this->realPath.'/kmlcreator/images/fish.png');
+			$kml->addFile($this->realPath.'/kmlcreator/images/port.png', $this->realPath.'/kmlcreator/images/port.png');
+			
+			$boatListFolder = new KMLFolder('', 'Pocisiones');
+			$iControl = 0;
+			$dateIn   = '';
+			$dateFin  = '';
+			$apolyLine = Array();
+			foreach($dataRecorrido as $items){
+				if($iControl==0){
+					$dateIn = $items['FECHA_TELEFONO'];
+					$iControl=0;
+				}
+				$boatFollow = new KMLPlaceMark('',$items['FECHA_TELEFONO'], '', true);
+				$boatFollow->setGeometry(new KMLPoint($items['LONGITUD'], $items['LATITUD'], 0));
+				//$boatFollow->setStyleUrl('#plotStyle');
+				$boatFollow->setTimePrimitive(new KMLTimeStamp('',$items['FECHA_TELEFONO']));
+				$boatListFolder->addFeature($boatFollow);
+				$dateFin  = $items['FECHA_TELEFONO'];
+				
+				$aPosition = Array($items['LONGITUD'], $items['LATITUD'],0);
+				$apolyLine[] = $aPosition;
+			}
+			
+			$boatTrace = new KMLPlaceMark(null, 'Recorrido', '', true);
+			$boatTrace->setGeometry (new KMLLineString( $apolyLine, true, '', true)
+			                     );
+			
+			$boatTrace->setTimePrimitive(new KMLTimeStamp('',$dateIn,$dateFin));
+			$boatTrace->setStyleUrl('#boatStyle');
+			$boatListFolder->addFeature($boatTrace);
+			
+			$document->addFeature($boatListFolder);			
+			$kml->setFeature($document);
+			
+			$nameFile = "RH_".$dataInfo['IMEI']."_".date("YmdHi").".kml";
+			$kml->output('A',$nameFile);			
+			}else{
+			 	echo "sin informaci—n";  	
+			}
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }  		
+	}
 }

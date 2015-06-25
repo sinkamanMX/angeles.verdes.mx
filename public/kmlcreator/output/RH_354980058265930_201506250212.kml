@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document id="Recorrido">
+<name>
+<![CDATA[
+Historico
+]]>
+</name>
+<visibility>1</visibility>
+<Style id="boatStyle">
+<IconStyle>
+<hotSpot x="19" y="0" xunits="pixels" yunits="pixels" />
+<color>ffffffff</color>
+<colorMode>normal</colorMode>
+<scale>1</scale>
+<Icon>
+<href>/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/kmlcreator/images/fish.png</href>
+</Icon>
+</IconStyle>
+<LineStyle>
+<color>ffffffff</color>
+<colorMode>normal</colorMode>
+<width>2</width>
+</LineStyle>
+</Style>
+<Style id="navintStyle">
+<IconStyle>
+<hotSpot x="19" y="0" xunits="pixels" yunits="pixels" />
+<color>ffffffff</color>
+<colorMode>normal</colorMode>
+<scale>1</scale>
+<Icon>
+<href>/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/kmlcreator/images/navint.png</href>
+</Icon>
+</IconStyle>
+<LineStyle>
+<color>ff0000ff</color>
+<colorMode>normal</colorMode>
+<width>3</width>
+</LineStyle>
+</Style>
+<Style id="plotStyle">
+<IconStyle>
+<hotSpot x="19" y="0" xunits="pixels" yunits="pixels" />
+<color>ff00ff00</color>
+<colorMode>normal</colorMode>
+<scale>0.2</scale>
+<Icon>
+<href>/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/kmlcreator/images/small.png</href>
+</Icon>
+</IconStyle>
+</Style>
+<Style id="portStyle">
+<IconStyle>
+<hotSpot x="19" y="0" xunits="pixels" yunits="pixels" />
+<colorMode>normal</colorMode>
+<scale>1</scale>
+<Icon>
+<href>/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/kmlcreator/images/port.png</href>
+</Icon>
+</IconStyle>
+</Style>
+<Style id="polyStyle">
+<PolyStyle>
+<color>660000ff</color>
+<colorMode>normal</colorMode>
+<fill>1</fill>
+<outline>1</outline>
+</PolyStyle>
+</Style>
+<Folder>
+<name>
+<![CDATA[
+Pocisiones
+]]>
+</name>
+<visibility>1</visibility>
+<Placemark>
+<name>
+<![CDATA[
+2015-06-22 12:22:58
+]]>
+</name>
+<visibility>1</visibility>
+<TimeStamp>
+<when>2015-06-22 12:22:58</when>
+</TimeStamp>
+<Point>
+<extrude>1</extrude>
+<altitudeMode>clampToGround</altitudeMode>
+<coordinates>-99.20998340, 19.56938700, 0
+</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>
+<![CDATA[
+2015-06-22 12:23:14
+]]>
+</name>
+<visibility>1</visibility>
+<TimeStamp>
+<when>2015-06-22 12:23:14</when>
+</TimeStamp>
+<Point>
+<extrude>1</extrude>
+<altitudeMode>clampToGround</altitudeMode>
+<coordinates>-99.20998340, 19.56938700, 0
+</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>
+<![CDATA[
+2015-06-22 19:35:57
+]]>
+</name>
+<visibility>1</visibility>
+<TimeStamp>
+<when>2015-06-22 19:35:57</when>
+</TimeStamp>
+<Point>
+<extrude>1</extrude>
+<altitudeMode>clampToGround</altitudeMode>
+<coordinates>-99.21035210, 19.56887050, 0
+</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>
+<![CDATA[
+2015-06-22 19:36:01
+]]>
+</name>
+<visibility>1</visibility>
+<TimeStamp>
+<when>2015-06-22 19:36:01</when>
+</TimeStamp>
+<Point>
+<extrude>1</extrude>
+<altitudeMode>clampToGround</altitudeMode>
+<coordinates>-99.21035210, 19.56887050, 0
+</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>
+<![CDATA[
+2015-06-22 19:36:06
+]]>
+</name>
+<visibility>1</visibility>
+<TimeStamp>
+<when>2015-06-22 19:36:06</when>
+</TimeStamp>
+<Point>
+<extrude>1</extrude>
+<altitudeMode>clampToGround</altitudeMode>
+<coordinates>-99.21035210, 19.56887050, 0
+</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>
+<![CDATA[
+2015-06-23 10:45:00
+]]>
+</name>
+<visibility>1</visibility>
+<TimeStamp>
+<when>2015-06-23 10:45:00</when>
+</TimeStamp>
+<Point>
+<extrude>1</extrude>
+<altitudeMode>clampToGround</altitudeMode>
+<coordinates>-99.21050910, 19.56880330, 0
+</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>
+<![CDATA[
+Recorrido
+]]>
+</name>
+<visibility>1</visibility>
+<styleUrl>#boatStyle</styleUrl>
+<TimeStamp>
+<when>2015-06-23 10:45:00</when>
+</TimeStamp>
+<LineString>
+<extrude>1</extrude>
+<tessellate>1</tessellate>
+<coordinates>
+-99.20998340,19.56938700,0 
+-99.20998340,19.56938700,0 
+-99.21035210,19.56887050,0 
+-99.21035210,19.56887050,0 
+-99.21035210,19.56887050,0 
+-99.21050910,19.56880330,0 
+</coordinates>
+</LineString>
+</Placemark>
+</Folder>
+</Document>
+</kml>
