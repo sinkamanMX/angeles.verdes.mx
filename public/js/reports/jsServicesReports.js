@@ -87,3 +87,9 @@ function getUbicacion(idValue){
     $('#iFrameModalMapa').attr('src','/reports/activities/mapubicacion?strInput='+idValue);
     $("#myModalMapa").modal("show");
 }
+
+
+function getUbicacionServ(idValue){
+    $('#iFrameModalMapa').attr('src','/reports/services/mapubicacion?strInput='+idValue);
+    $("#myModalMapa").modal("show");
+}
