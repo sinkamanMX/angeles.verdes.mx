@@ -12,7 +12,9 @@ class main_FunctionsController extends My_Controller_Action
 									'mun'        			=> Array('nameClass'=>'Municpios'),
 									'colonia'    			=> Array('nameClass'=>'Colonias'),
 									'horario'    			=> Array('nameClass'=>'Cinstalaciones'),
-									'tecnicos'    			=> Array('nameClass'=>'Tecnicos')
+									'tecnicos'    			=> Array('nameClass'=>'Tecnicos'),
+									'musuarios'    			=> Array('nameClass'=>'USUARIOS'),
+									'munidades'    			=> Array('nameClass'=>'UNIDADES'),
 								);				
     public function init()
     {		

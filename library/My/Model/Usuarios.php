@@ -18,6 +18,22 @@ class My_Model_Usuarios extends My_Db_Table
 	protected $_name 	= 'USUARIOS';
 	protected $_primary = 'ID_USUARIO';
 	
+	public function getCbo($idObject){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT $this->_primary AS ID, CONCAT(NOMBRE,' ',APELLIDOS) AS NAME 
+    			FROM $this->_name 
+    			WHERE ID_SUCURSAL  = $idObject
+    			 AND  TIPO_USUARIO = 0 
+    			      ORDER BY NAME ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}		
+	
 	public function validateUser($datauser){
 		$result= Array();		
 		$this->query("SET NAMES utf8",false);

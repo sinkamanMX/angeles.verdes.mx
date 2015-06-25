@@ -63,16 +63,19 @@ class dbman_MainController extends My_Controller_Action
     		$cFunctions   	  = new My_Model_Functions();
     		$inputEmpresa     = $this->_dataUser['ID_EMPRESA'];
     		$inputSucursal	  = $this->_dataUser['ID_SUCURSAL'];
+    		$initQuery		  = '';
 
     		if($this->_dataUser['TIPO_USUARIO']==1){
-    			$sQuery 		  = str_ireplace('$inputEmpresa',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY_ADMIN']);
-    			$sQuery 		  = str_ireplace('$inputSucursal',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY_ADMIN']);
-    			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS_ADMIN']);	
+    			$initQuery  = $this->aDbManInfo['TABLA_QUERY_ADMIN'];    			
+    			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS_ADMIN']);
     		}else{
-    			$sQuery 		  = str_ireplace('$inputSucursal',$inputSucursal,$this->aDbManInfo['TABLA_QUERY']);
-    			$sQuery 		  = str_ireplace('$inputEmpresa',$inputEmpresa,$this->aDbManInfo['TABLA_QUERY']);
+    			$initQuery  = $this->aDbManInfo['TABLA_QUERY_ADMIN'];
     			$this->view->aTittles    = explode(',',$this->aDbManInfo['TABLA_TITULOS']);
     		}
+    		
+    		$sQuery 		  = str_ireplace('$inputEmpresa' ,$inputEmpresa,$initQuery);
+    		$sQuery 		  = str_ireplace('$inputSucursal',$inputSucursal,$sQuery);
+    		
     		
     		$this->view->aDataTable  = $cFunctions->executeQuery($sQuery);
     		$this->view->aNamesTable = $cFunctions->getFieldsName($this->view->aDataTable);

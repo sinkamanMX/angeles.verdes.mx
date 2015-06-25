@@ -91,3 +91,28 @@ function validateRangeHour(nameInputMin,nameInputmax,checkType){
         $("#"+nameInputMin).val($("#"+nameInputmax).val());
     }
 }
+
+function getoptionsSimpleCbo(idCboTo,classObject,idObject,chosen,options){      
+
+    $("#div"+idCboTo).html('<img id="loader1" class="col-xs-offset-4" src="/images/loading.gif" alt="loading gif"/>');
+    $('#input'+idCboTo).find('option').remove().end().hide('slow');
+    var classChosen = (chosen) ? 'chosen-select': '';
+    var claseFind   = (options=='coloniaO') ? 'colonia': options;
+    var optionSelect= (options!='') ? 'getoptionsCbo("'+options+'","'+claseFind+'",this.value,false,"");': '';
+    var optsCP      = (idCboTo=='colonia' || idCboTo=='coloniaO') ? 'getCPdir(this.value,"'+idCboTo+'");': '';
+    $.ajax({
+        url: "/main/functions/getselect",
+        type: "GET",
+        data: { catId : idObject, 
+                oprDb : classObject },
+        success: function(data) {   
+            $("#div"+idCboTo).html("");
+            if(data!="no-info"){
+                $('#input'+idCboTo).append('<option value="">Seleccionar una opción</option>'+data+'</select>');
+            }else{
+                $('#input'+idCboTo).append('<option value="">Sin Información</option>');
+            }
+            $('#input'+idCboTo).show('slow');            
+        }
+    });        
+}

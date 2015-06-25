@@ -16,7 +16,7 @@ class My_Model_Unidades extends My_Db_Table
 		$this->query("SET NAMES utf8",false); 		
     	$sql ="SELECT $this->_primary AS ID, IDENTIFICADOR AS NAME 
     			FROM $this->_name 
-    			WHERE ID_CLIENTE = $idObject ORDER BY NAME ASC";
+    			WHERE ID_SUCURSAL = $idObject ORDER BY NAME ASC";
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			

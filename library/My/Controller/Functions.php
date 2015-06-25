@@ -162,7 +162,11 @@ class My_Controller_Functions
 		   case "tecnicos":
 		   		return new My_Model_Tecnicos();	
 		   case "modelot":
-		   		return new My_Model_Modelostel();		             			       	       		       	       
+		   		return new My_Model_Modelostel();	
+		   case "musuarios":
+		   		return new My_Model_Usuarios();
+		   case "munidades":
+		   		return new My_Model_Unidades();		   				   			             			       	       		       	       
 		}		
 	}
 	

@@ -1,5 +1,6 @@
 
 $( document ).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip(); 
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
     var dateInter  = parseInt(nowTemp.getMonth())+1;  
@@ -70,5 +71,19 @@ $('#dataTable').dataTable( {
                   "sLast" : "Fin"
                 }       
             }
-  });        
+  });     
+
+  $('#iFrameModalMapa').on('load', function () {        
+    $('#loader').hide();
+    $('#iFrameModalMapa').show();
+  });     
 });
+
+function getReport(){
+  $("#FormData").submit();
+}
+
+function getUbicacion(idValue){
+    $('#iFrameModalMapa').attr('src','/reports/activities/mapubicacion?strInput='+idValue);
+    $("#myModalMapa").modal("show");
+}

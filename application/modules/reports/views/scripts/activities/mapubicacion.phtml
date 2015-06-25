@@ -1,0 +1,35 @@
+<?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false') ?>
+<?php $this->headScript()->appendFile('/js/reports/jsDetailUbicacion.js'); ?>
+<div class="row customform bg-white">
+	<div class="col-md-12">
+		<table cellspacing="0" width="100%" class="table table-striped table-bordered display"  id="dataTable">
+            <thead>             
+                <tr>
+                	<th>Jefatura</th>
+	                <th>Unidad</th>
+	                <th>Usuario</th>
+	                <th>Técnico 2</th>                
+	                <th>Actividad</th>
+	                <th>Fecha</th>
+	                <th>Ubicación</th> 	                            	
+                </tr>
+            </thead>
+            <tbody>
+				<tr>
+					<?php $results = explode("|",$this->dataService['N_UNIDAD']);?>
+ 					<td><?php echo $this->dataService['N_SUCURSAL'];?></td>
+                    <td><?php echo @$results[0];?></td>                        
+                    <td><?php echo $this->dataService['N_USUARIO'];?></td>
+                    <td><?php echo @$results[1];?></td>
+                    <td><?php echo $this->dataService['N_ACTIVIDAD'];?></td>
+                    <td><?php echo $this->dataService['FECHA_CAPTURA_EQUIPO'];?></td>
+                    <td><?php echo $this->dataService['UBICACION'];?></td>
+				</tr>            	
+            </tbody>
+        </table>
+	</div>
+	<div class="col-md-12">
+		<div id="Map" style="width:100%;height:340px;"> </div> 
+	</div>
+	<div id="positions" class="hide"><?php echo $this->dataService['LATITUD'];?>|<?php echo $this->dataService['LONGITUD'];?>|<?php echo @$results[0]."-".$this->dataService['N_ACTIVIDAD'];?></div> 
+</div>
