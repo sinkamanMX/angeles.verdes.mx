@@ -306,7 +306,7 @@ class reports_LogbookController extends My_Controller_Action
 										</tr>
 										<tr>
 											<td style="width:658px;text-align:left;">
-												'.$aNotasTurno['CONTESTACION'].'
+												'.@$aNotasTurno['CONTESTACION'].'
 											</td>
 										</tr>										
 										</table><br/><br/><br/><br/><br/><br/>';
@@ -477,7 +477,13 @@ class reports_LogbookController extends My_Controller_Action
 								 <tbody>
 								 <tr>
 								 	<th width="645" colspan="6" style="text-align:center;background-color:#F2F2F2;">I.- UNIDAD Y SERVIDORES P&Uacute;BLICOS QUE BRINDAN EL SERVICIO</th>								 
+								 </tr>
+								 <tr>
+								 	<td><b>Folio</b>   </td><td>'.$aDatainfo['ID'].'</td>
+								 	<td><b>Jefatura</b></td><td>'.$aDataInfoIn['N_SUCURSAL'].'</td>
+									<td><b>Terminal</b>   </td><td>'.$aDataInfoIn['N_PHONE'].'</td>
 								 </tr>';
+					
 					$controlIt = 1;
 					foreach($aElemtosInicio as $key => $itemsInicio){
 						if($controlIt==1){
@@ -486,7 +492,7 @@ class reports_LogbookController extends My_Controller_Action
 							$content .= '<td><b>'.$itemsInicio['DESCIPCION'].'</b></td>'.
 										'<td>'.   $itemsInicio['CONTESTACION'].'</td>';
 						
-						if($controlIt===3){
+						if($controlIt==3){
 							$content .= '</tr>';
 							$controlIt=1;
 						}else{
@@ -495,32 +501,32 @@ class reports_LogbookController extends My_Controller_Action
 					}
 					$sUbicacion = explode(',',$items['UBICACION']);
 					$sDireccion = ($items['UBICACION']!="Sin Ubicacion") ? @$sUbicacion[0].','.@$sUbicacion[1].'<br/>'.@$sUbicacion[2].','.@$sUbicacion[3]: 'Sin direccion'; 
-					$content .= ($controlIt<3) ? '</tr>': '';
+					$content .= ($controlIt>1) ? '</tr>': '';
 					$content .= '</tbody>
 								  </table>';					
 					
 					$content .= '<table style="width: 100%;border: solid 1px #000000;  margin-top:10px;border-radius: 2px;font-size:9px; " align="center">
 								 <tr><td style="width:25%;text-align:center;background-color:#F2F2F2;">II.- LUGAR DE SERVICIO</td>
 								 	 <td style="width:25%;text-align:center;background-color:#F2F2F2;">III.- FECHA DE SERVICIO</td>
-								 	 <td style="width:50%;text-align:center;background-color:#F2F2F2;">IV.- VEH&Iacute;CULO ATENDIDO</td></tr>
+								 	 <td style="width:335px;text-align:center;background-color:#F2F2F2;">IV.- VEH&Iacute;CULO ATENDIDO</td></tr>
 								 <tr>
 									<td>'.$sDireccion.'</td>
 									<td style="text-align:center;">'.$items['FECHA_CAPTURA_EQUIPO'].'</td>
 									<td> 
-										<table celspacing="1" style="font-size:9px; width:100%;">
+										<table celspacing="1" style="font-size:9px; width:550px;">
 											<tr style="border: solid .5px #000000;">
 												<th style="text-align:center;background-color:#F2F2F2;">MARCA</th>
 												<th style="text-align:center;background-color:#F2F2F2;">SUBMARCA</th>
 												<th style="text-align:center;background-color:#F2F2F2;">A&Ntilde;O</th>
 												<th style="text-align:center;background-color:#F2F2F2;">PLACAS</th>
-												<th style="text-align:center;background-color:#F2F2F2;">ESTADO</th>
+												<th style="width:70px;text-align:center;background-color:#F2F2F2;">ESTADO</th>
 											</tr>
 											<tr>
-												<td style="text-align:center;width:18%;">'.$aElemtosServices['MARCA'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['SUBMARCA'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['ANO'].'</td>
+												<td style="text-align:center;width:16%;">'.$aElemtosServices['MARCA'].'</td>
+												<td style="text-align:center;width:10%;">'.$aElemtosServices['SUBMARCA'].'</td>
+												<td style="text-align:center;width:5%;">'.$aElemtosServices['ANO'].'</td>
 												<td style="text-align:center;">'.$aElemtosServices['PLACAS'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['ESTADO'].'</td>
+												<td style="text-align:center;width:18%;">'.$aElemtosServices['ESTADO'].'</td>
 											</tr>
 										</table>
 									</td>
@@ -530,9 +536,8 @@ class reports_LogbookController extends My_Controller_Action
 								 <tr><td style="width:50%;text-align:center;background-color:#F2F2F2;">V.- TURISTAS ATENDIDOS Y NACIONALIDAD</td>
 								 	 <td style="width:55%;text-align:center;background-color:#F2F2F2;">VI.- TIPO DE SERVICIO</td></tr>
 								 <tr>
-								 	<td style="text-align:center;">
-								 	
-										<table style="font-size:9px;">
+								 	<td style="text-align:center;" align="center">								 	
+										<table style="font-size:9px;width:500px;"">
 											<tr style="border: solid .5px #000000;">
 												<th style="text-align:center;background-color:#F2F2F2;">TOTAL</th>
 												<th style="text-align:center;background-color:#F2F2F2;">HOMBRES</th>
@@ -541,33 +546,32 @@ class reports_LogbookController extends My_Controller_Action
 												<th style="text-align:center;background-color:#F2F2F2;">EXTRANJERA</th>
 											</tr>
 											<tr>
-												<td  width="20" style="text-align:center;">'.$aElemtosServices['TOTAL_PERSONAS'].'</td>
-												<td  width="20"  style="text-align:center;">'.$aElemtosServices['TOTAL_H'].'</td>
-												<td  width="20" style="text-align:center;">'.$aElemtosServices['TOTAL_M'].'</td>
-												<td  width="20" width="20"style="text-align:center;">'.$aElemtosServices['TOTAL_MX'].'</td>
-												<td  width="20" style="text-align:center;">'.$aElemtosServices['TOTAL_EXT'].'</td>
+												<td style="width:12%;text-align:center;">'.$aElemtosServices['TOTAL_PERSONAS'].'</td>
+												<td style="width:12%;text-align:center;">'.$aElemtosServices['TOTAL_H'].'</td>
+												<td style="width:12%;text-align:center;">'.$aElemtosServices['TOTAL_M'].'</td>
+												<td style="text-align:center;">'.$aElemtosServices['TOTAL_MX'].'</td>
+												<td style="width:12%;text-align:center;">'.$aElemtosServices['TOTAL_EXT'].'</td>
 											</tr>
 										 </table>								 	
 								 	
 								 	</td>
 								 	<td style="text-align:center;">
 								 		<table style="font-size:8px; width:100%;">
-											<tr style="border: solid .5px #000000;">												
+											<tr>
+												<td  style="width:300px;text-align:center;font-size:12px;font-weight:bold;">
+													'.@$aElemtosServices['T_SERVICIO'].'
+												</td>';								
+					/*											<tr style="border: solid .5px #000000;">												
 												<th style="text-align:center;background-color:#F2F2F2;">Informaci&oacute;n Tur&iacute;stica</th>
 												<th style="text-align:center;background-color:#F2F2F2;">Primeros Auxilios</th>
 												<th style="text-align:center;background-color:#F2F2F2;">Asistencia Mec&aacute;nica</th>
 												<th style="text-align:center;background-color:#F2F2F2;">Accidente</th>
 												<th style="text-align:center;background-color:#F2F2F2;">Arrastre</th>
-											</tr>
+											</tr>-->*/
+					
+					$content .=             '</tr>
 											<tr>
-												<td style="text-align:center;">'.$aElemtosServices['T_ITUR'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['T_PA'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['T_AMEC'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['T_ACT'].'</td>
-												<td style="text-align:center;">'.$aElemtosServices['T_ARR'].'</td>
-											</tr>
-											<tr>
-												<td colspan="5">'.$aElemtosServices['T_MOT'].'</td>												
+												<td>'.$aElemtosServices['T_MOT'].'</td>												
 											</tr>
 										 </table>
 								 	</td></tr></table>
@@ -669,6 +673,8 @@ class reports_LogbookController extends My_Controller_Action
 		$result['PAIS']			= '';
 		$result['TEL']			= '';
 		$result['MAIL']			= '';
+		
+		$result['T_SERVICIO']	= '';
     		    	
     	foreach($aData as $key => $items){
     		if($items['ID_ELEMENTO']==25){
@@ -701,6 +707,20 @@ class reports_LogbookController extends My_Controller_Action
     			$result['COMENTARIO'] 	= $items['CONTESTACION'];						
     		}
     		
+    		if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Accidente'){
+    			@$result['T_SERVICIO'] = "Accidente";
+    		}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Arrastre'){
+    			@$result['T_SERVICIO'] = "Arrastre";
+    		}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Asistencia Mecánica'){
+    			@$result['T_SERVICIO'] = "Asistencia Mecánica";
+			}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Información Turistica'){
+    			@$result['T_SERVICIO'] = "Información Turistica";
+    		}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Primeros Auxilios'){    					
+    			@$result['T_SERVICIO'] = "Primeros Auxilios";
+			}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Accidente'){    					
+    			@$result['T_SERVICIO'] = "Accidente";
+    		}    		
+    		/*
     	    if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Accidente'){
     			@$result['T_ACT'] = "X";
     		}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Arrastre'){
@@ -714,6 +734,8 @@ class reports_LogbookController extends My_Controller_Action
 			}else if($items['ID_ELEMENTO']==13 && $items['CONTESTACION']=='Accidente'){    					
     			@$result['T_MOT'] = $items['CONTESTACION'];			
     		}	
+    		
+    		*/
     		
     		if($items['ID_ELEMENTO']==17){
 				$result['NOMBRE']	= $items['CONTESTACION'];		
