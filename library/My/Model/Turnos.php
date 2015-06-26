@@ -33,8 +33,11 @@ class My_Model_Turnos extends My_Db_Table
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 	
 		$filter = ($bLimit) ? 'LIMIT 1': '';	
-    	$sql ="SELECT *
+    	$sql ="SELECT R.*,S.DESCRIPCION AS N_SUCURSAL, SUBSTRING(T.TELEFONO, -4) AS N_PHONE,T.ID_TELEFONO,CONCAT(U.NOMBRE,' ',U.APELLIDOS) AS N_USUARIO
 					FROM PROD_FORM_RESULTADO R
+					LEFT JOIN USUARIOS   U ON R.ID_USUARIO_CONTESTO = U.ID_USUARIO
+					LEFT JOIN SUCURSALES S ON U.ID_SUCURSAL         = S.ID_SUCURSAL
+					LEFT JOIN PROD_TELEFONOS   T ON R.ID_EQUIPO           = T.ID_TELEFONO
 					WHERE R.ID_FORMULARIO    = $idForm
 						 AND R.ID_HIST_TURNO = $idObject
 					  ORDER BY R.FECHA_CAPTURA_EQUIPO DESC
@@ -55,7 +58,8 @@ class My_Model_Turnos extends My_Db_Table
 					FROM PROD_FORM_DETALLE_RESULTADO R
 					INNER JOIN PROD_ELEMENTOS E ON R.ID_ELEMENTO = E.ID_ELEMENTO
 					WHERE R.ID_RESULTADO = $idObject
-					$sFilter ";
+					$sFilter 
+					AND E.ID_ELEMENTO NOT IN (10,11)";
     	$query   = $this->query($sql);   
 		if(count($query)>0){		  
 			$result = $query;			
@@ -144,7 +148,7 @@ class My_Model_Turnos extends My_Db_Table
 						WHERE R.ID_FORMULARIO = 3
 	                      AND R.ID_HIST_TURNO = $idObject	
 					)
-					 AND E.ID_ELEMENTO   IN (37,42)
+					 AND E.ID_ELEMENTO   IN (37,42,38,39)
 					 ORDER BY R.ID_RESULTADO, S.FECHA_CAPTURA_EQUIPO ASC, E.ID_ELEMENTO ASC";    	
 		$query   = $this->query($sql);
 		if(count($query)>0){
@@ -191,5 +195,54 @@ class My_Model_Turnos extends My_Db_Table
 		}
         
 		return $result;			
+	}
+	
+	public function getValuesInend($idObject){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 	
+    	$sql ="SELECT S.`FECHA_CAPTURA_EQUIPO`,  IF( E.TITULO IS NULL ,E.DESCIPCION,E.TITULO) AS DESCIPCION , R.CONTESTACION, R.ID_RESULTADO,E.ID_ELEMENTO,
+					S.ID_HIST_TURNO
+					FROM PROD_FORM_DETALLE_RESULTADO R
+					INNER JOIN PROD_FORM_RESULTADO S ON R.`ID_RESULTADO` = S.`ID_RESULTADO`
+					INNER JOIN PROD_ELEMENTOS E ON R.ID_ELEMENTO = E.ID_ELEMENTO
+					WHERE R.ID_RESULTADO IN (
+					SELECT R.`ID_RESULTADO`
+					FROM PROD_FORM_RESULTADO R	
+						WHERE R.ID_FORMULARIO IN(1,4)
+						  AND R.ID_HIST_TURNO = $idObject
+					)
+					 AND E.ID_ELEMENTO   IN (10,11,44,45)
+					 ORDER BY R.ID_RESULTADO, S.FECHA_CAPTURA_EQUIPO ASC, E.ID_ELEMENTO ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;			
+		}
+        
+		return $result;				
+	}
+	
+	public function getNotasTurno($idObject){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 	
+    	$sql ="SELECT S.`FECHA_CAPTURA_EQUIPO`, P.UBICACION,  IF( E.TITULO IS NULL ,E.DESCIPCION,E.TITULO) AS DESCIPCION , R.CONTESTACION, R.ID_RESULTADO,E.ID_ELEMENTO
+					FROM PROD_FORM_DETALLE_RESULTADO R
+					INNER JOIN PROD_FORM_RESULTADO S ON R.`ID_RESULTADO` = S.`ID_RESULTADO`
+					INNER JOIN PROD_ELEMENTOS E ON R.ID_ELEMENTO = E.ID_ELEMENTO
+					LEFT JOIN PROD_HIST_RESULTADO     L ON R.ID_RESULTADO = L.ID_RESULTADO
+					LEFT JOIN PROD_HISTORICO_POSICION P ON L.`ID_POSICION` = P.`ID_POSICION`
+					WHERE R.ID_RESULTADO IN (
+						SELECT R.`ID_RESULTADO`
+						FROM PROD_FORM_RESULTADO R	
+						WHERE R.ID_FORMULARIO = 4
+	                      AND R.ID_HIST_TURNO = $idObject	
+					)
+					 AND E.ID_ELEMENTO   IN (46)
+					 ORDER BY R.ID_RESULTADO, S.FECHA_CAPTURA_EQUIPO ASC, E.ID_ELEMENTO ASC LIMIT 1";    	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query[0];			
+		}
+        
+		return $result;		
 	}
 }

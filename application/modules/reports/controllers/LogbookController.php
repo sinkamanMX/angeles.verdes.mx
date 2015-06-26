@@ -122,6 +122,7 @@ class reports_LogbookController extends My_Controller_Action
 			$this->_helper->viewRenderer->setNoRender();
     		$cTurnos 	= new My_Model_Turnos();
     		$cServicios = new My_Model_Servicios();
+    		$cHistorico	= new My_Model_Historico();
     		$aElemtosInicio	= Array();
     		$aElemtosFin	= Array();
     					
@@ -136,12 +137,34 @@ class reports_LogbookController extends My_Controller_Action
     			}	
     						
     			$aPrevActividades 	= $cTurnos->getActividadesResume($aDatainfo['ID']);
-    			$aActividades 		= $this->processData($aPrevActividades);    	
+    			$aActividades 		= $this->processData($aPrevActividades);
     			$aServicios 		= $cTurnos->getServicios($aDatainfo['ID']);
     			
     			$aResume			= $cTurnos->getResumeBitacora($aDatainfo['ID']);
     			$aDataResume 		= $this->processDataResume($aResume);
-    			    			
+    			
+    			$aValuesinEnd       = Array();
+    			$aDatainEnd 		= $cTurnos->getValuesInend($aDatainfo['ID']);
+    			
+				$aDataHistorico = $cHistorico->getPositions($aDataInfoIn['ID_TELEFONO'],$aDatainfo['FECHA_INICIO'],$aDatainfo['FECHA_FIN']);	    			
+    			if(count($aDataHistorico)>0){	    					    				
+    				$aStopTravels = $cHistorico->getStopTravels($aDataHistorico);
+    			}	    			
+    			
+    			foreach($aDatainEnd as $key => $items){
+    				if($items['ID_ELEMENTO']==11){
+    					@$aValuesinEnd['odominicial']  = $items['CONTESTACION']; 
+    				}else if($items['ID_ELEMENTO']==44){
+						@$aValuesinEnd['odomfinal']    = $items['CONTESTACION']; 
+    				}else if($items['ID_ELEMENTO']==10){
+						@$aValuesinEnd['nivelgasin']   = $items['CONTESTACION']; 
+    				}else if($items['ID_ELEMENTO']==45){
+    					@$aValuesinEnd['nivelfasfin']  = $items['CONTESTACION']; 
+    				}
+    			}
+    			
+    			$aNotasTurno = $cTurnos->getNotasTurno($aDatainfo['ID']);
+		
 			    require_once($this->_publicPath.'/html_pdf/html2pdf.class.php');
 			    
 			    ob_start();
@@ -150,8 +173,8 @@ class reports_LogbookController extends My_Controller_Action
 			    
 			    ob_start();
 			    include($this->_publicPath.'/layouts/reports/footer_report.html');
-			    $lFooter = ob_get_clean();	
-	
+			    $lFooter = ob_get_clean();
+			    	
 			    $tittle  = 'BIT&Aacute;CORA DE CONTROL DIARIO DE OPERACI&Oacute;N';		    
 			    $lHeader = str_ireplace('0titulo0', $tittle, $lHeader);		
 				$content = '<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
@@ -160,46 +183,80 @@ class reports_LogbookController extends My_Controller_Action
 						    <br>
 						    <br>
 							<table width="645" style="border: solid 2px #000000;  margin-top:30px;border-radius: 2px;font-size:9px; " align="center">
-							    <tbody><tr>
+							    <tr>
 								 	<th width="660" colspan="6" style="text-align:center;background-color:#F2F2F2;"></th>								 
+								 </tr>
+								 <tr>
+								 	<td><b>Inicio de Turno</b>   </td><td>'.$aDatainfo['FECHA_INICIO'].'</td>
+								 	<td><b>Fin de Turno</b></td><td>'.$aDatainfo['FECHA_FIN'].'</td>
+									<td colspan="2"></td>
+								 </tr>
+								 <tr>
+								 	<td><b>Folio</b>   </td><td>'.$aDatainfo['ID'].'</td>
+								 	<td><b>Jefatura</b></td><td>'.$aDataInfoIn['N_SUCURSAL'].'</td>
+									<td><b>Terminal</b>   </td><td>'.$aDataInfoIn['N_PHONE'].'</td>
 								 </tr>';
-						$controlIt = 1;
-						foreach($aElemtosInicio as $key => $itemsInicio){
-							if($controlIt==1){
-								$content .= '<tr>';
-							}
-								$content .= '<td><b>'.$itemsInicio['DESCIPCION'].'</b></td>'.
-											'<td>'.   $itemsInicio['CONTESTACION'].'</td>';
-							
-							if($controlIt===3){
-								$content .= '</tr>';
-								$controlIt=1;
-							}else{
-								$controlIt++;
-							}
-						}
-
-						$content .= ($controlIt<3) ? '</tr>': '';
-						$content .= '</tbody>
-									  </table><br><br>';
+					$sTecnico2 = '';
+								$controlIt = 1;
+								foreach($aElemtosInicio as $key => $itemsInicio){
+									
+									if($itemsInicio['ID_ELEMENTO']==5){
+										$sTecnico2 = $itemsInicio['CONTESTACION'];
+									}
+									
+									if($controlIt==1){
+										$content .= '<tr>';
+									}
+										$content .= '<td><b>'.$itemsInicio['DESCIPCION'].'</b></td>'.
+													'<td>'.   $itemsInicio['CONTESTACION'].'</td>';
+									
+									if($controlIt==3){
+										$content .= '</tr>';
+										$controlIt=1;
+									}else{
+										$controlIt++;
+									}
+								}
+		
+								$content .= ($controlIt!=1) ? '</tr>': '';
+								$content .= '<tr>
+											 	<td><b>Odometro Inicial</b></td><td>'.@$aValuesinEnd['odominicial'].'</td>
+											 	<td><b>Odometro Final  </b></td><td>'.@$aValuesinEnd['odomfinal'].'</td>
+												<td><b>Kms Recorridos  </b></td><td>'.$cHistorico->iDistancia.' kms.</td>
+											 </tr>';
+								$content .= '<tr>
+											 	<td><b>Nivel Gasolina Inicial</b></td><td>'.@$aValuesinEnd['nivelgasin'].'</td>
+											 	<td><b>Nivel Gasolina Final  </b></td><td>'.@$aValuesinEnd['nivelfasfin'].'</td>
+												<td colspan="2"></td>
+											 </tr>';								
+						$content .= '</table><br>';
+								
 						$content .= '<table cellspacing="0" style="width:100%;border: solid 1px #000000;font-size:9px;"  align="center" >
 									<thead>
 										<tr>
-											<th style="text-align:center;width:15%;border: solid .5px #000000;background-color:#F2F2F2;" >HORA</th>
-											<th style="text-align:center;width:35%;border: solid .5px #000000;background-color:#F2F2F2;" >LOCALIDAD</th>
-											<th style="text-align:center;width:34%;border: solid .5px #000000;background-color:#F2F2F2;" align="center">ACTIVIDADES Y SERVICIOS</th>
+											<th style="text-align:center;width:18%;border: solid .5px #000000;background-color:#F2F2F2;" >HORA</th>
+											<th style="text-align:center;width:30%;border: solid .5px #000000;background-color:#F2F2F2;" >LOCALIDAD</th>
+											<th style="text-align:center;width:43%;border: solid .5px #000000;background-color:#F2F2F2;" align="center">ACTIVIDADES Y SERVICIOS</th>
+											<th style="text-align:center;width:8%;border: solid .5px #000000;background-color:#F2F2F2;" align="center">LITROS</th>
+											<th style="text-align:center;width:8%;border: solid .5px #000000;background-color:#F2F2F2;" align="center">IMPORTE</th>
 										</tr>									
 									</thead>
-									<tbody>';						
+									<tbody>';
+											
 						foreach($aActividades as $key => $items){
+							$aDireccion = explode(",",$items['UBICACION']);
+							$sDireccion = $aDireccion[0].", ".$aDireccion[1]."<br/>".$aDireccion[2].", ".$aDireccion[3];
 							$content .= '<tr>
 											<td style="text-align:center;border: solid .5px #000000;">'.$items['FECHA'].'</td>
-											<td style="border: solid .5px #000000;">'.$items['UBICACION'].'</td>
+											<td style="border: solid .5px #000000;">'.$sDireccion.'</td>
 											<td style="border: solid .5px #000000;">'.$items['OPCION1'].' - '.$items['OPCION2'].'</td>
+											<td style="border: solid .5px #000000;text-align:center;">'.$items['LITROS'].' Lts.</td>
+											<td style="border: solid .5px #000000;text-align:center;">$ '.$items['IMPORTE'].'</td>
 										</tr>';	
 						}
 						
 						$content .= '</tbody></table><br/>';
+						
 						$content .= '<table cellspacing="0" style="width:100%;border: solid 1px #000000;font-size:9px;"  align="center" >
 										<tr>
 											<td style="text-align:center;background-color:#F2F2F2;" colspan="4" align="center">
@@ -241,6 +298,47 @@ class reports_LogbookController extends My_Controller_Action
 										</tr>
 									</table><br/>';
 						
+						$content .= '<table cellspacing="0" style="width:645px;border: solid 1px #000000;font-size:9px;" >
+										<tr>
+											<td style="width:645px;text-align:center;background-color:#F2F2F2;" align="center">
+												Notas del Turno
+											</td>
+										</tr>
+										<tr>
+											<td style="width:658px;text-align:left;">
+												'.$aNotasTurno['CONTESTACION'].'
+											</td>
+										</tr>										
+										</table><br/><br/><br/><br/><br/><br/>';
+						
+						
+						$content .= '<table cellspacing="0" style="width:645px;border: solid 0px #000000;font-size:9px;" >
+										<tr>
+											<td style="height:100px;width:320px;text-align:center;border: solid .5px #000000;" align="center">
+												
+											</td>
+											<td style="width:10px;text-align:center;" align="center">
+											
+											</td>
+											<td style="width:320px;text-align:center;border: solid .5px #000000;" align="center">
+											
+											</td>
+										</tr>
+										<tr>
+											<td  style="width:21%;text-align:center;border: solid .5px #000000;">
+												'.$aDataInfoIn['N_USUARIO'].'<br/>
+												Tecnico 1
+											</td>
+											<td style="width:10px;text-align:center;" align="center">
+											
+											</td>
+											<td align="center"  style="width:21%;text-align:center;border: solid .5px #000000;">
+												'.$sTecnico2.'<br/>
+												Tecnico 2
+											</td>
+										</tr>
+									</table><br/>';
+												
 						$content .='</page>';
 			    try
 			    {
@@ -271,13 +369,23 @@ class reports_LogbookController extends My_Controller_Action
     		@$aDataProcess[$items['ID_RESULTADO']]['ID'] 		= $items['ID_RESULTADO'];
     		@$aDataProcess[$items['ID_RESULTADO']]['FECHA'] 	= $items['FECHA_CAPTURA_EQUIPO'];
     		@$aDataProcess[$items['ID_RESULTADO']]['UBICACION'] = $items['UBICACION'];
+    		
     		if($items['ID_ELEMENTO']==37){
     			@$aDataProcess[$items['ID_RESULTADO']]['OPCION1'] = $items['CONTESTACION'];	
     		}
     		
+    	    if($items['ID_ELEMENTO']==38){
+    			@$aDataProcess[$items['ID_RESULTADO']]['LITROS'] = $items['CONTESTACION'];	
+    		}    	
+
+    	    if($items['ID_ELEMENTO']==39){
+    			@$aDataProcess[$items['ID_RESULTADO']]['IMPORTE'] = $items['CONTESTACION'];	
+    		}        		
+    		
     		if($items['ID_ELEMENTO']==42){
     			@$aDataProcess[$items['ID_RESULTADO']]['OPCION2'] = $items['CONTESTACION'];	
-    		}    		    		    		
+    		}  
+    	 		    		    		
     	}
    		$result = $aDataProcess;
     	
@@ -705,7 +813,7 @@ class reports_LogbookController extends My_Controller_Action
 						$iTotalRun  = $cHistorico->formatSeconds($iTotalRun);
 						$iGranTotal = $cHistorico->formatSeconds($iGranTotal);						
 						$sDirefenciaT = $cHistorico->diferenciaTiempo($aDataFirst['FECHA_TELEFONO'],$aDataLast['FECHA_TELEFONO']);
-						
+
 					    require_once($this->_publicPath.'/html_pdf/html2pdf.class.php');
 					    
 					    ob_start();

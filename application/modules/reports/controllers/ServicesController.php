@@ -162,40 +162,6 @@ class reports_ServicesController extends My_Controller_Action
 						}
 						$rowControl++;
 					}	
-									
-					/*
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Centro');
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'Fecha');
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', 'Usuario');
-					
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', 'Lugar de Servicio');
-					$objPHPExcel->setActiveSheetIndex(0)->setSharedStyle($stylezebraTable, 'A1:AA1');
-					$aElementos = $cServicios->getElementos(2);				
-					$iControl   = 4;	
-					
-					foreach($aElementos as $key => $items){
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($iControl,  1, $items['DESCIPCION']);
-						$iControl++;
-					}
-					
-					$rowControl		= 2;
-					foreach($aDataServicios as $key => $itemServ){
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(0,  ($rowControl), $itemServ['N_SUCURSAL']);
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(1,  ($rowControl), $itemServ['FECHA_CAPTURA_EQUIPO']);
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(2,  ($rowControl), $itemServ['USUARIO']);
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(3,  ($rowControl), $itemServ['UBICACION']);
-						
-						$controlColumn = 4;
-						$aDataResult = $cServicios->getResultados($itemServ['ID_RESULTADO']);
-						if(count($aDataResult)>0){
-							foreach($aDataResult as $key => $itemsResult){
-								$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($controlColumn,  ($rowControl), $itemsResult['CONTESTACION']);
-								$controlColumn++;	
-							}
-						}
-						$rowControl++;
-					}
-					*/
 										
 					$filename  = "Reporte_Servicios_".date("YmdHi").".xlsx";	
 	
