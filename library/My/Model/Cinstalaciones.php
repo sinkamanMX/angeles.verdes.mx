@@ -24,6 +24,21 @@ class My_Model_Cinstalaciones extends My_Db_Table
 		return $result;			
 	}
 	
+	public function getDataFilter($idObject,$iTypeuser=0){
+		$result= Array();
+		$this->query("SET NAMES utf8",false);
+		$sFilter = ($iTypeuser==0) ? " ID_SUCURSAL = $idObject" : " ID_EMPRESA = $idObject" ;	 		
+    	$sql ="SELECT *     			
+    			FROM $this->_name 
+    			WHERE $sFilter";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}	
+	
 	public function getCbo($idObject,$iTypeuser=0){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 	

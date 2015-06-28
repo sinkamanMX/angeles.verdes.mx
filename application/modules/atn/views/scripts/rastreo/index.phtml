@@ -174,7 +174,20 @@
 	                    <div id="Map" style="width:100%;height:500px;">
 
 	                    </div>  
-	                    <div class="">                      
+	                    <div id="divMyOptions">   
+	                    	<input id="chkJefaturas"   class="chkOptions" value="SUC" onChange="validateCheck()" type="checkbox"> Jefaturas &nbsp;
+	                    	<input id="chkCampamentos" class="chkOptions" value="CA"  onChange="validateCheck()" type="checkbox"> Campementos &nbsp;
+	                    	<input id="chkPuntosAux"   class="chkOptions" value="PA"  onChange="validateCheck()" type="checkbox"> Puntos de Asistencia &nbsp;
+	                    	<?php $iControl = 0;?>
+	                    	<?php foreach(@$this->aTiposGeos as $key => $items):?>	
+	                    	        <input id="chk<?php echo $items['ID_TIPO_GEO'];?>" class="chkOptions" onChange="validateCheck()"  value="<?php echo $items['ID_TIPO_GEO'];?>" type="checkbox"> <?php echo $items['DESCRIPCION'];?> &nbsp;            		
+	                    		<?php if($iControl==2):?>
+	                    			<br/>
+	                    			<?php  $iControl++;?>	                    			
+	                    		<?php else:?>
+	                    			<?php  $iControl++;?>
+	                    		<?php endif;?>	                    		
+	                    	<?php endforeach;?>
 	                    </div>                                         
 	                </div>	        		
 	        	</div>
@@ -182,9 +195,6 @@
 		</div>
     </div>
 </div>
-
-
-
 
     <div id="myModalMapa" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -201,18 +211,61 @@
             </div>
         </div>
     </div>
+<?php $iControlP=0;?>
+<?php $sContent = '';?>
+	<?php foreach($this->aJefaturas as $key => $items):?>
+		<?php $sContent .= ($iControlP==0) ? '': '!';?>
+		<?php $sContent .= "SUC|G|".$items['DESCRIPCION']."|"."sucursal.png|"."1000|"."NULL|".$items['LATITUD']."|".$items['LONGITUD']."|"."NULL"; ?>
+	<?php $iControlP++;?>
+	<?php endforeach;?>
+	<?php foreach($this->aPuntosassis as $key => $items):?>
+		<?php $sContent .= ($iControlP==0) ? '': '!';?>
+		<?php $sContent .= "PA|G|".
+				$items['DESCRIPCION']."|".
+				"sucursal.png|".
+				"1000|".
+				"NULL|".
+				$items['LATITUD']."|".
+				$items['LONGITUD']."|".
+				"NULL"; ?>
+	<?php $iControlP++;?>
+	<?php endforeach;?>
+	<?php foreach($this->aCampamentos as $key => $items):?>
+		<?php $sContent .= ($iControlP==0) ? '': '!';?>
+		<?php $sContent .= "CA|G|".
+				$items['DESCRIPCION']."|".
+				"campamento.png|".
+				"1000|".
+				"NULL|".
+				$items['LATITUD']."|".
+				$items['LONGITUD']."|".
+				"NULL"; ?>
+	<?php $iControlP++;?>
+	<?php endforeach;?>	
+<?php foreach($this->aGeosAll as $key => $items):?>
+	<?php $sContent .= ($iControlP==0) ? '': '!';?>
+	<?php $sContent .= $items['ID_TIPO_GEO']."|".
+				$items['TIPO_OBJECTO']."|".
+				$items['DESCRIPCION']."|".
+				$items['ICONO']."|".
+				$items['RADIO']."|".
+				$items['HTML_CODE']."|".
+				$items['LATITUD']."|".
+				$items['LONGITUD']."|"; ?>
+	<?php 	
+			$a_position= '';
+			if($items['TIPO_OBJECTO']!="G"){		
+				$last = strlen(@$items['MAP_OBJECT']) - 3; 
+				$mult = substr($items['MAP_OBJECT'] ,9 ,$last);
+				$pre_positions=explode(",",$mult);
+				for($p=0;$p<count($pre_positions);$p++){	
+					$a_position .= ($a_position=="") ? '':'¬';					
+					$fixed = str_replace(' ','*',$pre_positions[$p]); 
+					$a_position .= ''.$fixed.'';
+				}			
+			}
+			$sContent .= $a_position; ?>
+	<?php $iControlP++;?>
+<?php endforeach;?>
 
-<!--
-<div class="modal fade hide modal-lg" id="myModalMapa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-  <div class="modal-dialog ">
-    <div class="modal-content">
-    	<div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title" ></h4>
-      	</div>
-      <div class="modal-form i-body">             
-        <iframe class="hmodal550" id="iFrameModalMapa" src="" style="zoom:0" frameborder="0"></iframe>
-      </div>
-    </div>
-  </div>
-</div>	-->
+<div id="divOtrosGeo" style="display:none;"><?php echo $sContent;?></div>    

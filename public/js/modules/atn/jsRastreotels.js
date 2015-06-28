@@ -3,6 +3,7 @@ var geocoder;
 var infoWindow;
 var infoLocation;
 var markers = [];
+var markersGeo = [];
 var bounds;
 var arrayTravels="";
 var mon_timer=60;
@@ -19,7 +20,7 @@ $( document ).ready(function() {
 	drawTable();	 	
 	$('[data-toggle="tooltip"]').tooltip(); 
 
-	setTimeout('submitForm()', 180000);
+	//setTimeout('submitForm()', 180000);
 });
 
 function drawTable(){	
@@ -225,3 +226,120 @@ function getReportAll(){
   var url = "/atn/rastreo/exportall?optReg=search&inputStatus="+inputStatus+"&inputSucursal="+inputSucursal;
   window.open(url, '_blank');
 } 
+
+var aTypeSelected = Array();
+
+function validateCheck(){
+    aTypeSelected = [];
+    var selected = '';    
+    $('#divMyOptions input[type=checkbox]').each(function(){
+        if (this.checked) {
+            aTypeSelected.push($(this).val());
+        }
+    });       
+    showTypeObject()
+}
+
+function showTypeObject(){
+    clearMarkers();
+  var strData = $("#divOtrosGeo").html();
+      strData = $.trim(strData);
+
+
+  var aDataExplode = strData.split("!");
+  for(var i=0;i<aDataExplode.length;i++){
+      var infoElement = aDataExplode[i].split("|");
+      if(jQuery.inArray($.trim(infoElement[0]), aTypeSelected)>-1){
+        if(infoElement[1]=='G'){
+          drawPoint(infoElement);
+        }else if(infoElement[1]=='C'){
+          drawGeo(infoElement);
+        }else if(infoElement[1]=='R'){          
+          drawRoute(infoElement);
+        }
+      }
+  }
+}
+
+function drawPoint(aElement){
+    var markerTable = null;
+    if(aElement[6]!="null" && aElement[7]!="null" ){
+        var content = aElement[2];
+
+        var Latitud  = parseFloat(aElement[6])
+        var Longitud = parseFloat(aElement[7])
+        var sIcono   = aElement[3];
+
+        markerTable = new google.maps.Marker({
+          map: map,
+          position: new google.maps.LatLng(Latitud,Longitud),
+          title:  content,
+          icon:   '/assets/images/icons/'+sIcono
+        });
+        markersGeo.push(markerTable);
+        infoMarkerTable(markerTable,content);   
+        bounds.extend( markerTable.getPosition() );
+    }
+}
+
+function clearMarkers(){
+  if(markersGeo || markersGeo.length>-1){
+    for (var i = 0; i < markersGeo.length; i++) {
+            markersGeo[i].setMap(null);
+    } 
+    markersGeo = [];
+  }
+}
+
+function drawGeo(aElement){
+      var arrayGeoInfoLats = null;
+          arrayGeoInfoLats = aElement[8].split('¬');
+      var geos_points_polygon = [];
+
+      for(j=0;j<arrayGeoInfoLats.length;j++){
+            var latlon = arrayGeoInfoLats[j].split('*');
+
+            var Latit =  parseFloat(latlon[0]);
+            var Longit = parseFloat(latlon[1]);
+            var pointmarker = new google.maps.LatLng(Latit,Longit);
+            geos_points_polygon.push(pointmarker);                        
+        }
+
+      var geos_options = {
+            paths: geos_points_polygon,
+            strokeColor: aElement[5],
+            strokeOpacity: 0.8,
+            strokeWeight: 3,
+            title:  aElement[2],
+            fillColor: aElement[5],
+            fillOpacity: 0.35
+      }         
+      
+      var geos_polygon = new google.maps.Polygon(geos_options);
+      geos_polygon.setMap(map);
+      markersGeo.push(geos_polygon);
+}
+
+function drawRoute(aElement){
+      var arrayGeoInfoLats = null;
+          arrayGeoInfoLats = aElement[8].split('¬');
+      var geos_points_polyline = [];
+
+      for(j=0;j<arrayGeoInfoLats.length;j++){
+            var latlon = arrayGeoInfoLats[j].split('*');
+
+            var Latit =  parseFloat(latlon[0]);
+            var Longit = parseFloat(latlon[1]);
+            var pointmarker = new google.maps.LatLng(Latit,Longit);
+            geos_points_polyline.push(pointmarker);                        
+        }
+
+        var geos_polygon = new google.maps.Polyline({
+          path: geos_points_polyline,
+          strokeColor: aElement[5],
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });                
+      geos_polygon.setMap(map);
+      markersGeo.push(geos_polygon);
+}

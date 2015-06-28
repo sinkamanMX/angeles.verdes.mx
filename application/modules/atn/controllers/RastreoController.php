@@ -34,24 +34,48 @@ class atn_RastreoController extends My_Controller_Action
 			$cFunciones		= new My_Controller_Functions();
 			$cTecnicos		= new My_Model_Tecnicos();
 			$cPhones 		= new My_Model_Telefonos();
+			$cGeoref		= new My_Model_GeoPuntos();
+			
 			$sInstalacion	= (isset($this->dataIn['inputSucursal']) && $this->dataIn['inputSucursal']!="") ? $this->dataIn['inputSucursal'] : -1;
 			$aTecnicos 		= Array();
 			$bStatus		= -1;
+			$allPuntosGeo     = Array();
+			$allpuntosaGeo	  = Array();
+			$allCampamentoGeo = Array();
+			$aTiposGeos     = $cGeoref->getTipos();
+
+			$iFilter = ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
 			
 			if(isset($this->dataIn['optReg']) && $this->dataIn['optReg']='search'){
 				$bStatus		= $this->dataIn['inputStatus'];
+				$allPuntosGeo	= $cGeoref->getDataGeo($this->dataIn['inputSucursal'],0);
+				$allpuntosaGeo	= $cGeoref->getPuntosAsistencia($this->dataIn['inputSucursal'],0);
+				$allCampamentoGeo= $cGeoref->getCampamentos($this->dataIn['inputSucursal'],0);	
+			}else{
+				$allPuntosGeo	= $cGeoref->getDataGeo($iFilter,$this->view->dataUser['TIPO_USUARIO']);									
+				$allpuntosaGeo	= $cGeoref->getPuntosAsistencia($iFilter,$this->view->dataUser['TIPO_USUARIO']);									
+				$allCampamentoGeo= $cGeoref->getCampamentos($iFilter,$this->view->dataUser['TIPO_USUARIO']);									
 			}
-			
-			$iFilter = ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
 
 			$dataCenter		= $cInstalaciones->getCbo($iFilter,$this->view->dataUser['TIPO_USUARIO']);									
 			$aPocisiones  	= $cPhones->getAllPosition($sInstalacion,$this->view->dataUser['ID_EMPRESA']);		
+			
 
-			$this->view->cInstalaciones = $cFunciones->selectDb($dataCenter,$sInstalacion);
+			
+			$this->view->cInstalaciones = $cFunciones->selectDb($dataCenter,$sInstalacion);			
 			$this->view->aPocisiones 	= $aPocisiones;
 			$this->view->aResume	 	= $this->setResume($aPocisiones);
+			$this->view->iStatus		= $bStatus;
 			
-			$this->view->iStatus			= $bStatus;
+			$this->view->aTiposGeos 	= $aTiposGeos;
+			$this->view->aGeosAll	    = $allPuntosGeo;
+			$this->view->aJefaturas 	= $cInstalaciones->getDataFilter($iFilter,$this->view->dataUser['TIPO_USUARIO']);
+			$this->view->aCampamentos	= $allCampamentoGeo;
+			$this->view->aPuntosassis	= $allpuntosaGeo;
+			/*$this->view->aGeoPuntos		= $aGeoPuntos;
+			$this->view->aGeoCercas		= $aGeoCercas;
+			$this->view->aGeoRutas		= $aGeoRutas;
+			*/
         } catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
