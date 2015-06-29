@@ -1,0 +1,161 @@
+<?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places'); ?>
+<?php $this->headScript()->appendFile('/js/modules/geos/jsValidatePoints.js') ?> 
+<?php $this->headScript()->appendFile('/js/modules/general/functionGral.js') ?> 
+<?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>	
+<?php $urlActions = ($this->DbmanInfo['CUSTOM_ACTIONS']==1) ? $this->DbmanInfo['CUSTOM_URL'] : '/dbman/main/getdatainfo?ssIdource='.$this->DbmanInfo['CLAVE_MODULO']; ?>
+
+<input type="hidden" id="inputModule" value="<?php echo $this->moduleInfo['SCRIPT']; ?>"/>
+
+    <div class="breadcrumb-line margin-t5px">
+        <ul class="breadcrumb">
+            <li>Administración</li>
+            <li><a href="<?php echo $this->moduleInfo['SCRIPT']; ?>"><?php echo $this->DbmanInfo['TITULO']; ?></a></li>
+            <li>Registro</li>
+        </ul>
+    </div>
+
+    <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
+        <div class="alert alert-block alert-danger fade in block-inner">
+            <h6><i class="icon-cancel-circle"></i> Error</h6>
+            <hr>
+            <p>Usted no tiene permiso para ver esta información.</p>
+        </div>
+    <?php else:?>
+            <div id="formInit" class="tab-pane <?php echo ($this->tabSelected==1 || !isset($this->tabSelected)) ? 'active':'';?>">
+                <form id="formDbman" class="form-horizontal" role="form" method="POST" action="/admin/geos/getinfopoint" <?php echo ($this->DbmanInfo['INCLUYE_ARCHIVOS']==1) ? 'enctype="multipart/form-data"' :'';?>>                                
+                    <input type="hidden" id="catId" name="catId"  value="<?php echo $this->catId; ?>" id="catId" />
+                    <input type="hidden" id="optReg" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                            <?php if($this->resultOp=='okRegister'): ?>
+                                <?php $this->headScript()->captureStart() ?>
+                                    $().ready(function(){                                        
+                                            showNotification('registerOk','');
+                                    });
+                                <?php $this->headScript()->captureEnd() ?>                                                                
+                            <?php endif; ?>     
+                                                  
+                            <?php if(@$this->errors['errorAction']):?>
+                                <div class="alert alert-block alert-danger fade in block-inner">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h6><i class="icon-cancel-circle"></i><strong>¡Error!</strong> Se han encontrado uno ó mas problemas para guardar la información</h6>
+                                    <hr>
+                                    <p>
+                                        <?php if(count($this->aErrorFields)>0):?>
+                                        <br/>
+                                            <strong>Errores:</strong><br/>
+                                            <?php for($i=0;$i<count($this->aErrorFields);$i++):?>
+                                                <?php echo $this->aErrorFields[$i]['MessageError'];?><br/>
+                                            <?php endfor;?>                       
+                                        <?php endif;?>    
+                                    </p>
+                                </div>
+                            <?php endif;?>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="inputSucursal" class="col-sm-2 control-label"> Sucursal</label>
+                                    <div class="col-sm-10">
+                                        <select id="inputSucursal" name="inputSucursal" class="">
+                                            <?php echo $this->aSucursales ;?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputTipo" class="col-sm-2 control-label"> Tipo</label>
+                                    <div class="col-sm-10">
+                                        <select id="inputTipo" name="inputTipo" class="">
+                                            <?php echo $this->aTipos ;?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputDescripcion" class="col-sm-2 control-label">Descripción</label>
+                                    <div class="col-sm-10">
+                                        <input id="inputDescripcion" name="inputDescripcion" type="text" class="input-inline form-control"  value="<?php echo @$this->data['DESCRIPCION'];?>"  autocomplete="off">
+                                    </div>
+                                </div>  
+
+                                <div class="form-group">
+                                    <label for="inputLatOrigen" class="col-sm-2 control-label">Latitud</label>
+                                    <div class="col-sm-10">
+                                        <input id="inputLatOrigen" name="inputLatOrigen" type="text" class="input-inline form-control"  value="<?php echo @$this->data['LATITUD'];?>"  autocomplete="off">
+                                    </div>
+                                </div>  
+
+                                <div class="form-group">
+                                    <label for="inputLonOrigen" class="col-sm-2 control-label">Longitud</label>
+                                    <div class="col-sm-10">
+                                        <input id="inputLonOrigen" name="inputLonOrigen" type="text" class="input-inline form-control"  value="<?php echo @$this->data['LONGITUD'];?>"  autocomplete="off">
+                                    </div>
+                                </div>                                  
+
+                                <div class="form-group">
+                                    <label for="inputRadio" class="col-sm-2 control-label">Radio (mts.)</label>
+                                    <div class="col-sm-10">
+                                        <div class="col-sm-3 no-padding"> 
+                                            <input id="inputRadio" name="inputRadio" type="text" class="input-inline form-control"  value="<?php echo @$this->data['RADIO'];?>"  autocomplete="off">                                         
+                                        </div>
+                                        <div class="col-sm-9 no-padding">
+                                            <a class="btn btn-info noEnterSubmit pull-right" href="javascript:setMarker(0)"><i class=" icon-map-marker icon-white"></i> Pintar Coordenadas</a>
+                                        </div>
+                                    </div>
+                                </div>                                                         
+
+                                <div class="form-group">
+                                    <label for="inputEstatus" class="col-sm-2 control-label">Estatus</label>
+                                    <div class="col-sm-3">
+                                        <select id="inputEstatus" name="inputEstatus" class="">
+                                            <?php echo $this->aStatus ;?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputRadio" class="col-sm-2 control-label">Dirección</label>
+                                    <div class="col-sm-10 no-padding">
+                                        <div class="col-sm-10 no-padding"> 
+                                            <input type="text" class="form-control noEnterSubmit col-md-12" name="inputSearch" id="inputSearch" placeholder="Calle, Colonia, Delefación o Municipio">
+                                        </div>
+                                        <div class="col-sm-2 no-padding"> 
+                                            <a class="btn btn-info noEnterSubmit" href="javascript:setMarker(1)"><i class=" icon-map-marker icon-white"></i> Ir</a>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div id="map"  style="width:100%;height:350px;"></div>    
+                            </div>
+                        
+                            <?php if($disabled!='disabled'):?>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-info">Guardar Cambios</button>
+                                            <button type="button" class="btn default" onClick="location.href='<?php echo $this->moduleInfo['SCRIPT']; ?>';">Cancelar</button>   
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif;?>  
+                        </div>
+                    </div>                                                               
+                </form>
+            </div>         
+        </div>
+    <?php endif;?>
+
+<div id="divSelectStatus" class="hide">
+    <?php echo $this->selectStatus;?>
+</div>
+
+<div id="divSelectOptions" class="hide">
+    <?php echo $this->selectOptions;?>
+</div>
+
+<div id="divSelectTypes" class="hide">
+    <?php echo $this->selectTypes;?>
+</div>

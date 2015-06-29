@@ -1,8 +1,8 @@
 <?php
 
-class admin_PhonesController extends My_Controller_Action
+class admin_GeosController extends My_Controller_Action
 {
-	protected $_clase 	  = 'mphones';
+	protected $_clase 	  = 'mgeos';
 	protected $_keyModule = '';
 	public 	  $aDbManInfo = Array();
 	
@@ -24,72 +24,70 @@ class admin_PhonesController extends My_Controller_Action
         }  		
     }
     
-	public function formlisteventsAction(){
-		try{	
-			$tabSelected	= 1;		
-    		$this->view->layout()->setLayout('blank');			
-			$cEventosTel = new My_Model_EventosTel();
-			$cTelefonos	 = new My_Model_Telefonos();
-			$aEventos 	 = Array();
-			
-			if($this->_idUpdate){
-				$tabSelected = (isset($this->_dataIn['strTabSelected']) &&
-    						    $this->_dataIn['strTabSelected'] !="") ? $this->_dataIn['strTabSelected'] : 1;
-    						    				
-				$dataRow	= $cTelefonos->getDataRow($this->_idUpdate);
-				$aEventos   = $cEventosTel->getDataTables($this->_idUpdate,$dataRow['ID_MODELO']);	
-    		}else{
-    			$this->_redirect($this->aDbManInfo['SCRIPT']);
-    		}
-			
-    		
-			if($this->_dataOp=='updateModules'){
-				$this->_helper->layout->disableLayout();
-				$this->_helper->viewRenderer->setNoRender();
-				
-				$aDataForm = Array();
-				$aValuesForm = $this->_dataIn['formsValues'];
+    public function indexAction(){
+    	try{
+    		$cGeos     = new My_Model_GeoPuntos();
 
-				$aErrorsModules = 0;					
-				if(count($aValuesForm)>0){
-					$bDeleteRows	= $cTelefonos->deleteRelEvent($this->_idUpdate);
-					if(@$this->_dataIn['checkAllItems']!=''){
-						$bInserts = $cTelefonos->setAllEventos($this->_idUpdate,$dataRow['ID_MODELO']);
-						if(!$bInserts['status']){
-							Zend_Debug::dump("error al insertar el formulario completo");
-							$aErrorsModules++;
-						}
-					}else{
-						for($i=0;$i<count($aValuesForm);$i++){
-							$aDataForm['catId']      = $this->_idUpdate;
-							$aDataForm['inputEvento']= $aValuesForm[$i];
-							
-							$insertForm = $cTelefonos->setRelEventos($aDataForm);
-							if(!$insertForm){
-								Zend_Debug::dump("error al insertar el formulario ".$aValuesForm[$i]);
-								$aErrorsModules++;
-							}
-						}						
-					}
-				}else{
-					$aErrorsModules++;
-				}
-				
-				if($aErrorsModules==0){
-    				$aEventos   = $cEventosTel->getDataTables($this->_idUpdate,$dataRow['ID_MODELO']);
-					$sUrl		= '/dbman/main/getdatainfo?ssIdource='.$this->aDbManInfo['CLAVE_MODULO'].'&catId='.$this->_idUpdate.'&strTabSelected='.$tabSelected.'&optResult=okOperation';
-    				$this->_redirect($sUrl);
-				}else{
-					$this->_aErrors['errorModules']   = '1';
-				}				
-			}
-			 		
-			$this->view->aDataEventos = $aEventos;
-			$this->view->tabSelected  = $tabSelected;
+    		$iFilter = ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
+    		$aGeosData = $cGeos->getDataGeo($iFilter,$this->view->dataUser['TIPO_USUARIO']);
+    		
+    		$this->view->aDataTable = $aGeosData;
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
-        }  		
-	}
-	     
+        }  	
+    }
+
+    public function getinfoAction(){
+    	
+    }
+    
+    public function getinfopointAction(){
+    	try{
+    		$cGeos     	= new My_Model_GeoPuntos();
+    		$cSucursales= new My_Model_Cinstalaciones();
+    		$cFunctions = new My_Controller_Functions();
+    		
+    		$aDataInfo  = Array();
+    		$aTipos	   	= $cGeos->getCboTipos();	
+    		$iFilter 	= ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
+    		$aSucursales= $cSucursales->getCbo($iFilter,$this->view->dataUser['TIPO_USUARIO']);
+    		$sEstatus	= '';
+    		$sTipo		= '';
+    		$sSucursal  = '';
+    		
+    		if($this->_idUpdate>0){
+				$aDataInfo 	= $cGeos->getDataRow($this->_idUpdate);
+	    		$sEstatus	= $aDataInfo['ESTATUS'];
+	    		$sTipo		= $aDataInfo['ID_TIPO'];
+	    		$sSucursal  = $aDataInfo['ID_SUCURSAL'];				
+			}
+			
+			if($this->_dataOp=='new'){
+				$resultOp = $cGeos->insertRowPoint($this->_dataIn);
+				if($resultOp['status']){
+					$this->_idUpdate = $resultOp['id'];
+					$this->_resultOp = 'okRegister';
+				}
+			}else if($this->_dataOp=='update'){
+				$resultOp = $cGeos->updateRowPoint($this->_dataIn);
+				if($resultOp['status']){
+					$this->_resultOp = 'okRegister';	
+				}			
+			} 
+    		
+    		$this->view->data		 = $aDataInfo;
+    		$this->view->aTipos 	 = $cFunctions->selectDb($aTipos,$sTipo);
+    		$this->view->aSucursales = $cFunctions->selectDb($aSucursales,$sTipo);
+    		$this->view->aStatus 	 = $cFunctions->cboStatus($sEstatus);
+    		
+			$this->view->errors 	= $this->_aErrors;	
+			$this->view->resultOp   = $this->_resultOp;
+			$this->view->catId		= $this->_idUpdate;
+			$this->view->idToUpdate = $this->_idUpdate;    		
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }  	
+    }    
 }
