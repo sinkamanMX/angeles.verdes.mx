@@ -362,7 +362,30 @@ class My_Model_Telefonos extends My_Db_Table
 		$result= Array();
 		$this->query("SET NAMES utf8",false);
 		$sFilter = ($idSucursal==-1) ? 'S.ID_EMPRESA = '.$idEmpresa : 'E.ID_SUCURSAL = '.$idSucursal;
-		
+		$sql  = "SELECT T.DESCRIPCION AS N_TECNICO, 
+				S.DESCRIPCION AS N_SUCURSAL, 
+				T.ID_TELEFONO,
+				P.`FECHA_GPS`,
+				P.`LATITUD`,
+				P.`LONGITUD`,
+				P.`NIVEL_SENAL_RED`,
+				P.`UBICACION`,
+				P.`VELOCIDAD`,
+				V.`DESCRIPCION_EVENTO` AS N_EVENTO,
+				T.IDENTIFICADOR,
+				T.TELEFONO,
+				P.`TIPO_GPS`,
+				P.NIVEL_BATERIA,
+				P.`FECHA_TELEFONO`,
+				IF(P.FECHA_GPS >= DATE_ADD(CURRENT_TIMESTAMP, INTERVAL -1 DAY),'OK','NOK') AS N_ESTATUS,	
+				IF(P.FECHA_GPS >= DATE_ADD(CURRENT_TIMESTAMP, INTERVAL -1 DAY),'#3ADF00','#cf1919') AS N_COLOR	
+					FROM PROD_TELEFONOS T
+					INNER JOIN SUCURSALES           S ON T.ID_SUCURSAL  = S.ID_SUCURSAL
+					 LEFT JOIN PROD_ULTIMA_POSICION P ON T.ID_TELEFONO  = P.ID_TELEFONO
+					 LEFT JOIN PROD_EVENTOS         V ON P.ID_EVENTO    = V.ID_EVENTO
+					WHERE $sFilter
+					ORDER BY T.IDENTIFICADOR ASC";
+		/*
     	$sql ="SELECT CONCAT(U.NOMBRE,' ',APELLIDOS) AS N_TECNICO, S.DESCRIPCION AS N_SUCURSAL, T.ID_TELEFONO,
 				L.`FECHA_GPS`,
 				L.`LATITUD`,
@@ -386,6 +409,7 @@ class My_Model_Telefonos extends My_Db_Table
 				LEFT JOIN PROD_ULTIMA_POSICION L ON T.ID_TELEFONO = L.ID_TELEFONO
 				LEFT JOIN PROD_EVENTOS         V ON L.ID_EVENTO   = V.ID_EVENTO
 				WHERE $sFilter";    	
+    	*/
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			

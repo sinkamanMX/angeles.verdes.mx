@@ -8,8 +8,8 @@ class reports_ServicesController extends My_Controller_Action
 	protected $_clase 	  = 'mrservices';
 	protected $_keyModule = '';
 	public 	  $aDbManInfo = Array();
-	//public $realPath='/var/www/vhosts/angeles/htdocs/public';
-	public $realPath='/Users/itecno2/Documents/workspace/angeles.verdes.mx/public';	
+	public $realPath='/var/www/vhosts/angeles/htdocs/public';
+	//public $realPath='/Users/itecno2/Documents/workspace/angeles.verdes.mx/public';	
 	
     public function init()
     {
@@ -150,12 +150,13 @@ class reports_ServicesController extends My_Controller_Action
 						$aDataResult = $cServicios->getResultados($itemServ['ID_RESULTADO']);
 						if(count($aDataResult)>0){
 							foreach($aDataResult as $key => $itemsResult){
-								$subFijo = '';
-								$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($controlColumn,  ($rowControl), $itemsResult['CONTESTACION']);
+								$subFijo = '';								
 								if($itemsResult['ID_TIPO']==9 || $itemsResult['ID_TIPO']==10 || $itemsResult['ID_TIPO']==11){
-									$subFijo = 'http://201.131.96.62';	
+									$subFijo = 'http://201.131.96.62/evidencia/';
+										
 									$objPHPExcel->setActiveSheetIndex(0)->getCellByColumnAndRow($controlColumn,  ($rowControl))->getHyperlink()->setUrl($subFijo.$itemsResult['CONTESTACION']);
 								}
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($controlColumn,  ($rowControl), $subFijo.$itemsResult['CONTESTACION']);
 									
 								$controlColumn++;	
 							}

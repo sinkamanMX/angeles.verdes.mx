@@ -32,7 +32,8 @@ $().ready(function() {
                 required: true,
                 number: true
             },
-            inputEstatus        : "required"
+            inputEstatus        : "required",
+            inputClave          : "required"
         },
         // Se especifica el texto del mensaje a mostrar
         messages: {
@@ -52,6 +53,7 @@ $().ready(function() {
                 number: "Este campo acepta solo números"
             },
             inputEstatus        : "Campo Requerido",
+            inputClave          : "Campo Requerido"
         },
         
         submitHandler: function(form) {

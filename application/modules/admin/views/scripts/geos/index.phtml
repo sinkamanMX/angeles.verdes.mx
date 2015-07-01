@@ -1,4 +1,5 @@
-<?php $this->headScript()->appendFile('/js/modules/general/gralTables.js') ?>   
+<?php $this->headScript()->appendFile('/js/modules/general/gralTables.js') ?>
+<?php $this->headScript()->appendFile('/js/modules/geos/jsAdminGeos.js') ?>
 <?php $disabled   = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?> 
 <?php $urlActions = "/admin/geos/getinfo?catId="; ?>
     <div class="breadcrumb-line margin-t5px">
@@ -15,10 +16,15 @@
         
         <div class="panel-body">
             <div class="col-md-12">
-                <?php if($this->dataUser['INSERTAR']==1 && $this->DbmanInfo['AGREGAR']==1): ?>                                
+                <?php if($this->dataUser['INSERTAR']==1 && $this->DbmanInfo['AGREGAR']==1): ?>
                     <a href="/admin/geos/getinfopoint?catId=-1'; ?>" class="btn btn-success tooltip-success white">
                        <i class="icon-pushpin"></i> Agregar Punto
                     </a>
+
+                    <a href="javascript:importGeos();" class="btn btn-warning tooltip-success white">
+                       <i class="icon-upload3"></i> Importar
+                    </a>
+
                     <!--<a href="<?php echo $urlActions.'-1'; ?>" class="btn btn-info tooltip-success white">
                        <i class="icon-joomla"></i> Agregar Poligono
                     </a>
@@ -34,6 +40,7 @@
                             <th>Jefatura</th>
                             <th>Tipo</th>
                             <th>Referencia</th>
+                            <th>Clave Única</th>
                             <th>Descripción</th>
                             <th>Estatus</th>                            
                             <th class="col-xs-2 col-md-2">
@@ -43,37 +50,57 @@
                     </thead>                        
                     <tbody>                      
                         <?php foreach($this->aDataTable as $key => $items):?>
-                            <tr>
-                                <?php $urlOptions = '/admin/geos/getinfopoint?catId='.$items['ID']; ?>                                
-                                <?php  /* if($items['TIPO_OBJECTO']=='G'){
-                                            $urlOptions = '/admin/geos/getinfopoint?catId='.$items['ID'];
-                                        }else if($items['TIPO_OBJECTO']=='C'){
-                                            $urlOptions = '/admin/geos/getinfocerca?catId='.$items['ID'];
-                                        }else if($items['TIPO_OBJECTO']=='R'){
-                                            $urlOptions = '/admin/geos/getinforuta?catId='.$items['ID'];
-                                        }*/
-                                    ?>
-                                <td><?php echo $items['N_TIPO'];?></td>
-                                <td><?php echo $items['N_TIPO'];?></td>
-                                <td><?php echo $items['TIPO_REFERENCIA'];?></td>
-                                <td><?php echo $items['DESCRIPCION'];?></td>
-                                <td><?php echo $items['ESTATUS'];?></td>
-                                <td>                                    
-                                    <?php if($this->dataUser['LECTURA']==1 && $this->DbmanInfo['LECTURA']==1): ?>
-                                        <a class="btn btn-warning" href="<?php echo $urlOptions.$items['ID'] ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Ver"><i class="icon-eye"></i></a>
-                                    <?php endif;?>                                    
-                                    <?php if($this->dataUser['EDITAR']==1 && $this->DbmanInfo['MODIFICAR']==1): ?>
-                                        <a class="btn btn-info btn-sm icon-only white tooltip-info" href="<?php echo $urlOptions.$items['ID'] ?>" data-toggle="tooltip" data-placement="top" data-original-title="Editar"><i class="icon-pencil3"></i></a>                                                
-                                    <?php endif;?> 
-                                    <?php if($this->dataUser['ELIMINAR']==1 && $this->DbmanInfo['ELIMINAR']==1): ?>
-                                        <a class="btn btn-danger btn-sm icon-only white tooltip-danger" onclick="beforeDelete('<?php echo $items['ID']; ?>')" data-toggle="tooltip" data-placement="bottom" data-original-title="Eliminar"><i class="icon-minus-circle"></i></a>
-                                    <?php endif;?>
+                            <?php if($items['TIPO_OBJECTO']=='G'):?>
+                                <tr>
+                                    <?php $urlOptions = '/admin/geos/getinfopoint?catId='; ?>                                
+                                    <?php  /* if($items['TIPO_OBJECTO']=='G'){
+                                                $urlOptions = '/admin/geos/getinfopoint?catId='.$items['ID'];
+                                            }else if($items['TIPO_OBJECTO']=='C'){
+                                                $urlOptions = '/admin/geos/getinfocerca?catId='.$items['ID'];
+                                            }else if($items['TIPO_OBJECTO']=='R'){
+                                                $urlOptions = '/admin/geos/getinforuta?catId='.$items['ID'];
+                                            }*/
+                                        ?>
 
-                                </td>
-                            </tr>
+                                    <td><?php echo $items['N_SUCURSAL'];?></td>
+                                    <td><?php echo $items['N_TIPO'];?></td>                                
+                                    <td><?php echo $items['TIPO_REFERENCIA'];?></td>
+                                    <td><?php echo $items['CLAVE_UNICA'];?></td>
+                                    <td><?php echo $items['N_DESC'];?></td>
+                                    <td><?php echo $items['ESTATUS'];?></td>
+                                    <td>                                    
+                                        <?php if($this->dataUser['LECTURA']==1 && $this->DbmanInfo['LECTURA']==1): ?>
+                                            <a class="btn btn-warning" href="<?php echo $urlOptions.$items['ID'] ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Ver"><i class="icon-eye"></i></a>
+                                        <?php endif;?>                                    
+                                        <?php if($this->dataUser['EDITAR']==1 && $this->DbmanInfo['MODIFICAR']==1): ?>
+                                            <a class="btn btn-info btn-sm icon-only white tooltip-info" href="<?php echo $urlOptions.$items['ID'] ?>" data-toggle="tooltip" data-placement="top" data-original-title="Editar"><i class="icon-pencil3"></i></a>                                                
+                                        <?php endif;?> 
+                                        <?php if($this->dataUser['ELIMINAR']==1 && $this->DbmanInfo['ELIMINAR']==1): ?>
+                                            <a class="btn btn-danger btn-sm icon-only white tooltip-danger" onclick="beforeDelete('<?php echo $items['ID']; ?>')" data-toggle="tooltip" data-placement="bottom" data-original-title="Eliminar"><i class="icon-minus-circle"></i></a>
+                                        <?php endif;?>
+
+                                    </td>
+                                </tr>
+                            <?php endif;?>
                         <?php endforeach;?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <div id="myModalMapa" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"> Subir Referencias </h4>
+                </div>
+
+                <div class="modal-body with-padding">
+                    <img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
+                    <iframe class="hmodal550" id="iFrameModalMapa" src="" style="zoom:0" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>    

@@ -411,7 +411,7 @@ class atn_RastreoController extends My_Controller_Action
 
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A7', 'Estatus');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B7', 'Sucursal');
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C7', 'Tecnico');										
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C7', 'TelŽfono');										
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D7', 'Identificador');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E7', 'Ult. Evento');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F7', 'Ult. Reporte');
