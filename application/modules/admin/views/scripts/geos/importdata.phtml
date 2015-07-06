@@ -22,16 +22,36 @@
 
     </form>
 </div>
+<?php endif;?>
 
-<?php elseif(@$this->iOptionImport==1):?>
+<?php $urlUpdate    = '';?>
+<?php $urlPlantilla = '';?>
+<?php $urlImg       = '';?>
+<?php if(@$this->iOptionImport>-1):?>
+
+    <?php if(@$this->iOptionImport==1){
+            $urlUpdate      = 'uploadfilepoints';
+            $urlPlantilla   = 'plantilla.xlsx';
+            $urlImg         = 'upload_file.png';
+        }elseif(@$this->iOptionImport==2){
+            $urlUpdate      = 'uploadfilegeos';
+            $urlPlantilla   = 'plantilla_geos.xlsx';
+            $urlImg         = 'upload_file_area.png';
+        }elseif(@$this->iOptionImport==3){
+            $urlUpdate      = 'uploadfilegeos';
+            $urlPlantilla   = 'plantilla_geos.xlsx';
+            $urlImg         = 'upload_file_area.png';        
+        }
+    ?>
+
     <br/> <br/>    
-    <form id="formDbman" class="form-horizontal" role="form" method="POST" action="/admin/geos/uploadfilepoints"  enctype="multipart/form-data">                            
+    <form id="formDbman" class="form-horizontal" role="form" method="POST" action="/admin/geos/<?php echo $urlUpdate;?>"  enctype="multipart/form-data">                            
         <input type="hidden" id="optReg" name="optReg" value="uploadFile" />
         <input type="hidden" id="optImp" name="optImp" value="<?php echo $this->iOptionImport; ?>" />
         <p align="center" style="font-weight:bold; font-size:15px;">
-            <span>1.- Descargar plantilla. <a target="_blank" href="/plantilla/plantilla.xlsx"><i class="icon-file-download"></i></a> </span> <br/> <br/>
+            <span>1.- Descargar plantilla. <a target="_blank" href="/plantilla/<?php echo $urlPlantilla;?>"><i class="icon-file-download"></i></a> </span> <br/> <br/>
             <span>2.- Llenar la información.</span> <br/>
-            <img src="/images/upload_file.png" ><br/> <br/>
+            <img src="/images/<?php echo $urlImg;?>" ><br/> <br/>
             <span>2.- Subir Layout con información.</span> <br/> <br/>
 
             <div class="col-md-12" align="center">
@@ -50,7 +70,7 @@
                 <input type="submit" value="Subir" class="btn btn-primary tooltip-success white" id="btnSend">
             </div>            
         </p>
-    </fom>
-<?php else:?>
+    </form>
+
 
 <?php endif;?>

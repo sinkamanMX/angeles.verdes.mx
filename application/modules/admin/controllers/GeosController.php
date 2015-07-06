@@ -239,4 +239,167 @@ class admin_GeosController extends My_Controller_Action
         	echo "Message: " . $e->getMessage() . "\n";                
         }    	
     }
+    
+    public function uploadfilegeosAction(){
+        try{
+			$this->view->layout()->setLayout('layout_blank');  	
+
+			$cFunctions = new My_Controller_Functions();
+			$cValidateNumbers = new Zend_Validate_Float();
+			$cValidateAlpha   = new Zend_Validate_Alnum(true);
+			$cValidaReq		  = new Zend_Validate_NotEmpty();
+			
+			$cGeoRefs = new My_Model_GeoPuntos();
+			
+			$aFilter  = $cGeoRefs->getFilterUp();
+			$aPuntosE = $cGeoRefs->getFilterPuntos();
+			$aSucursal= $cGeoRefs->getFilterSucursales();
+			$aColores = $cGeoRefs->getFilterColores();
+			
+			$controlImport = 0;
+			$aFieldsErrors = Array();			
+			
+            $targetFolder = $this->realPath.'/trash';
+			if(@$_FILES['imageProfile']['name']!=""){		
+            	$tempFile = $_FILES['imageProfile']['tmp_name'];				
+				$targetFile = $targetFolder.'/'.$_FILES['imageProfile']['name'];
+				
+				$fileTypes = array('xls','xlsx');
+				$fileParts = pathinfo($_FILES['imageProfile']['name']);			
+			
+				if (in_array($fileParts['extension'],$fileTypes)) {
+					$nameFinalFile   = $targetFolder.'/'.$this->view->dataUser['TIPO_USUARIO'].'_'.$cFunctions->getRandomCode().'.'.$fileParts['extension'];
+					
+					if(move_uploaded_file($tempFile,$nameFinalFile)){
+						include $this->realPath.'/PHPExcel/IOFactory.php'; 						
+						try {
+							$objPHPExcel = PHPExcel_IOFactory::load($nameFinalFile);
+						}catch(Exception $e) {
+							die('Error loading file "'.pathinfo($nameFinalFile,PATHINFO_BASENAME).'": '.$e->getMessage());
+						}
+						
+						$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+						$arrayCount = count($allDataInSheet);
+
+						for($i=2;$i<=$arrayCount;$i++){
+							$controlImport++;
+							$controliError  = 0;
+							$sError 		= '';
+							$sPolygon		= ($this->_dataIn['optImp']==2) ? 'POLYGON((' : 'LINESTRING(';
+							$sintPos  		= '';
+							
+							$siSucursal = trim($allDataInSheet[$i]["A"]);
+							$siTipo 	= trim($allDataInSheet[$i]["B"]);
+							$siClaveUni = trim($allDataInSheet[$i]["C"]);							
+							$siColor	= trim($allDataInSheet[$i]["D"]);
+							$siDescrip  = $allDataInSheet[$i]["E"];							
+							$siPos    	= $allDataInSheet[$i]["F"];
+													
+							if(!$cValidateNumbers->isValid($siSucursal) || !isset($aSucursal[$siSucursal])){
+								$sError .= 'La Jefatura '.$siSucursal.' no existe <br>';
+								$controliError++;	
+							}
+							
+							if(!$cValidateAlpha->isValid($siTipo) || !isset($aFilter[$siTipo])){
+								$sError .=  'La tipo de referencia '.$siTipo.' no existe <br>';
+								$controliError++;			
+							}
+							
+							if(!$cValidaReq->isValid($siDescrip)){
+								$sError .= 'Favor de verificar la Descripcion <br>';
+								$controliError++;				
+							}
+							
+							if($cValidateAlpha->isValid($siClaveUni)==false || !isset($aPuntosE[$siClaveUni])==false ){														
+								$sError .=  'La clave '.$siClaveUni.' ya se encuentra registrada <br>';
+								$controliError++;				
+							}
+							
+							if(!$cValidateAlpha->isValid($siColor) || !isset($aColores[$siColor])){
+								$sError .=  'El color '.$siColor.' no se encuentra registrada <br>';
+								$controliError++;
+							}							
+							
+							if($siPos==""){
+								$sError .=  'Sin Posiciones <br>';
+								$controliError++;				
+							}
+
+							
+							$aDataPosiciones = explode("|", $siPos);							
+							if(count($aDataPosiciones)==0){
+								$sError .=  'Sin Posiciones <br>';
+								$controliError++;
+							}else{
+								$totalIntErrors = 0;								
+								for($p=0;$p<count($aDataPosiciones);$p++){
+									$aIntData = explode(",",$aDataPosiciones[$p]);									
+									if(count($aIntData)>0){	
+										$intLatitud = floatval(trim($aIntData[0]));
+										$intLongitud= floatval(trim($aIntData[1]));
+										
+										if($cValidateNumbers->isValid($intLatitud)==true && $cValidateNumbers->isValid($intLongitud)==true){
+											$sintPos .= ($sintPos!="") ?',':'';
+											$sintPos .= $intLatitud." ".$intLongitud;			
+										}else{
+											$totalIntErrors++;
+										}
+									}else{
+										$totalIntErrors++;
+									}
+								}
+								
+								if($totalIntErrors>0){
+									$sError .=  'Las posiciones no son v‡lidas <br>';
+									$controliError++;
+								}
+							}		
+							
+							if($controliError  == 0){
+								$aInsertData = Array();
+								$aInsertData['inputEmpresa'] 	= $this->view->dataUser['ID_EMPRESA'];
+								$aInsertData['inputSucursal'] 	= $siSucursal[0];
+								$aInsertData['inputTipo'] 		= @$aFilter[$siTipo]['ID'];
+								$aInsertData['inputDescripcion']= $siDescrip;
+								$aInsertData['inputClave'] 		= $siClaveUni;
+								$aInsertData['inputTypeObj'] 	= ($this->_dataIn['optImp']==2) ? 'C':'R';
+								$aInsertData['inputColor'] 		= @$aColores[$siColor]['ID'];
+								$aInsertData['inputEstatus'] 	= '1';
+								
+								$insertDate  = $cGeoRefs->insertRowGeo($aInsertData);
+								if($insertDate['status']){
+									$sPolygon   .= $sintPos;
+									$sPolygon	.= ($this->_dataIn['optImp']==2) ? '))' : ')';
+									
+									$aDataSpacial = Array();
+									$aDataSpacial['id'] 	= $insertDate['id'];
+									$aDataSpacial['object'] = $sPolygon;									
+									$insertSpatial = $cGeoRefs->insertSpatialRow($aDataSpacial);
+								}else{
+									$sError .= 'Error al insertar el registro <br>';
+									$allDataInSheet[$i]['linea']  = $i;
+									$allDataInSheet[$i]['errors'] = $sError;
+									$aFieldsErrors[] = $allDataInSheet[$i]; 
+								}
+							}else{
+								$allDataInSheet[$i]['linea']  = $i;
+								$allDataInSheet[$i]['errors'] = $sError;
+								$aFieldsErrors[] = $allDataInSheet[$i]; 
+							}							
+						}
+					}else{
+						echo "Ocurrio un error al subir el archivo.";
+					}
+				}else {
+					echo "El archivo es inv‡lido.";
+				}
+			}
+			
+			$this->view->iProcess = $controlImport;
+			$this->view->iErrors  = $aFieldsErrors;
+		}catch(Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }    	
+    }    
 }

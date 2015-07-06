@@ -15,7 +15,7 @@ class My_Model_Turnos extends My_Db_Table
 		$result= Array();
 		$sFilter  = ($iSucursal!=-1) ? "AND U.ID_SUCURSAL = ".$iSucursal : '';
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT T.ID_HIST_TURNO AS ID, T.FECHA_INICIO,T.FECHA_FIN, U.USUARIO,S.DESCRIPCION
+    	$sql ="SELECT T.ID_HIST_TURNO AS ID, T.FECHA_INICIO,T.FECHA_FIN, U.USUARIO,S.DESCRIPCION, T.ID_USUARIO
 				FROM PROD_HIST_TURNOS T
 				INNER JOIN USUARIOS U ON T.ID_USUARIO = U.ID_USUARIO
 				INNER JOIN SUCURSALES S ON U.ID_SUCURSAL = S.ID_SUCURSAL
@@ -71,7 +71,7 @@ class My_Model_Turnos extends My_Db_Table
 	public function getData($idObject){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 	
-    	$sql ="SELECT H.ID_HIST_TURNO AS  ID, H.FECHA_INICIO, H.FECHA_FIN, S.DESCRIPCION AS CAMPAMENTO,
+    	$sql ="SELECT H.ID_HIST_TURNO AS  ID, H.FECHA_INICIO, H.FECHA_FIN, S.DESCRIPCION AS CAMPAMENTO,H.ID_USUARIO,
 				U.USUARIO 
 				FROM  PROD_HIST_TURNOS H
 				INNER JOIN USUARIOS U ON H.ID_USUARIO = U.ID_USUARIO

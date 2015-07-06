@@ -285,5 +285,85 @@ class My_Model_GeoPuntos extends My_Db_Table
 			}	
 		}	
 		return $result;		
-	}  		
+	}  	
+
+	public function getFilterColores(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_COLOR AS ID, DESCRIPCION
+				FROM PROD_COLORES	
+				ORDER BY DESCRIPCION ASC";    	
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			foreach($query as $key => $items){
+				$result[$items['DESCRIPCION']] = $items['ID'];
+			}	
+		}	
+		return $result;		
+	}	
+	
+	/**
+	 * 
+	 * Inserta un nuevo registro en la tabla de formularios
+	 * @param Array $aDataIn
+	 * @return Array Id, Estatus de la operacion.
+	 */
+    public function insertRowGeo($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="INSERT INTO $this->_name			 
+					SET ID_EMPRESA 		=  ".$aDataIn['inputEmpresa'].",
+						ID_SUCURSAL		=  ".$aDataIn['inputSucursal'].",
+						ID_TIPO			=  ".$aDataIn['inputTipo'].",
+						ID_COLOR		=  ".$aDataIn['inputColor'].",
+						DESCRIPCION		= '".$aDataIn['inputDescripcion']."',
+						CLAVE_UNICA		= '".$aDataIn['inputClave']."',
+						LATITUD			=  NULL,
+						LONGITUD		=  NULL,
+						RADIO			=  NULL,
+						TIPO_OBJECTO	= '".$aDataIn['inputTypeObj']."',
+						ESTATUS			=  ".$aDataIn['inputEstatus'].",
+						CREADO			=  CURRENT_TIMESTAMP";  
+        try{
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']	   = $query_id[0]['ID_LAST'];
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    }	
+    
+	/**
+	 * 
+	 * Inserta un nuevo registro en la tabla de formularios
+	 * @param Array $aDataIn
+	 * @return Array Id, Estatus de la operacion.
+	 */
+    public function insertSpatialRow($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql=" INSERT INTO PROD_GEOREFERENCIAS_DETALLE (ID_GEOREFERENCIA,MAP_OBJECT)
+				VALUES (".$aDataIn['id']." ,GEOMFROMTEXT('".$aDataIn['object']."'))";   		 
+        try{
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']	   = $query_id[0]['ID_LAST'];
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    }    
 }	

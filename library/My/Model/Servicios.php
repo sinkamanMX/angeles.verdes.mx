@@ -44,6 +44,7 @@ class My_Model_Servicios extends My_Db_Table
 							 	SELECT ID_RESULTADO
   								FROM PROD_FORM_RESULTADO
   								WHERE ID_HIST_TURNO = R.ID_HIST_TURNO
+  								 AND  ID_RESULTADO  = R.ID_RESULTADO
   						 		AND  ID_FORMULARIO = 2
   						 	)  						
   						) AS N_SERVICIO,    												
@@ -96,6 +97,7 @@ class My_Model_Servicios extends My_Db_Table
 							 	SELECT ID_RESULTADO
   								FROM PROD_FORM_RESULTADO
   								WHERE ID_HIST_TURNO = R.ID_HIST_TURNO
+  								AND  ID_RESULTADO   = R.ID_RESULTADO
   						 		AND  ID_FORMULARIO = 3
   						 	)  						
   						) AS N_ACTIVIDAD, 

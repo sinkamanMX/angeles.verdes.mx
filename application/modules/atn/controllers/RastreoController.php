@@ -5,8 +5,8 @@ class atn_RastreoController extends My_Controller_Action
 	protected $_clase = 'mrastreotels';
 	public $dataIn;	
 	public $aService;
-	public $realPath='/var/www/vhosts/angeles/htdocs/public';
-	//public $realPath='/Users/itecno2/Documents/workspace/angeles.verdes.mx/public';
+	//public $realPath='/var/www/vhosts/angeles/htdocs/public';
+	public $realPath='/Users/itecno2/Documents/workspace/angeles.verdes.mx/public';
 			
     public function init()
     {
@@ -58,9 +58,7 @@ class atn_RastreoController extends My_Controller_Action
 			}
 
 			$dataCenter		= $cInstalaciones->getCbo($iFilter,$this->view->dataUser['TIPO_USUARIO']);									
-			$aPocisiones  	= $cPhones->getAllPosition($sInstalacion,$this->view->dataUser['ID_EMPRESA']);		
-			
-
+			$aPocisiones  	= $cPhones->getAllPosition($sInstalacion,$this->view->dataUser['ID_EMPRESA']);					
 			
 			$this->view->cInstalaciones = $cFunciones->selectDb($dataCenter,$sInstalacion);			
 			$this->view->aPocisiones 	= $aPocisiones;
@@ -412,7 +410,7 @@ class atn_RastreoController extends My_Controller_Action
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A7', 'Estatus');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B7', 'Sucursal');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C7', 'TelŽfono');										
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D7', 'Identificador');
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D7', 'Usuario Logeado');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E7', 'Ult. Evento');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F7', 'Ult. Reporte');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G7', 'Latitud');
@@ -429,7 +427,7 @@ class atn_RastreoController extends My_Controller_Action
 							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(0,  ($rowControl), (($items['N_ESTATUS']=='OK') ? 'Reportando': 'Sin Reportar'));						
 							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(1,  ($rowControl), $items['N_SUCURSAL']);
 							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(2,  ($rowControl), $items['N_TECNICO']);
-							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(3,  ($rowControl), $items['IDENTIFICADOR']);								
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(3,  ($rowControl), $items['N_USUARIO']);								
 							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(4,  ($rowControl), $items['N_EVENTO']);								
 							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(5,  ($rowControl), $items['FECHA_GPS']);								
 							$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(6,  ($rowControl), $items['LATITUD']);								

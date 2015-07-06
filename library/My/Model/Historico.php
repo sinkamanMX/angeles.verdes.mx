@@ -154,4 +154,22 @@ class My_Model_Historico extends My_Db_Table
 		}
 		return $aProcessData;
 	}
+	
+	public function getHistoricoByUser($idObject,$fechaIn,$fechaFin){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT P.ID_USUARIO, P.FECHA_TELEFONO, P.TIPO_GPS, P.LATITUD, P.LONGITUD,P.VELOCIDAD, P.NIVEL_BATERIA,P.UBICACION, E.DESCRIPCION_EVENTO AS EVENTO
+				FROM PROD_HISTORICO_POSICION P
+				INNER JOIN PROD_EVENTOS E ON P.ID_EVENTO = E.ID_EVENTO
+				WHERE P.ID_USUARIO     = ".$idObject."
+				 AND  P.FECHA_TELEFONO BETWEEN '".$fechaIn."'
+				 						   AND '".$fechaFin."'
+				 ORDER BY P.FECHA_TELEFONO ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}	
 }

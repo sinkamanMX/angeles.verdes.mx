@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"Mar",
+				"markersGeo"
+			],
+			[
+				"inf",
+				"infoElement"
+			],
+			[
+				"iCon",
+				"iControlP"
+			],
+			[
+				"iC",
+				"iControlP"
+			],
+			[
 				"c",
 				"controlIt"
 			],
@@ -440,10 +456,10 @@
 	"buffers":
 	[
 		{
-			"file": "application/modules/reports/views/scripts/activities/index.phtml",
+			"file": "application/modules/reports/views/scripts/logbook/index.phtml",
 			"settings":
 			{
-				"buffer_size": 5476,
+				"buffer_size": 7745,
 				"line_ending": "Unix"
 			}
 		}
@@ -477,25 +493,45 @@
 	"file_history":
 	[
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsReporteRastreo.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/reporte.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsRastreotels.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/importdata.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidateImport.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsAdminGeos.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/uploadfilepoints.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsResultImport.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout_blank.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsResultImpor",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/controllers/GeosController.php",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidatePoints.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/getinfopoint.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/activities/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/services/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/services/mapubicacion.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsServicesReports.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/controllers/ReportesController.php",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/header_report.html",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsReporteBitacora.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/activities/mapubicacion.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/kmlcreator/kml.class.php",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/functionGral.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsDetailUbicacion.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/newservice/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/jGeneralOptionsSearch.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/reporte.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/controllers/RastreoController.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/header.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/controllers/LogbookController.php",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/header_report.html",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/forms/views/scripts/main/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/library/My/Model/Historico.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/detailinfo.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsReporteResumen.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsReporteBitacora.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/footer_report.html",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/mainAtn.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/activities/index.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsServicesReports.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/services/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/table_bitacora.html",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/PHPExcel/Classes/dompdf/include/image_cache.cls.php",
 		"/Users/itecno2/Downloads/Bitacora_.pdf",
@@ -509,12 +545,10 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/callservice/datefinish.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/callcenter/lastStepCall.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/callcenter/datefinish.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/functionGral.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/newservice/datefinish.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/callservice/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/callservice/instalation.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/callservice/cardetail.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/newservice/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/forms/jsValidateForms.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/css/style.css",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/callcenter/newservice.js",
@@ -527,7 +561,6 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/services/posistiondate.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsinfoDate.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsService.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsRastreotels.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/gralTables.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/css/styles.css",
@@ -540,8 +573,6 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/main/searchcitas.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/jGeneralSearch.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/dbman/views/scripts/search/index.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout_blank.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/jGeneralOptionsSearch.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/phones/sjValidatePhones.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/phones/formlistevents.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout_inner.phtml",
@@ -588,22 +619,7 @@
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/backup_modules/users/views/scripts/profiles/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/location/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/location/views/scripts/main/reporte.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/location/reporteRastreo.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/general/chat.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/assets/css/portfolio.css",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/location/rastreotels.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/main/controllers/FunctionsController.php",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/main/controllers/MainController.php",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/login/login.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/backup_modules/users/views/scripts/profiles/index.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/menu.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/gralTables.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/s_backup_files/assets/scripts/core/datatable.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/assets/js/bootbox/bootbox.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/dbman/controllers/MainController.php",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/main/views/scripts/phones/index.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/main/views/scripts/phones/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/header.phtml"
+		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/location/reporteRastreo.js"
 	],
 	"find":
 	{
@@ -626,6 +642,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"offset",
+			"paddi",
+			"cleanMap",
+			"markersGeo",
+			"TITULO",
+			"initMapToDraw",
+			"Unidades->getCbo",
+			"getoptionsCbo",
 			"getResumen",
 			"right6",
 			"Sucursal",
@@ -745,15 +769,7 @@
 			"contact",
 			"checkMessages",
 			"chat",
-			"console.log",
-			"rtl-support",
-			"beyond-link",
-			"beyond",
-			"assets/",
-			"=\"assets/",
-			"submitHandler",
-			"SUBMIT",
-			"HANDLER"
+			"console.log"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -845,18 +861,18 @@
 			[
 				{
 					"buffer": 0,
-					"file": "application/modules/reports/views/scripts/activities/index.phtml",
+					"file": "application/modules/reports/views/scripts/logbook/index.phtml",
 					"settings":
 					{
-						"buffer_size": 5476,
+						"buffer_size": 7745,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1178,
-								1178
+								6711,
+								6711
 							]
 						],
 						"settings":
@@ -866,8 +882,8 @@
 							"translate_tabs_to_spaces": true,
 							"word_wrap": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 300.0,
+						"translation.x": 244.0,
+						"translation.y": 1396.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

@@ -123,11 +123,12 @@ class reports_ActivitiesController extends My_Controller_Action
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', 'Usuario');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', 'Tecnico 2');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', 'Fecha');
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', 'Latitud');
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1',  'Longitud');
+					/*$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', 'Latitud');
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1',  'Longitud');*/
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1',  'Mapa');
 					$objPHPExcel->setActiveSheetIndex(0)->setSharedStyle($stylezebraTable, 'A1:AA1');
 					$aElementos = $cServicios->getElementos(3);
-					$iControl   = 7;	
+					$iControl   = 6;	
 					
 					foreach($aElementos as $key => $items){
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($iControl,  1, $items['DESCIPCION']);
@@ -143,10 +144,16 @@ class reports_ActivitiesController extends My_Controller_Action
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(2,  ($rowControl), $itemServ['N_USUARIO']);
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(3,  ($rowControl), @$results[1]);
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(4,  ($rowControl), $itemServ['FECHA_CAPTURA_EQUIPO']);
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(5,  ($rowControl), $itemServ['LATITUD']);
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(6,  ($rowControl), $itemServ['LONGITUD']);
+						/*$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(5,  ($rowControl), $itemServ['LATITUD']);
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(6,  ($rowControl), $itemServ['LONGITUD']);	*/					
 						
-						$controlColumn = 7;
+						$aDirMap = ($itemServ['LATITUD']!="" && $itemServ['LONGITUD']!="") ? 'https://www.google.com/maps/search/'.$itemServ['LATITUD'].','.$itemServ['LONGITUD']: 'Sin Posicion';												
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow(5,  ($rowControl), $aDirMap);
+						if($aDirMap!="Sin Posicion"){
+							$objPHPExcel->setActiveSheetIndex(0)->getCellByColumnAndRow(5,  ($rowControl))->getHyperlink()->setUrl($aDirMap);
+						}
+						
+						$controlColumn = 6;
 						$aDataResult = $cServicios->getResultados($itemServ['ID_RESULTADO']);
 						if(count($aDataResult)>0){
 							foreach($aDataResult as $key => $itemsResult){
