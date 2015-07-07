@@ -66,7 +66,7 @@ class My_Model_GeoPuntos extends My_Db_Table
 				 LEFT JOIN PROD_COLORES   C ON G.ID_COLOR    = C.ID_COLOR
 				 LEFT JOIN PROD_GEOREFERENCIAS_DETALLE D ON G.`ID_GEOREFERENCIA` = D.ID_GEOREFERENCIA
 				WHERE $sFilter
-				  AND G.ESTATUS     = 1";  
+				  AND G.ESTATUS     = 1";     
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			
@@ -365,5 +365,104 @@ class My_Model_GeoPuntos extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;	
-    }    
+    }  
+
+	/**
+	 * 
+	 * Inserta un nuevo registro en la tabla de formularios
+	 * @param Array $aDataIn
+	 * @return Array Id, Estatus de la operacion.
+	 */
+    public function insertPasistencia($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="INSERT INTO PROD_PUNTOS_ASISTENCIA 
+        			SET   ID_EMPRESA	=  ".$aDataIn['inputEmpresa'].",
+						  ID_SUCURSAL	=  ".$aDataIn['inputSucursal'].",
+						  NOMBRE		= '".$aDataIn['inputClave']."',
+						  DESCRIPCION	= '".$aDataIn['inputDescripcion']."',
+						  LATITUD		=  ".$aDataIn['inputLatOrigen'].",
+						  LONGITUD		=  ".$aDataIn['inputLonOrigen'].",
+						  ESTATUS		=  ".$aDataIn['inputEstatus'].",
+						  CREADO		=  CURRENT_TIMESTAMP";  
+        try{
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']	   = $query_id[0]['ID_LAST'];
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    }
+
+	public function getFilterPasistencia(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_PUNTO_ASISTENCIA AS ID, NOMBRE
+				FROM PROD_PUNTOS_ASISTENCIA	
+				ORDER BY  NOMBRE ASC";    	
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			foreach($query as $key => $items){
+				$result[$items['NOMBRE']] = $items['ID'];
+			}	
+		}	
+		return $result;		
+	}    
+	
+	public function getFilterCampamentos(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_CAMPAMENTO AS ID, NOMBRE
+				FROM PROD_CAMPAMENTOS	
+				ORDER BY  NOMBRE ASC";    	
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			foreach($query as $key => $items){
+				$result[$items['NOMBRE']] = $items['ID'];
+			}	
+		}	
+		return $result;		
+	}   
+
+	/**
+	 * 
+	 * Inserta un nuevo registro en la tabla de formularios
+	 * @param Array $aDataIn
+	 * @return Array Id, Estatus de la operacion.
+	 */
+    public function insertCampamento($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="INSERT INTO PROD_CAMPAMENTOS 
+        			SET   ID_EMPRESA	=  ".$aDataIn['inputEmpresa'].",
+						  ID_SUCURSAL	=  ".$aDataIn['inputSucursal'].",
+						  NOMBRE		= '".$aDataIn['inputClave']."',
+						  DESCRIPCION	= '".$aDataIn['inputDescripcion']."',
+						  DIRECCION		= '".$aDataIn['inputDireccion']."',
+						  LATITUD		=  ".$aDataIn['inputLatOrigen'].",
+						  LONGITUD		=  ".$aDataIn['inputLonOrigen'].",
+						  ESTATUS		=  ".$aDataIn['inputEstatus'].",
+						  CREADO		=  CURRENT_TIMESTAMP";  
+        try{
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']	   = $query_id[0]['ID_LAST'];
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    }	
 }	

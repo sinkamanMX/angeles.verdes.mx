@@ -1,4 +1,5 @@
-<?php $this->headScript()->appendFile('/js/modules/general/gralTables.js') ?>   
+<?php $this->headScript()->appendFile('/js/modules/general/gralTables.js') ?> 
+<?php $this->headScript()->appendFile('/js/modules/general/jsImportFunctions.js') ?>   
 <?php $disabled   = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?> 
 <?php $urlActions = ($this->DbmanInfo['CUSTOM_ACTIONS']==1) ? $this->DbmanInfo['CUSTOM_URL'].'?catId=' : '/dbman/main/getdatainfo?ssIdource='.$this->DbmanInfo['CLAVE_MODULO'].'&catId='; ?>
     <input type="hidden" id="inputModule" value="<?php echo $this->DbmanInfo['CLAVE_MODULO']; ?>"/>
@@ -22,6 +23,13 @@
                     <a href="<?php echo $urlActions.'-1'; ?>" class="btn btn-success tooltip-success white">
                        <i class="icon-plus-circle"></i> Agregar 
                     </a>
+
+                    <?php if($this->DbmanInfo['IMPORTAR']==1):?>
+                        <input type="hidden" id="inputImport" name="inputImport" value="<?php echo $this->DbmanInfo['URL_IMPORTADOR'];?>"/>
+                        <a href="javascript:importData();" class="btn btn-warning tooltip-success white">
+                           <i class="icon-upload3"></i> Importar
+                        </a>                    
+                    <?php endif;?>
                 <?php endif;?>                    
             </div>
             <div class="datatable">
@@ -66,3 +74,19 @@
             </div>
         </div>
     </div>
+
+    <div id="myModalImport" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"> Importar <?php echo $this->DbmanInfo['TITULO']; ?></h4>
+                </div>
+
+                <div class="modal-body with-padding">
+                    <img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
+                    <iframe class="hmodal550" id="iFrameImport" src="" style="zoom:0" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>        

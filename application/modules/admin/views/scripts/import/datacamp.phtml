@@ -1,0 +1,80 @@
+<?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places'); ?>
+<?php $this->headScript()->appendFile('/js/modules/general/functionGral.js') ?> 
+<?php $this->headScript()->appendFile('/libs/upload/jasny-bootstrap.min.js') ?>
+<?php echo $this->headLink()->appendStylesheet('/libs/upload/jasny-bootstrap.min.css'); ?>
+<?php $this->headScript()->appendFile('/js/modules/geos/jsValidateImport.js') ?> 
+
+<?php if(@$this->Operation=='ok'):?>
+
+    <div class="col-md-12 m-top-3" align="center">     
+        <h3>Se ha procesado el archivo 
+            <div class="pull-right">
+            <a href="/admin/import/datacamp" class="btn btn-success tooltip-success white">
+                Importar otro Archivo
+            </a>
+        </div></h3>
+        
+        <div class="col-md-6 col-md-offset-3" align="center">
+            <table class="table table-striped table-hover table-bordered">
+                <tr>
+                    <td>Total de Registros Procesados</td><td><?php echo $this->iProcess;?></td>
+                </tr>
+                <tr>
+                    <td>Registros Correctos</td><td><?php echo ($this->iProcess - count($this->iErrors));?></td>
+                </tr>       
+                <tr>
+                    <td>Registros Incorrectos</td><td><?php echo count($this->iErrors);?></td>
+                </tr>               
+            </table>
+        </div>  
+
+        <?php if(count($this->iErrors)>0):?>
+            <table class="table table-striped table-hover table-bordered" id="dataTable">
+            <thead>
+                <tr>
+                    <th>No. Linea</th>
+                    <th>Problema</th>               
+                </tr>
+            </thead>
+            <tbody>     
+            <?php foreach($this->iErrors as $key => $items):?>
+
+                <tr>
+                    <td><?php echo $items['linea'];?></td>
+                    <td><?php echo $items['errors'];?></td>
+                </tr>
+            <?php endforeach;?>
+                </tbody>
+            </table>
+        <?php endif;?>  
+    </div>
+<?php else:?>
+
+    <form id="formDbman" class="form-horizontal" role="form" method="POST" action="/admin/import/datacamp"  enctype="multipart/form-data">                            
+        <input type="hidden" id="optReg" name="optReg" value="uploadFile" />
+        <input type="hidden" id="optImp" name="optImp" value="<?php echo $this->iOptionImport; ?>" />
+        <p align="center" style="font-weight:bold; font-size:15px;">
+            <span>1.- Descargar plantilla. <a target="_blank" href="/plantilla/plantilla_campamentos.xlsx"><i class="icon-file-download"></i></a> </span> <br/> <br/>
+            <span>2.- Llenar la información.</span> <br/>
+            <img src="/images/campamentos.png" ><br/> <br/>
+            <span>2.- Subir Layout con información.</span> <br/> <br/>
+
+            <div class="col-md-12" align="center">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="col-md-5">
+                        <div class="fileinput-preview thumbnail" data-trigger="fileinput" Astyle="width: 130px; height: 50px; line-height: 150px;"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <span class="btn btn-default btn-file">
+                        <span class="fileinput-new">Seleccionar Archivo</span>
+                        <span class="fileinput-exists">Cambiar</span>
+                        <input type="file" name="imageProfile" accept=".xls,.xlsx"></span>
+                        <a href="#" class="btn btn-default fileinput-exists  col-md-5" data-dismiss="fileinput">Eliminar</a>
+                    </div>
+                </div>
+                <input type="submit" value="Subir" class="btn btn-primary tooltip-success white" id="btnSend">
+            </div>            
+        </p>
+    </form>
+
+<?php endif;?>    

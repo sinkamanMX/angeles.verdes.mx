@@ -124,7 +124,7 @@ class admin_GeosController extends My_Controller_Action
     public function uploadfilepointsAction(){
         try{
 			$this->view->layout()->setLayout('layout_blank');  			
-			$cFunctions = new My_Controller_Functions();
+			$cFunctions 	  = new My_Controller_Functions();
 			$cValidateNumbers = new Zend_Validate_Float();
 			$cValidateAlpha   = new Zend_Validate_Alnum(true);
 			$cValidaReq		  = new Zend_Validate_NotEmpty();
