@@ -159,9 +159,11 @@ class My_Model_GeoPuntos extends My_Db_Table
 	function getDataRow($idObject){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT *
-				FROM $this->_name	
-				WHERE $this->_primary = $idObject
+    	$sql ="SELECT G.*, ASTEXT(D.MAP_OBJECT) AS MAP_OBJECT,C.HTML_CODE
+				FROM $this->_name G
+				LEFT JOIN PROD_GEOREFERENCIAS_DETALLE D ON G.ID_GEOREFERENCIA = D.ID_GEOREFERENCIA
+				LEFT JOIN PROD_COLORES	C ON G.ID_COLOR = C.ID_COLOR
+				WHERE G.$this->_primary = $idObject
 				LIMIT 1";    	
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
@@ -350,8 +352,8 @@ class My_Model_GeoPuntos extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
-        $sql=" INSERT INTO PROD_GEOREFERENCIAS_DETALLE (ID_GEOREFERENCIA,MAP_OBJECT)
-				VALUES (".$aDataIn['id']." ,GEOMFROMTEXT('".$aDataIn['object']."'))";   		 
+        $sql="INSERT INTO PROD_GEOREFERENCIAS_DETALLE (ID_GEOREFERENCIA,MAP_OBJECT)
+				VALUES (".$aDataIn['id']." ,GEOMFROMTEXT('".$aDataIn['object']."'))"; 
         try{
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
@@ -464,5 +466,97 @@ class My_Model_GeoPuntos extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;	
+    }
+
+	public function getColores(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_COLOR AS ID, DESCRIPCION AS NAME
+				FROM PROD_COLORES	
+				ORDER BY DESCRIPCION ASC";    	
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}		
+		return $result;		
+	}  
+
+    public function insertGeoArea($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="INSERT INTO $this->_name			 
+					SET ID_EMPRESA 		=  ".$aDataIn['inputEmpresa'].",
+						ID_SUCURSAL		=  ".$aDataIn['inputSucursal'].",
+						ID_TIPO			=  ".$aDataIn['inputTipo'].",
+						ID_COLOR		=  ".$aDataIn['inputColor'].",
+						DESCRIPCION		= '".$aDataIn['inputDescripcion']."',
+						CLAVE_UNICA		= '".$aDataIn['inputClave']."',
+						TIPO_OBJECTO	=  'C',
+						ESTATUS			=  ".$aDataIn['inputEstatus'].",
+						CREADO			=  CURRENT_TIMESTAMP";
+        try{
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']	   = $query_id[0]['ID_LAST'];
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
     }	
+    
+    public function updatetGeoArea($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="UPDATE $this->_name			 
+					SET ID_SUCURSAL		=  ".$aDataIn['inputSucursal'].",
+						ID_TIPO			=  ".$aDataIn['inputTipo'].",
+						ID_COLOR		=  ".$aDataIn['inputColor'].",
+						DESCRIPCION		= '".$aDataIn['inputDescripcion']."',
+						CLAVE_UNICA		= '".$aDataIn['inputClave']."',
+						ESTATUS			=  ".$aDataIn['inputEstatus']."
+				WHERE ID_GEOREFERENCIA  = ".$aDataIn['catId'];
+        Zend_Debug::dump($sql);
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }	    
+    
+	/**
+	 * 
+	 * Inserta un nuevo registro en la tabla de formularios
+	 * @param Array $aDataIn
+	 * @return Array Id, Estatus de la operacion.
+	 */
+    public function updateSpatialRow($aDataIn){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="UPDATE PROD_GEOREFERENCIAS_DETALLE 
+				SET  MAP_OBJECT = GEOMFROMTEXT('".$aDataIn['object']."')
+				WHERE  ID_GEOREFERENCIA = ".$aDataIn['id']; 
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }      
 }	

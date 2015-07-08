@@ -401,5 +401,132 @@ class admin_GeosController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         }    	
+    }  
+
+    public function getinfoareaAction(){
+    	try{
+    		$this->view->dataUser['allwindow'] = true; 
+    		$cGeos     	= new My_Model_GeoPuntos();
+    		$cSucursales= new My_Model_Cinstalaciones();
+    		$cFunctions = new My_Controller_Functions();
+    		
+    		
+    		$aDataInfo  = Array();
+    		$aTipos	   	= $cGeos->getCboTipos();	
+    		$aColores	= $cGeos->getColores();
+    		$iFilter 	= ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
+    		$aSucursales= $cSucursales->getCbo($iFilter,$this->view->dataUser['TIPO_USUARIO']);
+    		$sEstatus	= '';
+    		$sTipo		= '';
+    		$sSucursal  = '';
+    		$sColor		= '';
+    		$sPositions	= '';
+    		
+    	    if($this->_idUpdate>0){
+				$aDataInfo 	= $cGeos->getDataRow($this->_idUpdate);
+	    		$sEstatus	= $aDataInfo['ESTATUS'];
+	    		$sTipo		= $aDataInfo['ID_TIPO'];
+	    		$sSucursal  = $aDataInfo['ID_SUCURSAL'];
+	    		$sColor		= $aDataInfo['ID_COLOR'];	
+	    		$sPositions = $this->processArea($aDataInfo['MAP_OBJECT']);			
+			}
+			
+			if($this->_dataOp=='new'){
+				$resultOp = $cGeos->insertGeoArea($this->_dataIn);
+				if($resultOp['status']){
+					$this->_idUpdate = $resultOp['id'];
+					$dataSpatial = Array();
+					$dataSpatial['id'] 	   = $this->_idUpdate;
+					$dataSpatial['object'] = "POLYGON((".$this->_dataIn['inputPoints']."))";
+					$insertSpatial = $cGeos->insertSpatialRow($dataSpatial);
+					
+					if($insertSpatial['status']){
+						$aDataInfo 	= $cGeos->getDataRow($this->_idUpdate);
+			    		$sEstatus	= $aDataInfo['ESTATUS'];
+			    		$sTipo		= $aDataInfo['ID_TIPO'];
+			    		$sSucursal  = $aDataInfo['ID_SUCURSAL'];
+			    		$sColor		= $aDataInfo['ID_COLOR'];
+						$sPositions = $this->processArea($aDataInfo['MAP_OBJECT']);
+					}else{
+						$this->_aErrors['insertSpatial'] = 1;
+					}
+				}
+			}else if($this->_dataOp=='update'){
+				$resultOp = $cGeos->updatetGeoArea($this->_dataIn);
+				if($resultOp['status']){	
+
+					if($this->_dataIn['inputPoints']!=""){
+						$dataSpatial = Array();
+						$dataSpatial['id'] 	   = $this->_idUpdate;
+						$dataSpatial['object'] = "POLYGON((".$this->_dataIn['inputPoints']."))";
+						$insertSpatial = $cGeos->updateSpatialRow($dataSpatial);
+							
+						if($insertSpatial['status']){
+							$aDataInfo 	= $cGeos->getDataRow($this->_idUpdate);
+				    		$sEstatus	= $aDataInfo['ESTATUS'];
+				    		$sTipo		= $aDataInfo['ID_TIPO'];
+				    		$sSucursal  = $aDataInfo['ID_SUCURSAL'];
+				    		$sColor		= $aDataInfo['ID_COLOR'];
+							$sPositions = $this->processArea($aDataInfo['MAP_OBJECT']);
+							
+							$this->_resultOp = 'okRegister';
+						}else{
+							$this->_aErrors['insertSpatial'] = 1;
+						}	
+					}else{
+						$aDataInfo 	= $cGeos->getDataRow($this->_idUpdate);
+			    		$sEstatus	= $aDataInfo['ESTATUS'];
+			    		$sTipo		= $aDataInfo['ID_TIPO'];
+			    		$sSucursal  = $aDataInfo['ID_SUCURSAL'];
+			    		$sColor		= $aDataInfo['ID_COLOR'];
+						$sPositions = $this->processArea($aDataInfo['MAP_OBJECT']);
+						
+						$this->_resultOp = 'okRegister';
+					}					
+				}
+			}
+
+    		$this->view->data		 = $aDataInfo;
+    		$this->view->aTipos 	 = $cFunctions->selectDb($aTipos,$sTipo);
+    		$this->view->aSucursales = $cFunctions->selectDb($aSucursales,$sTipo);
+    		$this->view->aStatus 	 = $cFunctions->cboStatus($sEstatus);
+    		$this->view->aColores	 = $cFunctions->selectDb($aColores,$sColor);
+			$this->view->errors 	= $this->_aErrors;	
+			$this->view->resultOp   = $this->_resultOp;
+			$this->view->catId		= $this->_idUpdate;
+			$this->view->idToUpdate = $this->_idUpdate;
+			$this->view->aPositions = $sPositions;
+		}catch(Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }   
+    }
+    
+    public function getinforouteAction(){
+    	try{
+    		$this->view->dataUser['allwindow'] = true; 
+    		
+    		
+    		
+    		
+    		
+		}catch(Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }   
     }    
+    
+   	public function processArea($sPosition){
+		$a_position= '';
+		
+		$sClean = substr($sPosition, 0, -3);
+		$mult 	= substr($sClean ,9);				
+		$pre_positions=explode(",",$mult);		
+		for($p=0;$p<count($pre_positions);$p++){	
+			$a_position .= ($a_position=="") ? '':',';			
+			$fixed = str_replace(' ',',',$pre_positions[$p]);
+			$a_position .= 'new google.maps.LatLng('.$fixed.')';
+		}			
+		return $a_position;
+   	} 
 }

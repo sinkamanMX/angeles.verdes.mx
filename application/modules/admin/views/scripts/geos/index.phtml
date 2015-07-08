@@ -17,9 +17,18 @@
         <div class="panel-body">
             <div class="col-md-12">
                 <?php if($this->dataUser['INSERTAR']==1 && $this->DbmanInfo['AGREGAR']==1): ?>
-                    <a href="/admin/geos/getinfopoint?catId=-1'; ?>" class="btn btn-success tooltip-success white">
+                    <a href="/admin/geos/getinfopoint?catId=-1" class="btn btn-success tooltip-success white">
                        <i class="icon-pushpin"></i> Agregar Punto
+                    </a>
+
+                    <a href="/admin/geos/getinfoarea?catId=-1" class="btn btn-info tooltip-success white">
+                       <i class="icon-joomla"></i> Agregar Area
+                    </a>
+
+                    <a href="/admin/geos/getinforoute?catId=-1" class="btn btn-primary tooltip-success white">
+                       <i class="icon-wave"></i> Agregar Rutas
                     </a>                    
+
                     <a href="javascript:importGeos();" class="btn btn-warning tooltip-success white">
                        <i class="icon-upload3"></i> Importar
                     </a>
@@ -43,14 +52,14 @@
                     <tbody>                      
                         <?php foreach($this->aDataTable as $key => $items):?>
                                 <tr>
-                                    <?php $urlOptions = '/admin/geos/getinfopoint?catId='; ?>                                
-                                    <?php  /* if($items['TIPO_OBJECTO']=='G'){
-                                                $urlOptions = '/admin/geos/getinfopoint?catId='.$items['ID'];
+                                    <?php //$urlOptions = '/admin/geos/getinfopoint?catId='; ?>                                
+                                    <?php  if($items['TIPO_OBJECTO']=='G'){
+                                                $urlOptions = '/admin/geos/getinfopoint?catId=';
                                             }else if($items['TIPO_OBJECTO']=='C'){
-                                                $urlOptions = '/admin/geos/getinfocerca?catId='.$items['ID'];
+                                                $urlOptions = '/admin/geos/getinfoarea?catId=';
                                             }else if($items['TIPO_OBJECTO']=='R'){
-                                                $urlOptions = '/admin/geos/getinforuta?catId='.$items['ID'];
-                                            }*/
+                                                $urlOptions = '/admin/geos/getinforuta?catId=';
+                                            }
                                         ?>
 
                                     <td><?php echo $items['N_SUCURSAL'];?></td>
