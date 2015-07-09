@@ -2,7 +2,7 @@
 
 class atn_MainController extends My_Controller_Action
 {	
-	protected $_clase = 'matn';
+	protected $_clase = 'mdashboard';
 	public $dataIn;	
 	public $aService;
 		
@@ -36,7 +36,8 @@ class atn_MainController extends My_Controller_Action
     }
     
     public function getcitaspendientesAction(){
-    	try{   			
+    	try{
+    		/*
 			$this->_helper->layout->disableLayout();
 			$this->_helper->viewRenderer->setNoRender();    
 	                
@@ -50,6 +51,7 @@ class atn_MainController extends My_Controller_Action
 			}
 			
 			echo Zend_Json::encode($dataCitas);
+			*/
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                

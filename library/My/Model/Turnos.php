@@ -136,7 +136,8 @@ class My_Model_Turnos extends My_Db_Table
 	public function getActividadesResume($idObject){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 	
-    	$sql ="SELECT S.`FECHA_CAPTURA_EQUIPO`, P.UBICACION,  IF( E.TITULO IS NULL ,E.DESCIPCION,E.TITULO) AS DESCIPCION , R.CONTESTACION, R.ID_RESULTADO,E.ID_ELEMENTO
+    	$sql ="SELECT S.`FECHA_CAPTURA_EQUIPO`, P.UBICACION,  IF( E.TITULO IS NULL ,E.DESCIPCION,E.TITULO) AS DESCIPCION , R.CONTESTACION, R.ID_RESULTADO,E.ID_ELEMENTO,
+    				IF(P.ID_POSICION IS NULL, 'Sin Ubicacion',P.UBICACION) AS UBICACION
 					FROM PROD_FORM_DETALLE_RESULTADO R
 					INNER JOIN PROD_FORM_RESULTADO S ON R.`ID_RESULTADO` = S.`ID_RESULTADO`
 					INNER JOIN PROD_ELEMENTOS E ON R.ID_ELEMENTO = E.ID_ELEMENTO
@@ -149,7 +150,7 @@ class My_Model_Turnos extends My_Db_Table
 	                      AND R.ID_HIST_TURNO = $idObject	
 					)
 					 AND E.ID_ELEMENTO   IN (37,42,38,39)
-					 ORDER BY R.ID_RESULTADO, S.FECHA_CAPTURA_EQUIPO ASC, E.ID_ELEMENTO ASC";    	
+					 ORDER BY R.ID_RESULTADO, S.FECHA_CAPTURA_EQUIPO ASC, E.ID_ELEMENTO ASC"; 
 		$query   = $this->query($sql);
 		if(count($query)>0){
 			$result = $query;			

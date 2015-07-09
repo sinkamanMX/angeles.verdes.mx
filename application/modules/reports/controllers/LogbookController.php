@@ -249,8 +249,14 @@ class reports_LogbookController extends My_Controller_Action
 									<tbody>';
 											
 						foreach($aActividades as $key => $items){
-							$aDireccion = explode(",",$items['UBICACION']);
-							$sDireccion = $aDireccion[0].", ".$aDireccion[1]."<br/>".$aDireccion[2].", ".$aDireccion[3];
+							
+							if($items['UBICACION']!="Sin Ubicacion"){
+								$aDireccion = explode(",",$items['UBICACION']);
+								$sDireccion = $aDireccion[0].", ".$aDireccion[1]."<br/>".$aDireccion[2].", ".$aDireccion[3];
+							}else{
+								$sDireccion = $items['UBICACION'];		
+							}
+							
 							$content .= '<tr>
 											<td style="text-align:center;border: solid .5px #000000;">'.$items['FECHA'].'</td>
 											<td style="border: solid .5px #000000;">'.$sDireccion.'</td>
