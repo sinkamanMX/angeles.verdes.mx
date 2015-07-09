@@ -125,7 +125,7 @@ function initMapToDraw(){
 
   google.maps.event.addListener(geos_polygon.getPath(), 'set_at', function() {
       $('#inputPoints').html("");
-      
+
       var contentString='';
       var polygonBounds = geos_polygon.getPath();
       var xy;
@@ -144,18 +144,6 @@ function initMapToDraw(){
 
       $('#inputPoints').html(contentString);
     });    
-/*
-    google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon) {
-      drawingManager.setDrawingMode(null);
-      polygon.setEditable(true);
-      geos_polygon = polygon;
-
-      $("#btnDraw").hide('slow');
-      $("#btnClear").show('slow');
-
-      $("#inputStatusDraw").val("ok");
-    }); */
-
 }
 
 function removeMap(optionMarker){

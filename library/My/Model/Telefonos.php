@@ -361,7 +361,7 @@ class My_Model_Telefonos extends My_Db_Table
 	public function getAllPosition($idSucursal,$idEmpresa){
 		$result= Array();
 		$this->query("SET NAMES utf8",false);
-		$sFilter = ($idSucursal==-1) ? 'S.ID_EMPRESA = '.$idEmpresa : 'E.ID_SUCURSAL = '.$idSucursal;
+		$sFilter = ($idSucursal==-1) ? 'S.ID_EMPRESA = '.$idEmpresa : 'T.ID_SUCURSAL = '.$idSucursal;
 		$sql  = "SELECT T.DESCRIPCION AS N_TECNICO, 
 				S.DESCRIPCION AS N_SUCURSAL, 
 				T.ID_TELEFONO,

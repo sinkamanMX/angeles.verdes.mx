@@ -6255,7 +6255,7 @@ li.plupload_droptext {
   padding: 0; 
 }
 .message-list > li { 
-  padding: 15px 0 16px 0; 
+  padding: 5px; 
   border-bottom: 1px solid #e5e5e5; 
   position: relative; 
 }
@@ -6268,7 +6268,7 @@ li.plupload_droptext {
 }
 .message-list > li .chat { 
   margin-top: 15px; 
-  padding: 0 15px 15px 15px; 
+  padding: 5px; 
   border: 1px solid #eee; 
   background-color: #fcfcfc; 
 }
@@ -6280,7 +6280,7 @@ li.plupload_droptext {
   float: left; 
 } 
 .chat-member h6 { 
-  margin: 11px 0;; 
+  /*margin: 11px 0;; */
   float: left; 
   font-size: 12px; 
 }
@@ -6309,7 +6309,7 @@ li.plupload_droptext {
 
 .chat-actions { 
   float: right; 
-  margin: 5px 0; 
+  /*margin: 5px 0; */
 }
 
 .panel > .message-list > li { 

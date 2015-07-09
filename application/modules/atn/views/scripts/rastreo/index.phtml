@@ -1,88 +1,121 @@
 <?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false') ?>
-<?php $this->headScript()->appendFile('/libs/graphs/js/jquery.circliful.js'); ?>
+<?php $this->headScript()->appendFile('/libs/js/jquery.countdown360.js'); ?>
 <?php $this->headScript()->appendFile('/libs/others/dataTables.tableTools.js'); ?>
-<?php $this->headLink()->appendStylesheet('/libs/graphs/css/jquery.circliful.css');?>
 <?php $this->headLink()->appendStylesheet('/css/dataTables.tableTools.css');?>
 <?php $this->headScript()->appendFile('/libs/others/jQuery.print.js'); ?>
 <?php $this->headScript()->appendFile('/js/modules/atn/jsRastreotels.js'); ?>
 <?php $control=0?>
-<!--<div id="divDataPersonal" class="hide"><?php foreach($this->aTecnicos as $key => $items):?><?php echo ($control==0) ? '': '?';?><?php echo $items['ID']."|".$items['NAME']."|".$items['ID_SUCURSAL'];?><?php $control++;?><?php endforeach;?>
-</div>-->
-<div class="panel panel-default margin-t5px">
-    <div class="panel-heading">
-    	<h6 class="panel-title">Teléfonos - Ubicación </h6>		
-    </div>
-    
-    <div class="panel-body">
-	    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-	        <li class="active"><a href="#tabla" data-toggle="tab">Tabular</a></li>
-			<li><a href="#mapa" data-toggle="tab" onClick="reDrawMap();">Mapa</a></li>			    	
-			<div class="pull-right">
-				<form method="POST" action="/atn/rastreo/index" id="FormData" class="form-horizontal formcustom">
-                    <input type="hidden" name="optReg" value="search" />
-                    <input type="hidden" name="inputStatus" id="inputStatus" value="<?php echo $this->iStatus; ?>" />
-            		<div class="col-md-10">
-            			<div class="col-md-3">
-            				<label>Sucursal</label>
-            			</div>
-            			<div class="col-md-9">
-							<select class="chzn-select" id="inputSucursal" name="inputSucursal" onChange="submitForm();">
-								<option value="-1">Todos</option>
-								<?php echo $this->cInstalaciones;?>
-							</select>
-            			</div>
-            		</div>						
-            	</form>
-			</div>
-	    </ul>	    	
-	    <div id="my-tab-content" class="tab-content bg-white">
-	        <div class="tab-pane active" id="tabla">  
-	        	<div class="row no-margin-l">			        			
-                      <div class="col-md-2 cursor-hand  hide-sidebar <?php echo ($this->iStatus==-1) ? 'status-selected':'';?>" onClick="setStatus(-1)">
-                            <div class="graphCircle" 
-                                data-dimension="150" 
-                                data-text="<?php echo $this->aResume['TOTAL'];?>" 
-                                data-info="Total Teléfonos" 
-                                data-width="30" 
-                                data-fontsize="38" 
-                                data-percent="100" 
-                                data-fgcolor="#2D66F5" 
-                                data-bgcolor="#E2E2E2" 
-                                data-fill="#F3F3F3"></div>
-                        </div> 
-                        
-                        <?php foreach($this->aResume as $key => $items):?>
-                        	<?php if(isset($items['COLOR'])):?>
-								<?php $porcentaje = (round($items['TOTAL'] / $this->aResume['TOTAL'] * 100, 0)); ?>
-		                        <div class="col-md-2 cursor-hand  hide-sidebar <?php echo ($this->iStatus==$items['N_ESTATUS']) ? 'status-selected':'';?>" onClick="setStatus('<?php echo $items['N_ESTATUS']; ?>')">
-		                            <div class="graphCircle" 
-		                                data-dimension="150" 
-		                                data-text="<?php echo $items['TOTAL'];?>" 
-		                                data-info="<?php echo $items['DESC'];?>" 
-		                                data-width="30" 
-		                                data-fontsize="38" 
-		                                data-percent="<?php echo $porcentaje;?>" 
-		                                data-fgcolor="<?php echo $items['COLOR'];?>" 
-		                                data-bgcolor="#E2E2E2" 
-		                                data-fill="#F3F3F3"></div>
+
+	<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+		<li class="active"><a href="#mapa" data-toggle="tab" >Mapa</a></li>	
+	    <li><a href="#tabla" data-toggle="tab">Tabular</a></li>
+		<div class="pull-right">
+			<form method="POST" action="/atn/rastreo/index" id="FormData" class="form-horizontal formcustom">
+                <input type="hidden" name="optReg" value="search" />
+                <input type="hidden" name="inputStatus" id="inputStatus" value="<?php echo $this->iStatus; ?>" />
+        		<div class="col-md-10" style="margin:10px">
+        			<div class="col-md-3">
+        				<label>Jefatura</label>
+        			</div>
+        			<div class="col-md-9">
+						<select class="chzn-select" id="inputSucursal" name="inputSucursal" onChange="submitForm();">
+							<option value="-1">Todos</option>
+							<?php echo $this->cInstalaciones;?>
+						</select>
+        			</div>
+        		</div>						
+        	</form>        	
+		</div>        
+    </ul>	    	
+    <div id="my-tab-content" class="tab-content bg-white">
+    	<div class="tab-pane active" id="mapa"> 
+    		<div class="container">	
+				<div class="col-md-3 no-padding">
+					<div class="col-md-12 no-padding">
+						<div class="col-md-10 text-center no-padding">
+							<h5>Unidades</h5>
+						</div>
+						<div class="col-md-2 no-padding ">
+							<a href="javascript:showGeoReferencias();" class="btn btn-icon btn-success white pull-right"  data-toggle="tooltip" data-placement="bottom" title="Mostrar Referencias en Mapa">
+		                       <i class="icon-vector"></i>
+		                    </a>	
+						</div>
+					</div>
+		            <!-- Contacts -->
+			    	<div id="divList" class="block" style="width: 100%; height: 500px;overflow-y: auto;">
+			        	<ul id="message-list" class="message-list">
+			        		<!--<li class="message-list-header">Unidades</li>-->
+                            <?php $result = '';$print=false?>
+                            <?php foreach($this->aPocisiones as $key => $items): ?>
+                        		<?php $print = (isset($this->iStatus) && $this->iStatus != -1) ? (($this->iStatus==$items['N_ESTATUS']) ? true : false) : true; ?>
+                        		<?php if($print):?>	
+
+					        		<li class="listitems">
+					                	<div class="clearfix">
+					                		<div class="chat-member">
+												<h6><span class="status <?php echo ($items['N_ESTATUS']=='OK')  ? 'status-success': 'status-danger' ;?>"></span> <?php echo $items['N_TECNICO'];?> </h6>
+											</div>
+											<div class="chat-actions">
+												<a href="javascript:centerTel(<?php echo $items['ID_TELEFONO']; ?>)" class="btn btn-link btn-icon btn-xs"  data-toggle="tooltip" data-placement="bottom" title="Centrar En Mapa"><i class="icon-target3"></i></a>
+												<a href="javascript:getReport(<?php echo $items['ID_TELEFONO']; ?>)" class="btn btn-link btn-icon btn-xs"  data-toggle="tooltip" data-placement="left" title="Histórico"><i class="icon-table"></i></a>
+											</div>
+					                	</div>
+					        		</li>
+									<?php $result .= ($result!="") ? "!" : "";?>
+									<?php $resultInd =  $items['ID_TELEFONO']."|".
+													 $items['FECHA_TELEFONO']."|".
+													 $items['TIPO_GPS']."|".
+													 $items['N_EVENTO']."|".
+													 $items['LATITUD']."|".
+													 $items['LONGITUD']."|".
+													 round($items['VELOCIDAD'],2)."|".
+													 round($items['NIVEL_BATERIA'],2)."|".
+													 $items['UBICACION']."|".
+													 $items['N_ESTATUS']."|".
+													 $items['N_TECNICO'];?>
+									<?php $result .= $resultInd;?>
+
+									<div class="hide" id="divTel<?php echo $items['ID_TELEFONO']; ?>"><?php echo $resultInd;?></div>
+                        		<?php endif;?>
+                            <?php endforeach;?>
+			        	</ul>
+			        	<div id="positions" class="hide"><?php echo $result; ?></div> 
+			    	</div>
+
+            	</div>
+                <div class="col-md-9 block no-padding ">
+	                <div id="Map" style="width:100%;height:500px;">
+
+	            	</div>  
+
+					<div class="">
+                        <div class="col-md-12">
+                            <div id="countdown" ></div>                             
+                        </div>                        
+                    </div> 
+
+	            </div>
+    		</div>
+    	</div>
+    	<div class="tab-pane" id="tabla"> 
+    		<div class="col-md-12">
+    			<div class="col-md-10 text-center">
+    				<h5>Últimas Posiciones</h5>
+    			</div>
+    			<div class="col-md-2">
+					<div class="row  no-margin-l pull-right">
+						<div class="button-excel-rel">
+		                    <?php if(count($this->aPocisiones)>0): ?>
+		                        <div class="btn-group">
+		                         <a href="javascript:getReportAll()"><button class="btn btn-success"><i class="icon-file-download"></i> Exportar</button></a>                                    
 		                        </div>
-                        	<?php endif;?>		                        	
-                        <?php endforeach;?>           
-                </div>
-                <div class="row  no-margin-l">
-					<div class="button-excel-rel">
-                        <?php if(count($this->aPocisiones)>0): ?>
-                            <div class="btn-group">
-                             <a href="javascript:getReportAll()"><button class="btn btn-success"><i class="icon-file-download"></i> Exportar</button></a>                                    
-                            </div>
-                             <!--<div class="btn-group">
-                                <button onClick="printPage()" class="btn btn-primary"> Imprimir <i class="icon-print icon-white"></i></button>
-                            </div>-->
-                        <?php endif;?>
-                    </div>
-                </div>
-                <div class="row no-margin-l no-margin-r">            
-                    <div class="datatable-tools">                 
+		                    <?php endif;?>
+		                </div>
+		            </div>
+    			</div>
+    		</div>
+            <div class="row no-margin-l no-margin-r">   
+    			<div class="datatable-tools">                 
 	                    <table cellspacing="0" width="100%" class="table table-striped table-bordered display"  id="dataTable">
 	                        <thead>             
 	                            <tr>
@@ -121,95 +154,9 @@
 	                            <?php endforeach;?>
 	                        </tbody>
 	                    </table>    
-                    </div>               	
-                </div>
-	        </div>
-	        <div class="tab-pane " id="mapa"> 
-	        	<div class="row no-margin-l">		
-					<div class="col-md-3 row panel-data formcustom">
-						<div class="datatable">
-							<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="dataTable2">
-	                            <thead>
-	                                <tr>	        
-	                                	<th>Estatus</th>                                
-	                                    <th>Teléfono</th>
-	                                    <th>Centrar</th>
-	                                </tr>
-	                            </thead>
-	                            <tbody>                                
-		                            <?php $result = '';$print=false?>
-		                            <?php foreach($this->aPocisiones as $key => $items): ?>
-	                            		<?php $print = (isset($this->iStatus) && $this->iStatus != -1) ? (($this->iStatus==$items['N_ESTATUS']) ? true : false) : true; ?>
-	                            		<?php if($print):?>		                            
-		                                    <tr>
-		                                    	<td>
-		                                    		<img src="/assets/images/<?php echo ($items['N_ESTATUS']=='OK') ? 'carMarker' : 'carOff'; ?>.png"  data-toggle="tooltip" data-placement="right" title="Últ. Reporte: <?php echo $items['FECHA_GPS'];?>">
-		                                    	</td>
-		                                    	<td><?php echo $items['N_TECNICO'];?></td>  
-		                                    	<td>
-		                                    		<button class="btn btn-success btnCenter" onClick="centerTel(<?php echo $items['ID_TELEFONO']; ?>)"  data-toggle="tooltip" data-placement="bottom" title="Centrar el Teléfono"><i class="icon-arrow-right10"></i></button>
-		                                    	</td>
-		                                    </tr>  
-											<?php $result .= ($result!="") ? "!" : "";?>
-											<?php $resultInd =  $items['ID_TELEFONO']."|".
-															 $items['FECHA_TELEFONO']."|".
-															 $items['TIPO_GPS']."|".
-															 $items['N_EVENTO']."|".
-															 $items['LATITUD']."|".
-															 $items['LONGITUD']."|".
-															 round($items['VELOCIDAD'],2)."|".
-															 round($items['NIVEL_BATERIA'],2)."|".
-															 $items['UBICACION']."|".
-															 $items['N_ESTATUS'];?>
-											<?php $result .= $resultInd;?>
-											<div class="hide" id="divTel<?php echo $items['ID_TELEFONO']; ?>"><?php echo $resultInd;?></div>				 			                                    
-	                            		<?php endif;?>
-		                            <?php endforeach;?>	                                    
-	                            </tbody>
-	                        </table>
-                    	</div>
-                        <div id="positions" class="hide"><?php echo $result; ?></div> 								
-					</div>
-                	<div class="col-md-9 block">
-	                    <div id="Map" style="width:100%;height:500px;">
-
-	                    </div>  
-	                    <div id="divMyOptions">   
-	                    	<input id="chkJefaturas"   class="chkOptions" value="SUC" onChange="validateCheck()" type="checkbox"> Jefaturas &nbsp;
-	                    	<input id="chkCampamentos" class="chkOptions" value="CA"  onChange="validateCheck()" type="checkbox"> Campementos &nbsp;
-	                    	<input id="chkPuntosAux"   class="chkOptions" value="PA"  onChange="validateCheck()" type="checkbox"> Puntos de Asistencia &nbsp;
-	                    	<?php $iControl = 0;?>
-	                    	<?php foreach(@$this->aTiposGeos as $key => $items):?>	
-	                    	        <input id="chk<?php echo $items['ID_TIPO_GEO'];?>" class="chkOptions" onChange="validateCheck()"  value="<?php echo $items['ID_TIPO_GEO'];?>" type="checkbox"> <?php echo $items['DESCRIPCION'];?> &nbsp;            		
-	                    		<?php if($iControl==2):?>
-	                    			<br/>
-	                    			<?php  $iControl++;?>	                    			
-	                    		<?php else:?>
-	                    			<?php  $iControl++;?>
-	                    		<?php endif;?>	                    		
-	                    	<?php endforeach;?>
-	                    </div>                                         
-	                </div>	        		
-	        	</div>
-	        </div>
-		</div>
-    </div>
-</div>
-
-    <div id="myModalMapa" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"> Histórico </h4>
-                </div>
-
-                <div class="modal-body with-padding">
-                    <img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
-                    <iframe class="hmodal550" id="iFrameModalMapa" src="" style="zoom:0" frameborder="0"></iframe>
-                </div>
-            </div>
-        </div>
+                    </div> 
+    		</div>
+    	</div>	    	
     </div>
 <?php $iControlP=0;?>
 <?php $sContent = '';?>
@@ -222,7 +169,7 @@
 		<?php $sContent .= ($iControlP==0) ? '': '!';?>
 		<?php $sContent .= "PA|G|".
 				$items['DESCRIPCION']."|".
-				"sucursal.png|".
+				"regroup.png|".
 				"1000|".
 				"NULL|".
 				$items['LATITUD']."|".
@@ -268,4 +215,78 @@
 	<?php $iControlP++;?>
 <?php endforeach;?>
 
-<div id="divOtrosGeo" style="display:none;"><?php echo $sContent;?></div>    
+<div id="divOtrosGeo" style="display:none;"><?php echo $sContent;?></div> 
+<div id="myModalMapa" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"> Histórico </h4>
+            </div>
+
+            <div class="modal-body with-padding">
+                <img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
+                <iframe class="hmodal550" id="iFrameModalMapa" src="" style="zoom:0" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="ModalGeoRefs" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"> Referencias </h4>
+            </div>
+
+            <div class="modal-body with-padding">
+    			<div class="datatable-tools">                 
+	                    <table cellspacing="0" width="100%" class="table table-striped table-bordered display"  id="tableReferencias">
+	                        <thead>             
+	                            <tr>
+	                            	<th><input name="checkAllItems" onClick="optionAll(this.checked);" type="checkbox">
+		                        	<span class="text">Todos</span></th>
+	                            	<th>Tipo de Referencias</th>
+	                            	<th></th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                        	<tr>
+	                        		<td><input id="chkJefaturas"   class="chkOptions chkOn" value="SUC" onChange="validateCheck()" type="checkbox"></td>
+									<td>Jefaturas</td>
+									<td><img src="/assets/images/icons/sucursal.png" /></td>
+								</tr>
+								<tr>
+									<td>
+										<input id="chkCampamentos" class="chkOptions chkOn" value="CA"  onChange="validateCheck()" type="checkbox">
+									</td>
+			                    	<td>Campamentos</td>
+			                    	<td><img src="/assets/images/icons/regroup.png" /></td>
+								</tr>
+								<tr>
+			                    	<td>
+			                    		<input id="chkPuntosAux"   class="chkOptions chkOn" value="PA"  onChange="validateCheck()" type="checkbox">
+			                    	</td>
+			                    	<td>Puntos de Asistencia</td>
+			                    	<td><img src="/assets/images/icons/campamento.png" /></td>
+	                        	</tr>
+		                    	<?php foreach(@$this->aTiposGeos as $key => $items):?>	
+		                    		<tr>
+		                    			<td>
+		                    				<input id="chk<?php echo $items['ID_TIPO_GEO'];?>" class="chkOptions chkOn" onChange="validateCheck()"  value="<?php echo $items['ID_TIPO_GEO'];?>" type="checkbox">
+		                    			</td>
+										<td>
+		                    				<?php echo $items['DESCRIPCION'];?>
+		                    			</td>
+		                    			<td><img src="/assets/images/icons/<?php echo $items['ICONO'];?>" /></td>
+		                    		</tr>                    		
+		                    	<?php endforeach;?>
+	                        </tbody>
+	                    </table>    
+                    </div> 
+            </div>
+        </div>
+    </div>
+</div>

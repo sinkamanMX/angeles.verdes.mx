@@ -591,4 +591,39 @@ class atn_RastreoController extends My_Controller_Action
         	echo "Message: " . $e->getMessage() . "\n";                
         }  		
 	}
+	
+    public function getlastpAction(){
+    	$result = '';
+		try{  			
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();
+			
+			if(isset($this->dataIn['strInput']) && $this->dataIn['strInput']){
+				$cPhones 		= new My_Model_Telefonos();
+				
+				$sInstalacion	= (isset($this->dataIn['strInput']) && $this->dataIn['strInput']!="") ? $this->dataIn['strInput'] : -1;
+				$aPocisiones  	= $cPhones->getAllPosition($sInstalacion,$this->view->dataUser['ID_EMPRESA']);	
+
+				foreach ($aPocisiones as $key => $items){
+					$result .= ($result!="") ? "!" : "";
+					$resultInd = $items['ID_TELEFONO']."|".
+								 $items['FECHA_TELEFONO']."|".
+								 $items['TIPO_GPS']."|".
+								 $items['N_EVENTO']."|".
+								 $items['LATITUD']."|".
+								 $items['LONGITUD']."|".
+								 round($items['VELOCIDAD'],2)."|".
+								 round($items['NIVEL_BATERIA'],2)."|".
+								 $items['UBICACION']."|".
+								 $items['N_ESTATUS']."|".
+								 $items['N_TECNICO'];
+					$result .= $resultInd;
+				}
+			}
+			echo $result;
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }     	
+    } 
 }

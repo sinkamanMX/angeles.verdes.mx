@@ -2,26 +2,41 @@ var map = null;
 var geocoder;
 var infoWindow;
 var infoLocation;
-var markers = [];
-var markersGeo = [];
+var markers     = [];
+var markersGeo  = [];
 var bounds;
-var arrayTravels="";
-var mon_timer=60;
-var startingOp=false;
-var aSelected=Array();
-var sSucursal=-1;
+var arrayTravels= "";
+var mon_timer   = 60;
+var startingOp  = false;
+var aSelected   = Array();
+var sSucursal   = -1;
 
-$( document ).ready(function() {	
-	$('.graphCircle').circliful();
-    $('#iFrameModalMapa').on('load', function () {        
-      $('#loader').hide();
-      $('#iFrameModalMapa').show();
-    });       
-	drawTable();	 	
-	$('[data-toggle="tooltip"]').tooltip(); 
+var controlPrint=0;
 
-	//setTimeout('submitForm()', 180000);
+$( document ).ready(function(){	
+  drawTable();
+  $('#iFrameModalMapa').on('load', function () {        
+    $('#loader').hide();
+    $('#iFrameModalMapa').show();
+  });  
+
+  $('[data-toggle="tooltip"]').tooltip(); 
+  reDrawMap();
 });
+
+function timerCount(){  
+  $("#countdown").countdown360({
+        radius: 30,
+        seconds: 20,
+        label: ['seg', 'segs'],
+        fontColor: '#FFFFFF',
+        autostart: false,
+        onComplete: function () {
+          controlPrint=1;
+          getPositions()
+        }   
+    }).addSeconds(60);  
+}
 
 function drawTable(){	
    $('.datatable-tools table').dataTable({
@@ -100,10 +115,38 @@ function initMapToDraw(){
 
 function printPoints(){
 	var pointsTel = $("#positions").html().split("!");
+
 	for(var i=0;i<pointsTel.length;i++){
-      	var travelInfo = pointsTel[i].split('|');
-        var markerTable = null;
-        if(travelInfo[4]!="null" && travelInfo[5]!="null" ){
+    var travelInfo = pointsTel[i].split('|');
+    var markerTable = null;
+    var iStatus = (travelInfo[9]=='OK') ? 'status-success': 'status-danger' ;
+
+    if(controlPrint>0){
+      var opciones = travelInfo[0]+'|'+
+                           travelInfo[1]+'|'+
+                           travelInfo[2]+'|'+
+                           travelInfo[3]+'|'+
+                           travelInfo[4]+'|'+
+                           travelInfo[5]+'|'+
+                           (Math.round(travelInfo[6] * 100) / 100)+'|'+
+                           (Math.round(travelInfo[7] * 100) / 100)+'|'+
+                           travelInfo[8]+'|'+
+                           travelInfo[9]+'|'+
+                           travelInfo[10];
+      $('<li class="listitems">'+
+              '<div class="clearfix">'+
+                '<div class="chat-member">'+
+                  '<h6><span class="status '+iStatus+'"></span> '+travelInfo[10]+'</h6>'+
+                '</div>'+
+                '<div class="chat-actions">'+
+                  '<a href="javascript:centerTel('+travelInfo[0]+')" class="btn btn-link btn-icon btn-xs"  data-toggle="tooltip" data-placement="bottom" title="Centrar En Mapa"><i class="icon-target3"></i></a>'+
+                  '<a href="javascript:getReport('+travelInfo[0]+')" class="btn btn-link btn-icon btn-xs"><i class="icon-table"  data-toggle="tooltip" data-placement="left" title="Histórico"></i></a>'+
+                '</div>'+
+              '</div>'+
+        '</li>'+
+        '<div class="hide" id="divTel'+travelInfo[0]+'">'+opciones+'</div>').appendTo("#message-list");
+    }
+        if(travelInfo[4]!="null" && travelInfo[4]!="" && travelInfo[5]!="null" && travelInfo[5]!=""){
             content='<table width="350" class="table-striped" >'+  
                 '<tr><td align="right"><b>Hora</b></td><td width="200" align="left">'+travelInfo[1]+'</td><tr>'+
                 '<tr><td align="right"><b>Tipo GPS</b></td><td width="200" align="left">'+travelInfo[2]+'</td><tr>'+
@@ -123,32 +166,22 @@ function printPoints(){
               title:  travelInfo[1],
               icon: 	'/assets/images/'+sIcono+'.png'
             });
-            markers.push(new google.maps.LatLng(Latitud,Longitud));
+            markers.push(markerTable);
             infoMarkerTable(markerTable,content);   
             bounds.extend( markerTable.getPosition() );
         }
-	}
+	}  
 
+    /*
     if(arrayTravels.length>1){ 
         map.fitBounds(bounds);  
     }else if(arrayTravels.length==1){
         map.setZoom(13);
         map.panTo(markerTable.getPosition());  
-    }
-}
+    }*/
 
-function fitBoundsToVisibleMarkers() {
-	if(markers.length>0){
-	    for (var i=0; i<markers.length; i++) {
-			bounds.extend( markers[i].getPosition() );
-	    }
-	    if(markers.length==1){
-			map.setZoom(13);
-		  	map.panTo(markers[0].getPosition());
-	    }else{
-			map.fitBounds(bounds);
-	    }
-	}
+    fitBoundsToVisibleMarkers()
+    timerCount()    
 }
 
 function infoMarkerTable(marker,content){	
@@ -231,13 +264,14 @@ var aTypeSelected = Array();
 
 function validateCheck(){
     aTypeSelected = [];
-    var selected = '';    
-    $('#divMyOptions input[type=checkbox]').each(function(){
+    var selected = '';
+    $('#tableReferencias input[type=checkbox]').each(function(){
         if (this.checked) {
-            aTypeSelected.push($(this).val());
+          aTypeSelected.push($(this).val());
         }
-    });       
-    showTypeObject()
+    }); 
+
+    showTypeObject();
 }
 
 function showTypeObject(){
@@ -291,6 +325,16 @@ function clearMarkers(){
   }
 }
 
+function mapClearMap(){
+  if(markers || markers.length>-1){
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    } 
+    markers = [];
+  }
+  arrayTravels=null;
+}
+
 function drawGeo(aElement){
       var arrayGeoInfoLats = null;
           arrayGeoInfoLats = aElement[8].split('¬');
@@ -342,4 +386,56 @@ function drawRoute(aElement){
         });                
       geos_polygon.setMap(map);
       markersGeo.push(geos_polygon);
+}
+
+function getPositions(){
+  $("#positions").html("");
+  var idObject = $("#inputSucursal").val();   
+  $.ajax({
+    type: "GET",
+    url: "/atn/rastreo/getlastp",
+    data: { strInput: idObject},
+    success: function(datos){   
+      var result = datos;
+      if(result!= ""){
+        $("#positions").html(result);
+          mapClearMap();
+          cleanList();          
+      }
+    }
+  });  
+}
+
+function fitBoundsToVisibleMarkers() {
+  if(markers.length>0){
+      for (var i=0; i<markers.length; i++) {
+      bounds.extend( markers[i].getPosition() );
+      }
+      if(markers.length==1){
+      map.setZoom(13);
+        map.panTo(markers[0].getPosition());
+      }else{
+      map.fitBounds(bounds);
+      }
+  }
+}
+
+function cleanList(){
+  $( "#message-list .listitems " ).each(function( index ) {
+    $(this).remove();
+  });
+  printPoints();
+}
+
+function showGeoReferencias(){
+  $("#ModalGeoRefs").modal("show");  
+}
+
+function optionAll(inputCheck){
+    if(inputCheck){
+        $('.chkOn').prop('checked', true);         
+    }else{
+        $('.chkOn').prop('checked', false);
+    }
+    validateCheck();
 }
