@@ -11,9 +11,10 @@ class atn_MainController extends My_Controller_Action
     	try{	
 			$sessions = new My_Controller_Auth();
 			$perfiles = new My_Model_Perfiles();
-	        if(!$sessions->validateSession()){
+			$this->validateSession();
+	        /*if(!$sessions->validateSession()){
 	            $this->_redirect('/');		
-			}
+			}*/
 			
 			$this->dataIn 			= $this->_request->getParams();
 			$this->view->dataUser   = $sessions->getContentSession();
@@ -28,7 +29,52 @@ class atn_MainController extends My_Controller_Action
     public function indexAction()
     {
 		try{
+			$this->view->dataUser['allwindow'] = true;   			
+			$cInstalaciones = new My_Model_Cinstalaciones();
+			$cFunciones		= new My_Controller_Functions();
+			$cResume		= new My_Model_Resume();	
+        	$typeSearch     = "auto";
+        	$iTime          = "day";			
+			
+			$sSucursal		= (isset($this->dataIn['inputSucursal']) && $this->dataIn['inputSucursal']!="") ? $this->dataIn['inputSucursal'] : -1;
+			$iFilter 		= ($this->view->dataUser['TIPO_USUARIO']==0) ? $this->view->dataUser['ID_SUCURSAL'] : $this->view->dataUser['ID_EMPRESA'];
+			$dataCenter		= $cInstalaciones->getCbo($iFilter,$this->view->dataUser['TIPO_USUARIO']);
+			
+			if($this->_dataOp =="search"){
+	        	if($this->_dataIn['typeSearch']=="manual"){	        					
+					$typeSearch     = "manual";
+					$sInputFechaIn  = $this->_dataIn['inputDatein'];
+					$sInputFechaFin = $this->_dataIn['inputDatefin']; 
+	        	}elseif($this->_dataIn['typeSearch']=="auto"){
+	        		$iTime         = $this->_dataIn['iTime'];
+	        		if($iTime=='day'){
+	        			$sDaySearch = 1;
+	        		}else if($iTime=='week'){
+	        			$sDaySearch = 7;
+	        		}else if($iTime=='month'){
+	        			$sDaySearch = 30;
+	        		}
+	        		$sInputFechaIn  = ' DATE_SUB(CURRENT_DATE, INTERVAL '.$sDaySearch.' DAY)';
+	        		$sInputFechaFin = ' CURRENT_DATE'; 
+	        		$typeSearch    = "auto";
+	        	}	        
+	        }else{
+	        	$sInputFechaIn  = ' DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY)';
+	        	$sInputFechaFin = ' CURRENT_DATE'; 
+			}
+			
+			$aResults = $cResume->getResultsServices($sSucursal,$sInputFechaIn,$sInputFechaFin);
 
+	
+	        		
+	        $this->_dataIn['iTime'] 	 = $iTime;
+	        $this->_dataIn['typeSearch'] = $typeSearch;			
+			$this->view->cInstalaciones = $cFunciones->selectDb($dataCenter,$sSucursal);
+			$this->view->iTime		= $iTime;
+			$this->view->typeSearch = $typeSearch;	
+
+			$this->view->aResumen	= $cResume->aResumeGral;
+			$this->view->aResumenDet= $aResults;
         } catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                

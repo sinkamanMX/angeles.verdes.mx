@@ -1,66 +1,523 @@
-<?php $this->headScript()->appendFile('/libs/fullcalendar/lib/moment.min.js') ?>   
-<?php $this->headScript()->appendFile('/libs/fullcalendar/fullcalendar.js') ?>   
-<?php $this->headScript()->appendFile('/libs/fullcalendar/lang-all.js') ?>
+<?php $this->headScript()->appendFile('/libs/graficas/zingchart.min.js') ?>
 <?php $this->headScript()->appendFile('/js/modules/atn/mainAtn.js') ?>
-<!--
+
+<input type="hidden" id="txtLabels" value="<?php echo (isset($this->aResumen['servicios'])) ? count($this->aResumenDet) : 0; ?>"/>
+<?php $this->headScript()->captureStart() ?>
+
+<?php if(isset($this->aResumen['servicios'])):?>
+	<?php $nameKeys =  (isset($this->aResumen['servicios'])) ? array_keys($this->aResumen['servicios']): ''; ?>
+	var chartData = {
+    	"graphset":[
+        {    
+			"type":"pie",
+		    "plot":{
+		        "slice":70,
+	            "animation":{
+	                "delay":0,
+	                "effect":2,
+	                "speed":"600",
+	                "method":"0",
+	                "sequence":"1"
+	            }
+		    },
+		    "plotarea":{
+		        "margin-top":"35px"
+		    },
+            "series":[
+	        	<?php for($i=0;$i<count($nameKeys);$i++):?>	        		
+	        		{
+	                    "text":"<?php echo $nameKeys[$i];?>",
+	                    "values":[<?php echo $this->aResumen['servicios'][$nameKeys[$i]];?>]
+	                },
+	        	<?php endfor;?>
+            ],
+
+			 "labels":[
+				   {
+			    	"text":"Servicios Proporcionados",
+			    	"x":"20%",
+			    	"y":"10px",
+			        "border-radius":"20px",
+			        "width":"250px",
+			        "height":"30px"
+				   }
+				]            
+        }
+    ]};
+
+    <?php $namesEdo =  (isset($this->aResumen['estado'])) ? array_keys($this->aResumen['estado']): ''; ?>
+
+	var chartData2 = {
+    	"graphset":[
+        {    
+			"type":"pie",
+		    "plot":{
+		        "slice":70,
+	            "animation":{
+	                "delay":0,
+	                "effect":2,
+	                "speed":"600",
+	                "method":"0",
+	                "sequence":"1"
+	            }
+		    },
+		    "plotarea":{
+		        "margin-top":"35px"
+		    },
+            "series":[
+	        	<?php for($i=0;$i<count($namesEdo);$i++):?>	        		
+	        		{
+	                    "text":"<?php echo $namesEdo[$i];?>",
+	                    "values":[<?php echo $this->aResumen['estado'][$namesEdo[$i]];?>]
+	                },
+	        	<?php endfor;?>
+            ],       
+			 "labels":[
+				   {
+			    	"text":"Lugar de Origen",
+			    	"x":"20%",
+			    	"y":"10px",
+			        "border-radius":"20px",
+			        "width":"250px",
+			        "height":"30px"
+				   }
+				] 
+        }
+    ]};
+
+	var chartData3 = {
+        "type":"pie",
+	    "plotarea":{
+	        "margin-top":"35px"
+	    },
+        "plot":{
+            "slice":50,
+            "ref-angle":270,
+            "detach":false,
+            "hover-state":{
+                "visible":false
+            },
+            "value-box":{
+                "visible":true,
+                "type":"first",
+                "connected":false,
+                "placement":"center",
+                "text":"%v",
+                "rules":[
+                    {
+                        "rule":"%v < <?php echo $this->aResumen['total_turistas'];?>",
+                        "visible":false
+                    }
+                ],
+                "font-color":"#000000",
+                "font-size":"20px",
+                "font-family":"arial"
+            },
+            "animation":{
+                "delay":0,
+                "effect":2,
+                "speed":"600",
+                "method":"0",
+                "sequence":"1"
+            }
+        },
+        "series":[
+            {
+                "values":[<?php echo $this->aResumen['total_turistas'];?>],
+                "text":"Turistas",
+                "background-color":"#00baf0",
+                "border-width":"0px",
+                "shadow":0
+            }
+        ],       
+			 "labels":[
+				   {
+			    	"text":"Turistas Atendidos",
+			    	"x":"15%",
+			    	"y":"10px",
+			        "border-radius":"20px",
+			        "width":"250px",
+			        "height":"30px"
+				   }
+				] 
+    };
+
+    <?php $namesTipoAcc =  (isset($this->aResumen['tipo_acc'])) ? array_keys($this->aResumen['tipo_acc']): ''; ?>
+
+	var chartData4 = {
+    	"graphset":[
+        {    
+			"type":"pie",
+		    "plot":{
+		        "slice":70,
+	            "animation":{
+	                "delay":0,
+	                "effect":2,
+	                "speed":"600",
+	                "method":"0",
+	                "sequence":"1"
+	            }
+		    },
+		    "plotarea":{
+		        "margin-top":"35px"
+		    },
+            "series":[
+	        	<?php for($i=0;$i<count($namesTipoAcc);$i++):?>	        		
+	        		{
+	                    "text":"<?php echo $namesTipoAcc[$i];?>",
+	                    "values":[<?php echo $this->aResumen['tipo_acc'][$namesTipoAcc[$i]];?>]
+	                },
+	        	<?php endfor;?>
+            ],       
+			 "labels":[
+				   {
+			    	"text":"Tipo de Accidentes",
+			    	"x":"20%",
+			    	"y":"10px",
+			        "border-radius":"20px",
+			        "width":"250px",
+			        "height":"30px"
+				   }
+				] 
+        }
+    ]};
+
+    <?php $namesCalif =  (isset($this->aResumen['nivel'])) ? array_keys($this->aResumen['nivel']): ''; ?>
+
+	var chartData5 = {
+    	"graphset":[
+        {    
+			"type":"pie",
+		    "plot":{
+		        "slice":70,
+	            "animation":{
+	                "delay":0,
+	                "effect":2,
+	                "speed":"600",
+	                "method":"0",
+	                "sequence":"1"
+	            }
+		    },
+		    "plotarea":{
+		        "margin-top":"35px"
+		    },
+            "series":[
+	        	<?php for($i=0;$i<count($namesCalif);$i++):?>	        		
+	        		{
+	                    "text":"<?php echo $namesCalif[$i];?>",
+	                    "values":[<?php echo $this->aResumen['nivel'][$namesCalif[$i]];?>]
+	                },
+	        	<?php endfor;?>
+            ],       
+			 "labels":[
+				   {
+			    	"text":"Satisfacción de los Servicios",
+			    	"x":"20%",
+			    	"y":"10px",
+			        "border-radius":"20px",
+			        "width":"250px",
+			        "height":"30px"
+				   }
+				] 
+        }
+    ]};    
+
+<?php endif;?>
+<?php $this->headScript()->captureEnd(); ?>
 	<div class="panel panel-default margin-t5px">
 	    <div class="panel-heading">
-	    	<h6 class="panel-title"> Resumen</h6>
+	    	<h6 class="panel-title"> DashBoard</h6>
 			<div class="pull-right">
-				<button class="btn btn-default btn-sm" type="button" onClick="searchDialog();" ><i class="icon-search3"></i></button>	
+
+				<form method="POST" action="/atn/main/index?action=report&ssKeyConfigTokenAction=72" id="FormData" class="form-horizontal formcustom">
+					<input type="hidden" name="optReg"     value="search" />
+					<input type="hidden" name="typeSearch" value="auto" />
+					<input type="hidden" id="iTime" 	   name="iTime"    value="<?php echo $this->iTime;?>" />
+
+					<div class="divToolsMap pull-right">
+						<small>Jefatura: </small>
+						<select class="chzn-select" id="inputSucursal" name="inputSucursal" onChange="submitForm();">
+							<option value="-1">Todos</option>
+							<?php echo $this->cInstalaciones;?>
+						</select>
+
+						<small>	Ver: </small>
+						<button type="button" onClick="<?php echo ($this->typeSearch!="auto" OR $this->iTime!='day')   ? 'getReportForm(\'day\',0)'   : '';?>" class="btn btn-sm btn-success shiny <?php echo ($this->typeSearch =="auto" && $this->iTime=='day')  ? 'active': '';?>"><i class="icon-clock"></i> 24 Horas</button>
+						<button type="button" onClick="<?php echo ($this->typeSearch!="auto" OR $this->iTime!='week')  ? 'getReportForm(\'week\',0)'  : '';?>"  class="btn btn-sm btn-success shiny <?php echo ($this->typeSearch=="auto" && $this->iTime=='week') ? 'active': '';?>"><i class="icon-calendar3"></i> Últ. Semana</button>						
+						<button type="button" onClick="<?php echo ($this->typeSearch!="auto" OR $this->iTime!='month') ? 'getReportForm(\'month\',0)' : '';?>"  class="btn btn-sm btn-success shiny <?php echo ($this->typeSearch=="auto" && $this->iTime=='month')? 'active': '';?>"><i class="icon-calendar4"></i> Mes</button>
+
+						<a class="btn btn-sm btn-success shiny <?php echo ($this->typeSearch=="manual") ? 'active': '';?>" href="#form_modal2" data-toggle="modal">
+							 <i class="icon-calendar2"></i> Rango de Fechas 
+						</a>
+					</div>	
+				</form>
 			</div>
-	    </div>
-	    
+	    </div>	    
 	    <div class="panel-body">
-	    	<div id="calendar"></div>
+	    	<div class="text-center row"><h6>Resumen General</h6></div>
+	    	<div class="row">
+				<div class="col-md-4">
+		    		<div id='chartDiv'></div>
+		    	</div>
+		    	<div class="col-md-4">
+		    		<div id='chartDiv2' ></div>
+		    	</div>	 
+		    	<div class="col-md-4">
+		    		<div id='chartDiv3' ></div>
+		    	</div>
+	    	</div>	    	
+	    	<div class="row m-top-1">
+				<div class="col-md-4">
+		    		<div id='chartDiv4' ></div>
+		    	</div>
+		    	<div class="col-md-4">
+		    		<div id='chartDiv5' ></div>
+		    	</div>	    
+		   	</div>		    		    	   	
 	    </div>
 	</div>
-	
+<?php $sSetGraph = ''; ?>
+<?php foreach($this->aResumenDet as $key => $items):?>	
+	<?php $this->headScript()->captureStart() ?>
+		<?php if(isset($items['aServices']['servicios'] )):?>
+			<?php $aElement = $items['aServices'];?>
+			<?php $nameKeys =  (isset($aElement['servicios'])) ? array_keys($aElement['servicios']): ''; ?>
 
-	<div id="myModalinfoVis" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title"> Información de la Cita</h4>
-				</div>
+			var chartData_<?php echo $items['ID_SUCURSAL'];?> = {
+		    	"graphset":[
+		        {    
+					"type":"pie",
+				    "plot":{
+				        "slice":70,
+			            "animation":{
+			                "delay":0,
+			                "effect":2,
+			                "speed":"600",
+			                "method":"0",
+			                "sequence":"1"
+			            }
+				    },
+				    "plotarea":{
+				        "margin-top":"35px"
+				    },
+		            "series":[
+			        	<?php for($i=0;$i<count($nameKeys);$i++):?>	        		
+			        		{
+			                    "text":"<?php echo $nameKeys[$i];?>",
+			                    "values":[<?php echo $aElement['servicios'][$nameKeys[$i]];?>]
+			                },
+			        	<?php endfor;?>
+		            ],
 
-				<div class="modal-body with-padding">
-					<img id="loader" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif" style="display:none;"/>
-	        		<iframe class="hmodal500" id="iFrameDetCita" src="" style="zoom:0" frameborder="0"></iframe>
-				</div>
-			</div>
-		</div>
-	</div>
+					 "labels":[
+						   {
+					    	"text":"Servicios Proporcionados",
+					    	"x":"20%",
+					    	"y":"10px",
+					        "border-radius":"20px",
+					        "width":"250px",
+					        "height":"30px"
+						   }
+						]            
+		        }
+		    ]};
 
-	<div id="MyModalSearch" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Buscar Citas </h4>
-				</div>
+		    <?php $sSetGraph .= ($nameKeys!="") ? "zingchart.render({
+										            id:'divChartJ".$items['ID_SUCURSAL']."',
+										            height:250,
+										            width:'100%',
+										            data:chartData_".$items['ID_SUCURSAL']."
+										          });" : ""; ?>
 
-				<div class="modal-body with-padding">
-					<img id="loader2" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>	      	
-					<iframe class="hmodal550" id="iFrameModaCita" src="" style="zoom:0" frameborder="0"></iframe>
-				</div>
-			</div>
-		</div>
-	</div>
+			var chartData_1<?php echo $items['ID_SUCURSAL'];?> = {
+		        "type":"pie",
+			    "plotarea":{
+			        "margin-top":"35px"
+			    },
+		        "plot":{
+		            "slice":50,
+		            "ref-angle":270,
+		            "detach":false,
+		            "hover-state":{
+		                "visible":false
+		            },
+		            "value-box":{
+		                "visible":true,
+		                "type":"first",
+		                "connected":false,
+		                "placement":"center",
+		                "text":"%v",
+		                "rules":[
+		                    {
+		                        "rule":"%v < <?php echo $aElement['total_turistas'];?>",
+		                        "visible":false
+		                    }
+		                ],
+		                "font-color":"#000000",
+		                "font-size":"20px",
+		                "font-family":"arial"
+		            },
+		            "animation":{
+		                "delay":0,
+		                "effect":2,
+		                "speed":"600",
+		                "method":"0",
+		                "sequence":"1"
+		            }
+		        },
+		        "series":[
+		            {
+		                "values":[<?php echo $aElement['total_turistas'];?>],
+		                "text":"Turistas",
+		                "background-color":"#00baf0",
+		                "border-width":"0px",
+		                "shadow":0
+		            }
+		        ],       
+					 "labels":[
+						   {
+					    	"text":"Turistas Atendidos",
+					    	"x":"15%",
+					    	"y":"10px",
+					        "border-radius":"20px",
+					        "width":"250px",
+					        "height":"30px"
+						   }
+						] 
+		    };		
 
-	<div id="mModalList" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title"> Citas </h4>
-				</div>
+		    <?php $sSetGraph .= ($nameKeys!="") ? "zingchart.render({
+										            id:'divChartJ_1".$items['ID_SUCURSAL']."',
+										            height:250,
+										            width:'100%',
+										            data:chartData_1".$items['ID_SUCURSAL']."
+										          });" : ""; ?>		    	
 
-				<div class="modal-body with-padding">
-					<img id="loader3" class="col-xs-offset-4" src="/assets/images/loading.gif" alt="loading gif"/>          
-	        		<iframe class="hmodal550" id="frameList" src="" style="zoom:0" frameborder="0"></iframe>
-				</div>
-			</div>
-		</div>
-	</div>-->
+		    <?php $namesTipoAcc =  (isset($aElement['tipo_acc'])) ? array_keys($aElement['tipo_acc']): ''; ?>
+
+			var chartData_2<?php echo $items['ID_SUCURSAL'];?> = {
+		    	"graphset":[
+		        {    
+					"type":"pie",
+				    "plot":{
+				        "slice":70,
+			            "animation":{
+			                "delay":0,
+			                "effect":2,
+			                "speed":"600",
+			                "method":"0",
+			                "sequence":"1"
+			            }
+				    },
+				    "plotarea":{
+				        "margin-top":"35px"
+				    },
+		            "series":[
+			        	<?php for($i=0;$i<count($namesTipoAcc);$i++):?>	        		
+			        		{
+			                    "text":"<?php echo $namesTipoAcc[$i];?>",
+			                    "values":[<?php echo $aElement['tipo_acc'][$namesTipoAcc[$i]];?>]
+			                },
+			        	<?php endfor;?>
+		            ],       
+					 "labels":[
+						   {
+					    	"text":"Tipo de Accidentes",
+					    	"x":"20%",
+					    	"y":"10px",
+					        "border-radius":"20px",
+					        "width":"250px",
+					        "height":"30px"
+						   }
+						] 
+		        }
+		    ]};
+
+		    <?php $sSetGraph .= ($namesTipoAcc!="") ? "zingchart.render({
+										            id:'divChartJ_2".$items['ID_SUCURSAL']."',
+										            height:250,
+										            width:'100%',
+										            data:chartData_2".$items['ID_SUCURSAL']."
+										          });" : ""; ?>			    
+
+		    <?php $namesCalif =  (isset($aElement['nivel'])) ? array_keys($aElement['nivel']): ''; ?>
+
+			var chartData_3<?php echo $items['ID_SUCURSAL'];?> = {
+		    	"graphset":[
+		        {    
+					"type":"pie",
+				    "plot":{
+				        "slice":70,
+			            "animation":{
+			                "delay":0,
+			                "effect":2,
+			                "speed":"600",
+			                "method":"0",
+			                "sequence":"1"
+			            }
+				    },
+				    "plotarea":{
+				        "margin-top":"35px"
+				    },
+		            "series":[
+			        	<?php for($i=0;$i<count($namesCalif);$i++):?>	        		
+			        		{
+			                    "text":"<?php echo $namesCalif[$i];?>",
+			                    "values":[<?php echo $aElement['nivel'][$namesCalif[$i]];?>]
+			                },
+			        	<?php endfor;?>
+		            ],       
+					 "labels":[
+						   {
+					    	"text":"Satisfacción de los Servicios",
+					    	"x":"20%",
+					    	"y":"10px",
+					        "border-radius":"20px",
+					        "width":"250px",
+					        "height":"30px"
+						   }
+						] 
+		        }
+		    ]};   
+
+		    <?php $sSetGraph .= ($namesTipoAcc!="") ? "zingchart.render({
+										            id:'divChartJ_3".$items['ID_SUCURSAL']."',
+										            height:250,
+										            width:'100%',
+										            data:chartData_3".$items['ID_SUCURSAL']."
+										          });" : ""; ?>				     		    
+		<?php endif;?>
+	<?php $this->headScript()->captureEnd(); ?>
+	<div class="panel panel-default margin-t5px">
+	    <div class="panel-heading">
+	    	<h6 class="panel-title"> Jefatura: <?php echo $items['DESCRIPCION'];?> </h6>
+	    </div>	    
+	    <div class="panel-body">
+	    	<div class="row">
+				<div class="col-md-4">
+		    		<div id='divChartJ<?php echo $items['ID_SUCURSAL'];?>'></div>
+		    	</div>
+		    	<div class="col-md-4">
+		    		<div id='divChartJ_1<?php echo $items['ID_SUCURSAL'];?>'></div>
+		    	</div>	 
+		    	<div class="col-md-4">
+		    		<div id='divChartJ_2<?php echo $items['ID_SUCURSAL'];?>'></div>
+		    	</div>
+	    	</div>	    	
+	    	<div class="row m-top-1">
+				<div class="col-md-4">
+		    		<div id='divChartJ_3<?php echo $items['ID_SUCURSAL'];?>'></div>
+		    	</div>
+		    	<div class="col-md-4">
+		    		<div id='divChartJ_4<?php echo $items['ID_SUCURSAL'];?>'></div>
+		    	</div>	    
+		   	</div>		    	
+	    </div>
+	</div>    
+<?php endforeach;?>
+<?php $this->headScript()->captureStart() ?>
+$( document ).ready(function() {
+    <?php echo $sSetGraph;?>
+});
+
+<?php $this->headScript()->captureEnd(); ?>

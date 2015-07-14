@@ -103,7 +103,12 @@ class forms_MainController extends My_Controller_Action
 						if($aElement['op']=='new' && $aElement['id']==-1){
 							$aResult = $cFormularios->insertElement($aElement,$this->_idUpdate,$this->_dataUser['ID_EMPRESA']);
 						}else if($aElement['op']=='up' && $aElement['id']>-1){
-							$aResult = $cFormularios->updateRowRel($aElement);
+							$aResult = $cFormularios->updateRowRel($aElement,$this->_idUpdate);
+							/*
+							$delRelation = $cFormularios->deleteRowRel($aElement,$this->_idUpdate);
+							if($delRelation['status']){
+								$aResult = $cFormularios->insertElement($aElement,$this->_idUpdate,$this->_dataUser['ID_EMPRESA']);			
+							}*/
 						}else if($aElement['op']=='del' && $aElement['id']>-1){
 							$aResult = $cFormularios->deleteRowRel($aElement,$this->_idUpdate);
 						}

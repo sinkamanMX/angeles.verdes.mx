@@ -226,11 +226,11 @@ class My_Model_Formularios extends My_Db_Table
 
 	/**
 	 * 
-	 * Actualiza un elemento del formulario
+	 * Actualiza un elemento y orden del formulario
 	 * @param Array $aDataIn
 	 * @return Boolean Estatus de la operacion
 	 */
-    public function updateRowRel($aDataElement){
+    public function updateRowRel($aDataElement,$idObject){
         $result     = Array();
         $result['status']  = false;
         
@@ -244,15 +244,22 @@ class My_Model_Formularios extends My_Db_Table
 					DEPENDE			= ".(($aDataElement['depend']=="") ? 'NULL': $aDataElement['depend']).",
 					ESPERA 			='".$aDataElement['when']."'
 			WHERE ID_ELEMENTO = ".$aDataElement['id']." LIMIT 1";				        
-		try{            
+		try{
     		$query   = $this->query($sql,false);
 			if($query){
-				$result['status']  = true;					
+				$sqlRel = "UPDATE PROD_FORMULARIO_ELEMENTOS
+							SET ORDEN			= ".$aDataElement['orden']."
+							WHERE ID_ELEMENTO   = ".$aDataElement['id']."
+							  AND ID_FORMULARIO = ".$idObject;
+				$queryRel   = $this->query($sqlRel,false);
+				if(count($queryRel)>0){
+					$result['status']  = true;		
+				}				
 			}	
         }catch(Exception $e) {
             echo $e->getMessage();
             echo $e->getErrorMessage();
         }
 		return $result;
-    }      
+    }     
 }
