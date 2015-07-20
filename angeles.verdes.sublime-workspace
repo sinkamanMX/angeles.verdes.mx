@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"geos",
+				"geos_polygon"
+			],
+			[
+				"geos_po",
+				"geos_points"
+			],
+			[
+				"iT",
+				"iTotalDet"
+			],
+			[
+				"ur",
+				"urlImg"
+			],
+			[
+				"url",
+				"urlImg"
+			],
+			[
 				"Mar",
 				"markersGeo"
 			],
@@ -455,14 +475,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "application/modules/reports/views/scripts/logbook/index.phtml",
-			"settings":
-			{
-				"buffer_size": 7745,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -492,20 +504,36 @@
 	},
 	"file_history":
 	[
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsReporteRastreo.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/index.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsRastreotels.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/index.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/importdata.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidateImport.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/getinforoute.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidateRute.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsAdminGeos.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/getinfoarea.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/getinfopoint.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/mainAtn.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/main/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/css/style.css",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsRastreotels.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/css/styles.css",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidateGeos.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/controllers/RastreoController.php",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidatePoints.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/dbman/views/scripts/main/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/gralTables.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/jsImportFunctions.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/import/datapa.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/import/datacamp.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/importdata.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/uploadfilegeos.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/index.phtml",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsReporteRastreo.js",
+		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidateImport.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/uploadfilepoints.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsResultImport.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout_blank.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsResultImpor",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/controllers/GeosController.php",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/geos/jsValidatePoints.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/geos/getinfopoint.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/activities/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/services/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/services/mapubicacion.phtml",
@@ -520,18 +548,14 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/newservice/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/jGeneralOptionsSearch.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/rastreo/reporte.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/controllers/RastreoController.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/header.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/controllers/LogbookController.php",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/forms/views/scripts/main/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/library/My/Model/Historico.php",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/reports/views/scripts/logbook/detailinfo.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/reports/jsReporteResumen.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/footer_report.html",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/mainAtn.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/layouts/reports/table_bitacora.html",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/PHPExcel/Classes/dompdf/include/image_cache.cls.php",
 		"/Users/itecno2/Downloads/Bitacora_.pdf",
@@ -550,7 +574,6 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/callservice/instalation.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/callservice/cardetail.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/forms/jsValidateForms.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/css/style.css",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/callcenter/newservice.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/newservice/instalation.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/callcenter/views/scripts/newservice/cardetail.phtml",
@@ -562,14 +585,11 @@
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsinfoDate.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/atn/jsService.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/views/layouts/layout.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/gralTables.js",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/css/styles.css",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/datatables/js/dataTables.tableTools.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/libs/js/plugins/interface/tabletools.min.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/profiles/listmodules.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/users/jsValidateProfiles.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/admin/views/scripts/users/listhorarios.phtml",
-		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/dbman/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/atn/views/scripts/main/searchcitas.phtml",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/public/js/modules/general/jGeneralSearch.js",
 		"/Users/itecno2/Documents/workspace/angeles.verdes.mx/application/modules/dbman/views/scripts/search/index.phtml",
@@ -611,15 +631,7 @@
 		"/Users/itecno2/Documents/workspace/productividapp.mx/public/assets/js/validation/bootstrapValidator.js",
 		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/dbman/views/scripts/main/scriptvalidation.phtml",
 		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/functionGral.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/general/jGeneralSearch.js",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/dbman/views/scripts/search/index.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/dbman/views/scripts/main/getdatainfo.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/layout_blank.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/views/layouts/blank.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/backup_modules/users/views/scripts/profiles/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/location/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/application/modules/location/views/scripts/main/reporte.phtml",
-		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/location/reporteRastreo.js"
+		"/Users/itecno2/Documents/workspace/productividapp.mx/public/js/modules/general/jGeneralSearch.js"
 	],
 	"find":
 	{
@@ -642,6 +654,34 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"validateLine",
+			"geos_points",
+			"drawinit",
+			"drawinit()",
+			"geos_polygon = new google.maps",
+			"Polygon",
+			"margin-t",
+			"maring-t",
+			"aTypeSelected",
+			"validateCheck",
+			"images",
+			".pnh",
+			"validateCheck()",
+			"cleanList()",
+			"this",
+			"ARRAYTRAVELS",
+			"padding",
+			"chat",
+			"LatLng",
+			"setMarker",
+			" ",
+			",",
+			" ",
+			",",
+			" ",
+			",",
+			" ",
+			",",
 			"offset",
 			"paddi",
 			"cleanMap",
@@ -741,35 +781,7 @@
 			"load",
 			"loade",
 			"loader",
-			"confirm",
-			"t",
-			"t(",
-			"_t(",
-			"locales",
-			"Cancel",
-			"Ok",
-			"sLengthMenu",
-			"records",
-			"select",
-			"señect",
-			"aButtons",
-			"aLengthMenu",
-			" records per page",
-			"editabledatatable_length",
-			"per page",
-			"assets/sound/alert.mp3",
-			"txtInput",
-			"back",
-			"toast",
-			"txtLastMessage",
-			"scrollto",
-			"loadin",
-			"loading",
-			"setNameContact",
-			"contact",
-			"checkMessages",
-			"chat",
-			"console.log"
+			"confirm"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -777,6 +789,14 @@
 		"regex": true,
 		"replace_history":
 		[
+			",",
+			"|",
+			",",
+			"|",
+			",",
+			"|",
+			",",
+			"|",
 			"col-sm-9",
 			"col-xs-6",
 			"col-sm-3 control-label",
@@ -856,38 +876,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "application/modules/reports/views/scripts/logbook/index.phtml",
-					"settings":
-					{
-						"buffer_size": 7745,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6711,
-								6711
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 244.0,
-						"translation.y": 1396.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],

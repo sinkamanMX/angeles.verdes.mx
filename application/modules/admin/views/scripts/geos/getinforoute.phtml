@@ -1,5 +1,5 @@
 <?php $this->headScript()->appendFile('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,drawing'); ?>
-<?php $this->headScript()->appendFile('/js/modules/geos/jsValidateGeos.js') ?> 
+<?php $this->headScript()->appendFile('/js/modules/geos/jsValidateRute.js') ?> 
 <?php $this->headScript()->appendFile('/js/modules/general/functionGral.js') ?> 
 <?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>	
 <?php $urlActions = ($this->DbmanInfo['CUSTOM_ACTIONS']==1) ? $this->DbmanInfo['CUSTOM_URL'] : '/dbman/main/getdatainfo?ssIdource='.$this->DbmanInfo['CLAVE_MODULO']; ?>
@@ -8,13 +8,12 @@
   geos_poins_polygon = [ <?php echo @$this->aPositions;?> ];
 
   geos_options = {
-          paths: geos_poins_polygon,
-          editable: true,
-          strokeColor: "<?php echo (isset($this->data['HTML_CODE'])) ? $this->data['HTML_CODE'] : '#FF0000';?>",
-          strokeOpacity: 0.8,
-          strokeWeight: 3,
-          fillColor: "<?php echo (isset($this->data['HTML_CODE'])) ? $this->data['HTML_CODE'] : '#FF0000'; ?>",
-          fillOpacity: 0.35
+    path: geos_poins_polygon,
+    geodesic: true,
+    editable: true,
+    strokeColor: '<?php echo (isset($this->data['HTML_CODE'])) ? $this->data['HTML_CODE'] : '#FF0000';?>',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
     }
 <?php $this->headScript()->captureEnd(); ?>
 <input type="hidden" id="inputModule" value="<?php echo $this->moduleInfo['SCRIPT']; ?>"/>
@@ -23,7 +22,7 @@
         <ul class="breadcrumb">
             <li>Administración</li>
             <li><a href="<?php echo $this->moduleInfo['SCRIPT']; ?>"><?php echo $this->DbmanInfo['TITULO']; ?></a></li>
-            <li>Registro GeoCerca</li>
+            <li>Registro Ruta</li>
         </ul>
     </div>
 
@@ -35,7 +34,7 @@
         </div>
     <?php else:?>
             <div id="formInit" class="tab-pane <?php echo ($this->tabSelected==1 || !isset($this->tabSelected)) ? 'active':'';?>">
-                <form id="formDbman" class="form-horizontal" role="form" method="POST" action="/admin/geos/getinfoarea" <?php echo ($this->DbmanInfo['INCLUYE_ARCHIVOS']==1) ? 'enctype="multipart/form-data"' :'';?>>                                
+                <form id="formDbman" class="form-horizontal" role="form" method="POST" action="/admin/geos/getinforoute" <?php echo ($this->DbmanInfo['INCLUYE_ARCHIVOS']==1) ? 'enctype="multipart/form-data"' :'';?>>                                
                     <input type="hidden" id="catId" name="catId"  value="<?php echo $this->catId; ?>" id="catId" />
                     <input type="hidden" id="optReg" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
                     <input type="hidden" id="inputStatusDraw" name="inputStatusDraw" value="<?php echo ($this->idToUpdate>0) ? 'ok': 'nok';?>" />

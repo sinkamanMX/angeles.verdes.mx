@@ -522,7 +522,6 @@ class My_Model_GeoPuntos extends My_Db_Table
 						CLAVE_UNICA		= '".$aDataIn['inputClave']."',
 						ESTATUS			=  ".$aDataIn['inputEstatus']."
 				WHERE ID_GEOREFERENCIA  = ".$aDataIn['catId'];
-        Zend_Debug::dump($sql);
         try{            
     		$query   = $this->query($sql,false);
 			if($query){
